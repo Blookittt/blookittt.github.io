@@ -3078,3 +3078,245 @@ body:has(.balance-page-v2) .page-wrap{
 .balance-beam{
   transition:transform .15s cubic-bezier(.2,.7,.25,1);
 }
+
+
+/* BALANCE — BUTTONS + MECHANICAL ROLLERS */
+.balance-attraction-banner{
+  position:relative;
+  min-height:29px;
+  padding:0 18px;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:12px;
+  background:
+    linear-gradient(#a76059,#7e423f);
+  border:1px solid #5c332f;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.15),
+    inset 0 -3px 0 rgba(61,29,27,.13),
+    0 1px 0 rgba(255,255,255,.24);
+}
+
+.balance-attraction-banner::before,
+.balance-attraction-banner::after{
+  content:"";
+  position:absolute;
+  top:5px;
+  bottom:5px;
+  width:1px;
+  background:rgba(239,221,184,.22);
+}
+
+.balance-attraction-banner::before{left:42px}
+.balance-attraction-banner::after{right:42px}
+
+.banner-pin{
+  height:1px;
+  background:
+    linear-gradient(90deg,transparent,#d8bd87 28%,#d8bd87 72%,transparent);
+  opacity:.7;
+}
+
+.banner-medallion{
+  width:19px;
+  height:19px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:#ead39e;
+  border:1px solid rgba(234,211,158,.45);
+  font:10px/1 Georgia,"Times New Roman",serif;
+}
+
+/* The number windows are little vertical drums now. */
+.balance-number-window{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  perspective:160px;
+}
+
+.balance-number-window::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(48,38,27,.24) 0,
+      rgba(48,38,27,.06) 15%,
+      transparent 31%,
+      transparent 69%,
+      rgba(48,38,27,.07) 86%,
+      rgba(48,38,27,.25) 100%
+    );
+  box-shadow:
+    inset 0 9px 10px rgba(45,34,23,.10),
+    inset 0 -9px 10px rgba(45,34,23,.11);
+}
+
+.balance-number-window::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  top:50%;
+  z-index:3;
+  height:1px;
+  pointer-events:none;
+  background:rgba(80,61,40,.18);
+  box-shadow:0 1px 0 rgba(255,255,255,.22);
+}
+
+.balance-number-window strong{
+  position:relative;
+  z-index:1;
+  transform:translateY(0) rotateX(0deg);
+  transform-origin:center;
+  will-change:transform,opacity;
+}
+
+.balance-tile.roller-out .balance-number-window strong{
+  animation:balance-roller-out .115s cubic-bezier(.45,0,.8,.35) forwards;
+}
+
+.balance-tile.roller-in .balance-number-window strong{
+  animation:balance-roller-in .155s cubic-bezier(.2,.72,.25,1) forwards;
+}
+
+@keyframes balance-roller-out{
+  0%{transform:translateY(0) rotateX(0deg);opacity:1}
+  100%{transform:translateY(112%) rotateX(-22deg);opacity:.45}
+}
+
+@keyframes balance-roller-in{
+  0%{transform:translateY(-112%) rotateX(22deg);opacity:.45}
+  100%{transform:translateY(0) rotateX(0deg);opacity:1}
+}
+
+/* Blue flip plates read as real push-buttons, not labels. */
+.balance-tile-control{
+  position:relative;
+  min-height:30px;
+  padding:8px 18px 6px;
+  border:1px solid #172b3d;
+  border-radius:2px;
+  background:
+    linear-gradient(#5b7e9e 0%,#365b7a 48%,#274965 52%,#1f3d56 100%);
+  color:#f5ecdc!important;
+  text-shadow:0 -1px 0 rgba(0,0,0,.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.25),
+    inset 0 -2px 0 rgba(9,28,43,.4),
+    0 3px 0 #162d40,
+    0 4px 3px rgba(0,0,0,.24);
+}
+
+.balance-tile:not(.sealed) .balance-tile-control::before,
+.balance-tile:not(.sealed) .balance-tile-control::after{
+  position:absolute;
+  top:50%;
+  transform:translateY(-52%);
+  color:#d5c59f;
+  font:9px/1 Georgia,"Times New Roman",serif;
+}
+
+.balance-tile:not(.sealed) .balance-tile-control::before{
+  content:"◀";
+  left:6px;
+}
+
+.balance-tile:not(.sealed) .balance-tile-control::after{
+  content:"▶";
+  right:6px;
+}
+
+.balance-tile:active:not(:disabled) .balance-tile-control,
+.balance-tile.roller-busy .balance-tile-control{
+  transform:translateY(3px);
+  box-shadow:
+    inset 0 2px 4px rgba(0,0,0,.3),
+    inset 0 1px 0 rgba(255,255,255,.10),
+    0 0 0 #162d40;
+}
+
+.balance-tile.sealed .balance-tile-control{
+  background:
+    linear-gradient(#a96a63 0%,#8b4f4b 50%,#713d39 52%,#62312f 100%);
+  border-color:#4f2826;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.20),
+    inset 0 -2px 0 rgba(65,28,26,.35),
+    0 3px 0 #4f2a28;
+}
+
+/* Make WEIGH the big satisfying county-fair button. */
+.balance-weigh-button{
+  position:relative;
+  min-height:44px;
+  border:2px solid #4d302d;
+  border-radius:3px;
+  color:#f4e8d4;
+  background:
+    linear-gradient(#b66b62 0%,#98544f 47%,#7f413d 52%,#6a3432 100%);
+  text-shadow:0 -1px 0 rgba(0,0,0,.48);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.24),
+    inset 0 -3px 0 rgba(67,27,26,.28),
+    0 5px 0 #4c2a28,
+    0 6px 4px rgba(0,0,0,.24);
+  font:bold 11px/1 "Courier New",monospace;
+  letter-spacing:.18em;
+}
+
+.balance-weigh-button::before,
+.balance-weigh-button::after{
+  content:"✦";
+  position:absolute;
+  top:50%;
+  transform:translateY(-52%);
+  color:#e3c58d;
+  font:9px/1 Georgia,"Times New Roman",serif;
+}
+
+.balance-weigh-button::before{left:14px}
+.balance-weigh-button::after{right:14px}
+
+.balance-weigh-button:active:not(:disabled),
+.is-weighing .balance-weigh-button{
+  transform:translateY(5px);
+  box-shadow:
+    inset 0 3px 6px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.10),
+    0 0 0 #4c2a28;
+}
+
+/* SERVICE is deliberately smaller and uglier. */
+.balance-actions .old-button{
+  min-height:28px;
+  padding:5px 9px;
+  border:1px solid #5b4e3e;
+  background:
+    linear-gradient(#e3d7c0,#c0af91);
+  color:#3d3429;
+  box-shadow:
+    inset 1px 1px 0 #f3ead8,
+    inset -1px -2px 0 #94836a,
+    0 2px 0 #6a5b47;
+  font:bold 8px/1 "Courier New",monospace;
+}
+
+.balance-actions .old-button:active:not(:disabled){
+  transform:translateY(2px);
+  box-shadow:inset 1px 2px 3px rgba(87,68,46,.25);
+}
+
+@media (prefers-reduced-motion:reduce){
+  .balance-tile.roller-out .balance-number-window strong,
+  .balance-tile.roller-in .balance-number-window strong{
+    animation:none!important;
+  }
+}
