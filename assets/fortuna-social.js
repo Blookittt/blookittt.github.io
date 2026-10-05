@@ -1,6 +1,7 @@
 (() => {
   const STORAGE_KEY = 'fortuna.profile.v1';
   const FAVOR_LEDGER_KEY = 'fortuna.favor.ledger.v1';
+  const SITE_SETTINGS_KEY = 'fortuna.site.settings.v1';
 
   const defaults = {
     displayName: 'BLOO',
@@ -16,6 +17,14 @@
     embed1: '',
     embed2: '',
     embed3: ''
+  };
+
+  const siteDefaults = {
+    theme: 'light',
+    motion: true,
+    sysClock: true,
+    showFavor: true,
+    showSong: true
   };
 
   const safeParse = (value, fallback) => {
@@ -170,6 +179,65 @@
     });
   };
 
+  const loadSite = () => {
+    const saved = safeParse(localStorage.getItem(SITE_SETTINGS_KEY), {});
+    return Object.assign({}, siteDefaults, saved);
+  };
+
+  const getWrongTime = () => {
+    const now = new Date();
+
+    // Fortuna System Time is calibrated exactly 7h 17m 17s away from usefulness.
+    const wrong = new Date(now.getTime() + ((7 * 60 * 60 + 17 * 60 + 17) * 1000));
+
+    return [
+      String(wrong.getHours()).padStart(2,'0'),
+      String(wrong.getMinutes()).padStart(2,'0'),
+      String(wrong.getSeconds()).padStart(2,'0')
+    ].join(':');
+  };
+
+  let clockTimer = null;
+
+  const applySite = (settings = loadSite()) => {
+    document.documentElement.dataset.fortunaTheme = settings.theme === 'dark' ? 'dark' : 'light';
+    document.documentElement.classList.toggle('fortuna-no-motion', !settings.motion);
+    document.documentElement.classList.toggle('fortuna-hide-favor', !settings.showFavor);
+    document.documentElement.classList.toggle('fortuna-hide-song', !settings.showSong);
+
+    document.querySelectorAll('[data-sys-clock-wrap]').forEach(el => {
+      el.hidden = !settings.sysClock;
+    });
+
+    const updateClock = () => {
+      const value = getWrongTime();
+      document.querySelectorAll('[data-sys-clock]').forEach(el => {
+        el.textContent = value;
+      });
+    };
+
+    updateClock();
+
+    if (clockTimer) {
+      window.clearInterval(clockTimer);
+      clockTimer = null;
+    }
+
+    if (settings.sysClock) {
+      clockTimer = window.setInterval(updateClock, 1000);
+    }
+
+    return settings;
+  };
+
+  const saveSite = next => {
+    const merged = Object.assign({}, siteDefaults, next || {});
+    localStorage.setItem(SITE_SETTINGS_KEY, JSON.stringify(merged));
+    applySite(merged);
+    window.dispatchEvent(new CustomEvent('fortuna-site-settings-updated', { detail: merged }));
+    return merged;
+  };
+
   window.FortunaProfile = {
     defaults,
     load,
@@ -179,5 +247,14 @@
     renderEmbeds
   };
 
+  window.FortunaSite = {
+    defaults: siteDefaults,
+    load: loadSite,
+    save: saveSite,
+    apply: applySite,
+    getWrongTime
+  };
+
   apply();
+  applySite();
 })();
