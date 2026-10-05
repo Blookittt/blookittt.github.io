@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>{% if page.title and page.title != "home" %}{{ page.title | escape }} / {% endif %}FORTUNA</title>
   <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | strip_newlines | escape }}">
-  <link rel="stylesheet" href="/assets/style.css?v=20261005m">
+  <link rel="stylesheet" href="/assets/style.css?v=20261005n">
 </head>
 <body>
   {% if site.data.weekly.song_audio and site.data.weekly.song_audio != "" %}
@@ -24,7 +24,8 @@
       <div class="account-stub">
         SIGNED IN AS<br>
         <strong><span data-profile-name>BLOO</span> № <span data-profile-id>17•421</span></strong><br>
-        FAVOR: <span data-profile-favor>284</span>
+        <span class="account-favor">FAVOR: <span data-profile-favor>284</span></span>
+        <span class="header-sys-clock" data-sys-clock-wrap>SYS <span data-sys-clock>--:--</span></span>
       </div>
     </header>
 
