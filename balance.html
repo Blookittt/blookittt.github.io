@@ -151,43 +151,73 @@ permalink: /balance/
         </div>
       </section>
 
-      <section class="fortometer" id="fortometer" aria-label="Today's Fortuna condition">
+      <section class="fortometer fortometer-v2" id="fortometer" aria-label="Today's Fortuna condition">
         <div class="fortometer-head">
-          <span>FORTOMETER</span>
-          <a href="/almanac/" aria-label="What does the Fortometer mean?">?</a>
+          <div>
+            <span>FORTOMETER</span>
+            <small>FIELD UNIT No. 17</small>
+          </div>
+          <a href="/almanac/" aria-label="How to read the Fortometer">?</a>
         </div>
 
         <div class="fortometer-body">
-          <div class="fortometer-glyph" aria-hidden="true">
-            <span class="weather-frame weather-a">☼</span>
-            <span class="weather-frame weather-b">◐</span>
-          </div>
+          <div class="fortometer-instrument">
+            <div class="fortometer-dial" id="fortometer-dial" aria-hidden="true">
+              <div class="fortometer-scale">
+                <span class="tick t1"></span><span class="tick t2"></span><span class="tick t3"></span>
+                <span class="tick t4"></span><span class="tick t5"></span><span class="tick t6"></span>
+                <span class="tick t7"></span><span class="tick t8"></span><span class="tick t9"></span>
+              </div>
 
-          <div class="fortometer-reading">
-            <div class="fortometer-label">TODAY'S CONDITION / FARM &amp; HOME EDITION</div>
-            <div class="fortometer-condition" id="fortometer-condition">VARIABLE</div>
-            <div class="fortometer-pressure">
-              <strong id="fortometer-pressure">29.41</strong>
-              <span>fHg</span>
-              <span id="fortometer-trend">FALLING</span>
+              <span class="dial-word dial-clear">CLEAR</span>
+              <span class="dial-word dial-variable">VARIABLE</span>
+              <span class="dial-word dial-heavy">HEAVY</span>
+
+              <div class="fortometer-needle"></div>
+              <div class="fortometer-hub"></div>
+
+              <div class="fortometer-weather">
+                <span class="weather-frame weather-a">☼</span>
+                <span class="weather-frame weather-b">◐</span>
+              </div>
+            </div>
+
+            <div class="fortometer-reading">
+              <div class="fortometer-label">ALMANAC READING</div>
+              <div class="fortometer-condition" id="fortometer-condition">VARIABLE</div>
+              <div class="fortometer-pressure">
+                <strong id="fortometer-pressure">29.41</strong>
+                <span>fHg</span>
+                <span class="pressure-divider">/</span>
+                <span id="fortometer-trend">FALLING</span>
+              </div>
             </div>
           </div>
 
-          <dl class="fortometer-details">
-            <dt>LUNAR AGE</dt><dd id="fortometer-lunar">--.- d</dd>
-            <dt>SEASONAL CARRY</dt><dd id="fortometer-carry">WEST</dd>
-            <dt>STANDARD CORR.</dt><dd id="fortometer-correction">+0.0</dd>
-            <dt>BALANCE STRAIN</dt><dd id="fortometer-strain">--</dd>
-            <dt>TOMORROW</dt><dd id="fortometer-tomorrow">VARIABLE</dd>
-          </dl>
+          <div class="fortometer-slip">
+            <div class="fortometer-slip-head">
+              <span>DAILY FIELD REPORT</span>
+              <span>FORM F-17</span>
+            </div>
 
-          <p class="fortometer-note" id="fortometer-note">
-            Corrections generally hold.
-          </p>
+            <dl class="fortometer-details">
+              <dt>LUNAR AGE</dt><dd id="fortometer-lunar">--.- d</dd>
+              <dt>SEASONAL CARRY</dt><dd id="fortometer-carry">WEST</dd>
+              <dt>STANDARD CORR.</dt><dd id="fortometer-correction">+0.0</dd>
+              <dt>BALANCE STRAIN</dt><dd id="fortometer-strain">--</dd>
+              <dt>TOMORROW</dt><dd id="fortometer-tomorrow">VARIABLE</dd>
+            </dl>
+          </div>
 
-          <div class="fortometer-stamp" aria-hidden="true">CHECKED TODAY</div>
+          <div class="fortometer-advisory">
+            <span>FIELD NOTE</span>
+            <p id="fortometer-note">Corrections generally hold.</p>
+          </div>
 
-          <a class="fortometer-help" href="/almanac/">WHAT DOES ANY OF THIS MEAN?</a>
+          <div class="fortometer-footer">
+            <div class="fortometer-stamp" aria-hidden="true">CHECKED TODAY</div>
+            <a class="fortometer-help" href="/almanac/">HOW TO READ THIS →</a>
+          </div>
         </div>
       </section>
 
@@ -243,6 +273,7 @@ permalink: /balance/
   const keyFavorEl = document.getElementById('balance-key-favor');
   const dateEl = document.getElementById('balance-date');
   const fortometerCondition = document.getElementById('fortometer-condition');
+  const fortometerDial = document.getElementById('fortometer-dial');
   const fortometerPressure = document.getElementById('fortometer-pressure');
   const fortometerTrend = document.getElementById('fortometer-trend');
   const fortometerLunar = document.getElementById('fortometer-lunar');
@@ -412,6 +443,11 @@ permalink: /balance/
   if (fortometerCorrection) fortometerCorrection.textContent = (almanac.correction >= 0 ? '+' : '') + almanac.correction.toFixed(1);
   if (fortometerStrain) fortometerStrain.textContent = String(almanac.strain).padStart(2,'0');
   if (fortometerTomorrow) fortometerTomorrow.textContent = almanac.tomorrow;
+  if (fortometerDial) {
+    const angle = -62 + (almanac.strain / 99) * 124;
+    fortometerDial.style.setProperty('--fortometer-angle', angle.toFixed(1) + 'deg');
+    fortometerDial.dataset.condition = almanac.condition.toLowerCase();
+  }
   if (fortometerNote) fortometerNote.textContent = almanac.note;
 
   const favorForCondition = condition => ({
