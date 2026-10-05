@@ -123,9 +123,15 @@
     const dayOfYear = Math.floor((now - start) / 86400000);
 
     const words = message.split(/\s+/).filter(Boolean);
-    const letters = (message.match(/[A-Za-z]/g) || []).length;
+    const lettersOnly = message.match(/[A-Za-z]/g) || [];
+    const letters = lettersOnly.length;
     const vowels = (message.match(/[AEIOUaeiou]/g) || []).length;
+    const consonants = Math.max(0, letters - vowels);
+    const punctuation = (message.match(/[^A-Za-z0-9\s]/g) || []).length;
+    const spaces = (message.match(/\s/g) || []).length;
     const songWords = songTitle.split(/\s+/).filter(Boolean).length;
+    const songLetters = (songTitle.match(/[A-Za-z]/g) || []).length;
+    const weekday = now.getDay();
 
     const hashString = (str) => {
       let h = 2166136261 >>> 0;
@@ -135,6 +141,10 @@
       }
       return h >>> 0;
     };
+
+    const charSum = (str) => Array.from(str).reduce((sum, ch, i) => {
+      return sum + ch.charCodeAt(0) * (i + 3);
+    }, 0);
 
     const mulberry32 = (seed) => () => {
       seed |= 0;
@@ -149,12 +159,66 @@
     const rand = mulberry32(seed);
 
     /*
-      Totally-serious cosmic mathematics:
-      date echoes + word/letter counts + song-title numerology + fortune serial.
-      The weighting is intentionally coincidence-hungry, but deterministic for the day.
+      BLOO'S FORTUNE DAILY NUMBER ENGINE
+      -----------------------------------
+      No single input is allowed to feel important enough to explain the result.
+
+      Components presently include:
+      - Gregorian date leakage
+      - weekday surcharge
+      - punctuation debt
+      - vowel/consonant imbalance
+      - middle-word taxation
+      - song-title contamination
+      - fake moon phase residue
+      - apostrophe surcharge
+      - fortune-fold asymmetry
+      - the Bloo constant (17), whose authority is self-evident
+      - a convenience-store receipt correction because 24/7 establishments know things
+
+      None of this is astrology.
+      This is worse.
     */
+
+    const middleWord = words.length ? words[Math.floor(words.length / 2)] : '';
+    const firstWord = words[0] || '';
+    const lastWord = words[words.length - 1] || '';
+    const firstHalf = message.slice(0, Math.floor(message.length / 2));
+    const secondHalf = message.slice(Math.ceil(message.length / 2));
+
+    const apostrophes = (message.match(/['’]/g) || []).length;
+    const doubledLetters = (message.match(/([A-Za-z])\1/gi) || []).length;
+    const longWords = words.filter(word => word.replace(/[^A-Za-z]/g, '').length >= 7).length;
+    const tinyWords = words.filter(word => word.replace(/[^A-Za-z]/g, '').length <= 3).length;
+
+    const fakeMoonResidue = norm(
+      Math.floor((dayOfYear + (yyyy % 19) * 11 + dd * 3) * 0.87)
+    );
+    const weekdaySurcharge = norm((weekday + 1) * 7 + dd + punctuation);
+    const apostropheSurcharge = norm(apostrophes * 13 + 3 + mm);
+    const vowelDebt = norm(consonants - vowels + yy);
+    const middleWordTax = norm(charSum(middleWord) + middleWord.length * dd);
+    const firstLastHandshake = norm(charSum(firstWord) - charSum(lastWord) + dayOfYear);
+    const fortuneFold = norm(charSum(firstHalf) - charSum(secondHalf));
+    const gasStationReceipt = norm((dd * mm) + yy + letters + 24 + 7);
+    const blooConstant = 17;
+    const songContamination = norm(charSum(songTitle) + songLetters * 3 + songWords * 11);
+    const doubledLetterPenalty = norm(doubledLetters * 9 + spaces + mm);
+    const suspiciousWordRatio = norm((longWords + 1) * 13 - tinyWords * 5 + words.length);
+    const sundayException = norm(
+      weekday === 0 ? 44 + vowels :
+      weekday === 2 ? 13 + punctuation :
+      weekday === 5 ? 27 + songWords :
+      weekday * 6 + 5
+    );
+    const receiptTail = norm(Number(String(yyyy) + String(mm).padStart(2,'0') + String(dd).padStart(2,'0')) % 97);
+    const titleEcho = norm(hashString(songTitle + dateKey) % 113);
+    const sentenceEcho = norm(hashString(message.split('').reverse().join('')) % 127);
+
     const echoes = [
-      dd, mm, yy,
+      dd,
+      mm,
+      yy,
       dd + mm,
       dd + yy,
       mm * dd,
@@ -162,25 +226,53 @@
       words.length,
       letters,
       vowels,
+      consonants,
+      punctuation,
       songTitle.length,
       songWords * 11,
       fortuneNo,
       fortuneNo + dd,
       fortuneNo + words.length,
       letters - vowels,
-      hashString(message) % 60,
-      hashString(songTitle) % 60,
-      hashString(dateKey + message.slice(0, 12)) % 60
+      fakeMoonResidue,
+      weekdaySurcharge,
+      apostropheSurcharge,
+      vowelDebt,
+      middleWordTax,
+      firstLastHandshake,
+      fortuneFold,
+      gasStationReceipt,
+      blooConstant,
+      songContamination,
+      doubledLetterPenalty,
+      suspiciousWordRatio,
+      sundayException,
+      receiptTail,
+      titleEcho,
+      sentenceEcho,
+      hashString(message + 'lucky') % 60,
+      hashString(songTitle + 'you') % 60,
+      hashString(dateKey + middleWord) % 60
     ].map(norm);
 
-    // Repeat a few "obvious" anchors so the machine occasionally looks psychic.
+    /*
+      The weighted bowl is intentionally rude:
+      familiar/date-adjacent values get duplicated so coincidences happen just often
+      enough for a person with a corkboard and red string to ruin their weekend.
+    */
     const weighted = [
       ...echoes,
-      norm(dd), norm(dd), norm(mm),
-      norm(words.length), norm(fortuneNo + dd),
-      norm(dayOfYear + songWords),
-      norm(letters + dd),
-      norm(vowels * mm)
+      norm(dd), norm(dd), norm(dd),
+      norm(mm), norm(mm),
+      norm(yy),
+      norm(words.length), norm(words.length + dd),
+      norm(fortuneNo + dd), norm(fortuneNo + mm),
+      norm(fakeMoonResidue + blooConstant),
+      norm(gasStationReceipt - weekdaySurcharge),
+      norm(songContamination + vowels),
+      norm(middleWordTax - punctuation),
+      norm(receiptTail + apostropheSurcharge),
+      norm(dayOfYear + songWords + 17)
     ];
 
     const picks = [];
@@ -188,16 +280,22 @@
 
     while (picks.length < 6) {
       let candidate;
-      if (weighted.length && rand() < 0.72) {
+
+      // Usually pick from the nonsense bowl; occasionally the machine "hears a number".
+      if (rand() < 0.86) {
         candidate = weighted[Math.floor(rand() * weighted.length)];
       } else {
         candidate = 1 + Math.floor(rand() * 60);
       }
 
-      // Tiny deterministic nudge prevents duplicates without losing the "echo".
+      /*
+        Duplicate resolution is also intentionally stupid:
+        walk forward by a daily prime-ish hop, then charge a punctuation fee.
+      */
       let guard = 0;
+      const hop = 3 + ((dd + weekday + fortuneNo + guard) % 11);
       while (used.has(candidate) && guard < 60) {
-        candidate = norm(candidate + 1 + Math.floor(rand() * 9));
+        candidate = norm(candidate + hop + punctuation + (guard % 5));
         guard++;
       }
 
@@ -207,7 +305,7 @@
       }
     }
 
-    // Keep the set fortune-cookie-ish rather than lottery-machine sorted.
+    // Do not sort. The order is part of the omen, obviously.
     for (let i = picks.length - 1; i > 0; i--) {
       const j = Math.floor(rand() * (i + 1));
       [picks[i], picks[j]] = [picks[j], picks[i]];
@@ -215,6 +313,88 @@
 
     const numberEls = Array.from(rollers.querySelectorAll('.lucky-number'));
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const teaseDigit = (digit, targetChar, localRand, delayBase, onDone) => {
+      const target = Number(targetChar);
+      const fakeNeighbor = (target + (localRand() < .5 ? 1 : 9)) % 10;
+      const fakeNeighbor2 = (target + (localRand() < .5 ? 2 : 8)) % 10;
+
+      const phases = [
+        { count: 9 + Math.floor(localRand() * 4), delay: 34 },
+        { count: 7 + Math.floor(localRand() * 4), delay: 48 },
+        { count: 5 + Math.floor(localRand() * 3), delay: 67 },
+        { count: 4, delay: 92 }
+      ];
+
+      let phase = 0;
+      let step = 0;
+      let teaseStage = 0;
+
+      const flash = (value, ms, next) => {
+        digit.textContent = String(value);
+        digit.classList.add('is-near');
+        window.setTimeout(() => {
+          digit.classList.remove('is-near');
+          next();
+        }, ms);
+      };
+
+      const tick = () => {
+        const p = phases[Math.min(phase, phases.length - 1)];
+
+        if (phase < phases.length) {
+          let value = Math.floor(localRand() * 10);
+
+          // As it slows, suspiciously drift toward the answer.
+          if (phase >= 2 && localRand() < .45) {
+            value = (target + (localRand() < .5 ? 1 : 9)) % 10;
+          }
+
+          digit.textContent = String(value);
+          digit.classList.add('is-ticking');
+          window.setTimeout(() => digit.classList.remove('is-ticking'), 34);
+
+          step++;
+          if (step >= p.count) {
+            phase++;
+            step = 0;
+          }
+
+          const wobble = Math.floor(localRand() * 18);
+          window.setTimeout(tick, p.delay + wobble);
+          return;
+        }
+
+        // The cheap carnival tease: "there it is— nope."
+        if (teaseStage === 0) {
+          teaseStage++;
+          flash(target, 115 + Math.floor(localRand() * 55), () => {
+            digit.textContent = String(fakeNeighbor);
+            digit.classList.add('is-slip');
+            window.setTimeout(() => {
+              digit.classList.remove('is-slip');
+              tick();
+            }, 150 + Math.floor(localRand() * 90));
+          });
+          return;
+        }
+
+        if (teaseStage === 1) {
+          teaseStage++;
+          flash(fakeNeighbor2, 140 + Math.floor(localRand() * 70), () => {
+            tick();
+          });
+          return;
+        }
+
+        // Final slow click.
+        digit.textContent = targetChar;
+        digit.classList.add('is-settled');
+        if (onDone) onDone();
+      };
+
+      window.setTimeout(tick, delayBase);
+    };
 
     numberEls.forEach((numberEl, index) => {
       const target = String(picks[index]).padStart(2, '0');
@@ -227,21 +407,32 @@
         return;
       }
 
-      digits.forEach((digit, digitIndex) => {
-        const localRand = mulberry32(seed ^ ((index + 1) * 0x45d9f3b) ^ ((digitIndex + 1) * 0x27d4eb2d));
-        const stopAt = 620 + index * 105 + digitIndex * 48 + Math.floor(localRand() * 110);
-        const tick = 32 + Math.floor(localRand() * 18);
-        const started = performance.now();
+      numberEl.classList.add('is-rolling');
 
-        const timer = window.setInterval(() => {
-          digit.textContent = String(Math.floor(localRand() * 10));
-          if (performance.now() - started >= stopAt) {
-            window.clearInterval(timer);
-            digit.textContent = target[digitIndex];
-            digit.classList.add('is-settled');
-            if (digitIndex === 1) numberEl.classList.add('is-settled');
-          }
-        }, tick);
+      let settledDigits = 0;
+      const settleOne = () => {
+        settledDigits++;
+        if (settledDigits >= 2) {
+          numberEl.classList.remove('is-rolling');
+          numberEl.classList.add('is-settled');
+        }
+      };
+
+      digits.forEach((digit, digitIndex) => {
+        const localRand = mulberry32(
+          seed ^
+          ((index + 1) * 0x45d9f3b) ^
+          ((digitIndex + 1) * 0x27d4eb2d) ^
+          (weekday * 0x9e3779b1)
+        );
+
+        const startDelay =
+          80 +
+          index * 150 +
+          digitIndex * 70 +
+          Math.floor(localRand() * 120);
+
+        teaseDigit(digit, target[digitIndex], localRand, startDelay, settleOne);
       });
     });
 
