@@ -1295,3 +1295,194 @@ body::after{
     gap:20px;
   }
 }
+
+
+/* BLOO'S FORTUNE — warm palette + fortune hero pass */
+:root{
+  --paper:#241c1e;
+  --paper2:#302529;
+  --panel:#302529;
+  --night:#241c1e;
+  --ink:#e8ddd6;
+  --muted:#a58b8f;
+  --pink:#d96c93;
+  --pink-dim:#b45c7c;
+  --blue:#d96c93;
+}
+
+html{
+  background:#1b1517;
+}
+
+body{
+  background:
+    radial-gradient(circle at 50% -12%,rgba(217,108,147,.045),transparent 34%),
+    radial-gradient(circle at 84% 20%,rgba(181,138,103,.04),transparent 28%),
+    radial-gradient(circle at 10% 80%,rgba(126,92,92,.035),transparent 28%),
+    linear-gradient(180deg,#2a2023 0%,#241c1e 58%,#20191b 100%);
+  color:var(--ink);
+}
+
+body::after{
+  box-shadow:
+    inset 0 0 95px rgba(0,0,0,.30),
+    inset 0 0 18px rgba(217,108,147,.012);
+}
+
+.noise{opacity:.018}
+.crt-lines{opacity:.08}
+
+.exact-ascii-title{
+  color:var(--ink);
+  text-shadow:
+    0 0 4px rgba(232,221,214,.045),
+    0 0 10px rgba(217,108,147,.02);
+}
+
+.lucky-neon{color:var(--pink)}
+
+.nav a,
+.post-back a,
+.entry-title a,
+.archive-list a,
+.all-link,
+.past-post-list a{
+  color:var(--ink);
+  border-bottom-color:rgba(217,108,147,.42);
+}
+
+.nav a:hover,
+.post-back a:hover,
+.entry-title a:hover,
+.archive-list a:hover,
+.all-link:hover,
+.past-post-list a:hover{
+  background:var(--pink);
+  color:#20181a;
+}
+
+/* main event */
+.fortune{
+  width:min(780px,92%);
+  margin:24px auto 60px;
+  padding:38px 34px 28px;
+  background:#e8ddd0;
+  color:#1d1818;
+  border:1px solid rgba(60,40,40,.16);
+  border-radius:0;
+  box-shadow:
+    0 12px 32px rgba(0,0,0,.20),
+    0 2px 0 rgba(255,255,255,.34) inset;
+  transform:rotate(-.18deg);
+  text-shadow:none;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:clamp(22px,2.05vw,30px);
+  line-height:1.28;
+  font-weight:500;
+  letter-spacing:-.01em;
+  position:relative;
+  overflow:hidden;
+  transition:transform .16s ease,box-shadow .16s ease;
+}
+
+.fortune::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.11;
+  background-image:
+    radial-gradient(rgba(0,0,0,.09) .45px,transparent .65px);
+  background-size:7px 7px;
+  mix-blend-mode:multiply;
+}
+
+.fortune::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(var(--pink),var(--pink)) 12px 12px / 34px 5px no-repeat,
+    linear-gradient(var(--pink),var(--pink)) calc(100% - 46px) calc(100% - 12px) / 34px 5px no-repeat;
+}
+
+.fortune small{
+  position:relative;
+  z-index:1;
+  display:block;
+  margin-top:18px;
+  color:#55474a;
+  font:10px/1.4 "Courier New",Courier,monospace;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  text-shadow:none;
+}
+
+.fortune:hover{
+  transform:translateY(-2px) rotate(-.18deg);
+  box-shadow:
+    0 16px 38px rgba(0,0,0,.23),
+    0 2px 0 rgba(255,255,255,.34) inset;
+}
+
+.weekly-frame,
+.audio-toggle,
+.volume-control{
+  background:rgba(48,37,41,.84);
+  border-color:rgba(217,108,147,.24);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.01),
+    2px 2px 0 rgba(15,10,12,.26);
+}
+
+.song-title{color:var(--pink)}
+
+.entry-excerpt,
+.post-body,
+.song-artist,
+.weekly-note,
+.picture-caption{
+  color:#ded1cb;
+}
+
+.entry-meta,
+.post-meta,
+.archive-date,
+.past-post-list span,
+.empty{
+  color:var(--muted);
+}
+
+.box-label,
+.archive-section h3{
+  background:var(--pink);
+  color:#241c1e;
+  text-shadow:none;
+}
+
+.picture-frame img,
+.post-body img{
+  filter:saturate(.72) contrast(1.01) brightness(.90);
+  border-color:rgba(217,108,147,.24);
+}
+
+.audio-toggle:hover,
+.audio-toggle.is-playing{
+  background:var(--pink);
+  color:#241c1e;
+}
+
+.volume-control input{accent-color:var(--pink)}
+
+@media (max-width:700px){
+  .fortune{
+    width:min(94%,780px);
+    padding:26px 18px 20px;
+    font-size:clamp(18px,5.4vw,24px);
+  }
+  .fortune small{
+    font-size:9px;
+    letter-spacing:.13em;
+  }
+}
