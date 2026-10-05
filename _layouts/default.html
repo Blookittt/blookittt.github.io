@@ -23,19 +23,20 @@
 
       <div class="account-stub">
         SIGNED IN AS<br>
-        <strong>BLOO № 17•421</strong><br>
-        FAVOR: 284
+        <strong><span data-profile-name>BLOO</span> № <span data-profile-id>17•421</span></strong><br>
+        FAVOR: <span data-profile-favor>284</span>
       </div>
     </header>
 
     <nav class="site-nav" aria-label="main navigation">
       <a href="/">HOME</a>
+      <a href="/profile/">PROFILE</a>
+      <a href="/balance/">BALANCE</a>
       <a href="/archive/">ARCHIVE</a>
-      <a href="/archive/#log">LOG</a>
-      <a href="/archive/#found">FOUND</a>
-      <a href="/archive/#music">MUSIC</a>
-      <a href="/archive/#scrap">SCRAPS</a>
+      <a href="/settings/">SETTINGS</a>
     </nav>
+
+    <script src="/assets/fortuna-social.js"></script>
 
     <div class="page-wrap">
       {{ content }}
