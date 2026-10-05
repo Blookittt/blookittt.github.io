@@ -954,3 +954,530 @@ body:has(.operator-page) .page-wrap{
     animation:none!important;
   }
 }
+
+
+/* OPERATOR V2 — DENSE MACHINE, SELECTIVE ATTENTION */
+body:has(.operator-page) .site-shell{
+  width:min(1700px,calc(100% - 8px));
+  margin:4px auto;
+}
+
+.operator-topbar{
+  min-height:30px;
+  padding:5px 10px;
+}
+
+.operator-brand span{
+  opacity:.55;
+}
+
+/* Tier 1: timer / rank / chain own the top of the screen. */
+.operator-status-rack{
+  grid-template-columns:2.25fr .55fr .8fr .55fr .72fr;
+}
+
+.operator-status-rack > div{
+  min-height:74px;
+}
+
+.operator-time-block strong{
+  margin-top:2px;
+  font-size:clamp(36px,4.4vw,62px);
+  line-height:.88;
+}
+
+.operator-rank-block strong{
+  font-size:42px;
+}
+
+.operator-stat-block strong{
+  font-size:23px;
+}
+
+.operator-fst-block{
+  opacity:.52;
+}
+
+.operator-fst-block strong{
+  font-size:12px;
+}
+
+/* Balance gets the room. Side systems are strategic/support information. */
+.operator-grid{
+  grid-template-columns:190px minmax(720px,1fr) 205px;
+  gap:6px;
+  padding:6px;
+}
+
+.operator-left-column,
+.operator-right-column,
+.operator-center-column{
+  gap:6px;
+}
+
+.operator-panel-head{
+  min-height:24px;
+  padding:5px 7px 4px;
+  font-size:7px;
+}
+
+.operator-panel-head small{
+  font-size:5px;
+}
+
+/* Fortograph becomes a glance panel, not a second game. */
+.fortograph-panel{
+  padding-bottom:5px;
+}
+
+.fortograph-condition-row{
+  grid-template-columns:minmax(0,1fr) 58px;
+  gap:4px;
+  padding:5px;
+}
+
+.fortograph-condition-row > div{
+  padding:6px;
+}
+
+.fortograph-condition-row strong{
+  font-size:20px;
+}
+
+.fortograph-condition-row span:not(.tiny-label){
+  font-size:6px;
+}
+
+.fortograph-index strong{
+  font-size:22px;
+}
+
+.fortograph-meter{
+  height:20px;
+  margin:0 5px 5px;
+}
+
+.fortograph-facts{
+  margin:0 5px 5px;
+}
+
+.fortograph-facts > div{
+  padding:5px 6px;
+}
+
+.fortograph-facts > div:nth-child(3),
+.fortograph-facts > div:nth-child(4){
+  opacity:.42;
+}
+
+.fortograph-facts dt{
+  font-size:5px;
+}
+
+.fortograph-facts dd{
+  font-size:9px;
+}
+
+.operator-fortune{
+  margin:0 5px;
+  padding:6px;
+}
+
+.operator-fortune p{
+  font-size:9px;
+}
+
+/* Only the omen affecting right now gets full copy. */
+.omen-panel{
+  padding-bottom:5px;
+}
+
+.omen-slot.active{
+  margin:5px;
+  padding:6px;
+  opacity:1;
+}
+
+.omen-slot.active strong{
+  font-size:7px;
+}
+
+.omen-slot.active small{
+  color:#a99da0;
+  font-size:6px;
+}
+
+.omen-held-strip{
+  display:flex;
+  gap:4px;
+  padding:0 5px;
+  overflow:hidden;
+}
+
+.omen-held-strip span{
+  flex:1;
+  min-width:0;
+  padding:4px;
+  color:#6f686b;
+  background:#141215;
+  border:1px solid #39353a;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  font:5px/1 "Courier New",monospace;
+}
+
+/* Indicator lamps are texture until they become a warning. */
+.lamps-panel{
+  opacity:.48;
+}
+
+.lamps-panel:hover{
+  opacity:.9;
+}
+
+/* The current job is physically part of The Balance now. */
+.operator-current-order{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 90px 110px 110px;
+  margin:-1px -1px 9px;
+  background:#332d28;
+  border:1px solid #594b3c;
+  box-shadow:inset 0 -3px 5px rgba(0,0,0,.13);
+}
+
+.operator-current-order > div{
+  padding:8px 10px 7px;
+  border-right:1px solid #5f5142;
+}
+
+.operator-current-order .tiny-label{
+  color:#988876;
+}
+
+.operator-current-order strong{
+  display:block;
+  margin-top:3px;
+  color:#efe3cf;
+  font:bold 13px/1.1 "Courier New",monospace;
+}
+
+.operator-current-order .order-identity strong{
+  font:normal 20px/1 Georgia,"Times New Roman",serif;
+  letter-spacing:.03em;
+}
+
+.operator-current-order small{
+  display:block;
+  margin-top:3px;
+  color:#b69f88;
+  font:6px/1 "Courier New",monospace;
+}
+
+.operator-current-order .order-award strong{
+  color:#e29aad;
+}
+
+.operator-current-order .operator-engage{
+  min-width:0;
+  min-height:50px;
+  border-left:1px solid #623b3d;
+  font-size:9px;
+}
+
+.operator-balance{
+  padding:12px;
+  border-width:4px;
+}
+
+.operator-balance-head{
+  width:min(560px,78%);
+  margin-bottom:12px;
+  padding:7px 15px;
+}
+
+.operator-balance-head strong{
+  font-size:23px;
+}
+
+.operator-balance-head > span:first-child{
+  font-size:6px;
+}
+
+.operator-balance-head .operator-ruleline{
+  margin-top:3px;
+  color:#7e3f3d;
+  font-size:9px;
+  letter-spacing:.09em;
+}
+
+/* The rollers are the game. Make them feel like it. */
+.operator-number-bank{
+  gap:8px;
+  padding:10px;
+  border-width:3px;
+}
+
+.operator-number{
+  padding:6px;
+}
+
+.operator-number-window{
+  min-height:118px;
+}
+
+.operator-number-window strong{
+  font-size:clamp(45px,4.4vw,65px);
+}
+
+.operator-number-plate{
+  margin-top:6px;
+  padding:7px 3px;
+  font-size:8px;
+}
+
+.operator-weigh-deck{
+  grid-template-columns:135px 1fr 135px;
+  margin-top:9px;
+  padding:11px;
+}
+
+.operator-total{
+  padding:8px;
+}
+
+.operator-total span{
+  font-size:7px;
+}
+
+.operator-total strong{
+  font-size:31px;
+}
+
+.operator-scale{
+  height:65px;
+}
+
+.operator-scale-beam{
+  top:19px;
+  height:7px;
+}
+
+.operator-scale-pivot{
+  top:16px;
+  width:21px;
+  height:40px;
+}
+
+.operator-balance-readout{
+  min-height:40px;
+  width:min(800px,94%);
+  padding:7px 12px;
+  font-size:10px;
+}
+
+.operator-controls{
+  grid-template-columns:1fr minmax(210px,1.4fr) 82px;
+  margin-top:9px;
+}
+
+.operator-weighs{
+  padding:9px 10px;
+}
+
+.operator-weighs > span{
+  font-size:7px;
+}
+
+.operator-weighs > strong{
+  font-size:22px;
+}
+
+.operator-weigh-pips span{
+  width:12px;
+  height:12px;
+}
+
+.operator-weigh-button{
+  min-height:52px;
+  font-size:12px;
+}
+
+.operator-no-button{
+  font-size:10px;
+}
+
+/* Settlement is silent until a win, then becomes a reward moment. */
+.payout-panel{
+  min-height:29px;
+  overflow:hidden;
+  transition:border-color .16s ease,box-shadow .16s ease;
+}
+
+.payout-panel .payout-ledger{
+  max-height:0;
+  opacity:0;
+  overflow:hidden;
+  transition:max-height .2s ease,opacity .12s ease;
+}
+
+.payout-panel.awake{
+  border-color:#754b58;
+  box-shadow:0 0 13px rgba(185,102,125,.13);
+}
+
+.payout-panel.awake .payout-ledger{
+  max-height:90px;
+  opacity:1;
+}
+
+.payout-panel.awake .operator-panel-head{
+  color:#efb0c2;
+}
+
+.payout-panel.awake .payout-total strong{
+  font-size:18px;
+}
+
+/* The order rail tells you now + next. Everything else shuts up. */
+.operator-job-queue{
+  padding:5px;
+}
+
+.operator-job-card{
+  margin-bottom:4px;
+  padding:6px;
+  opacity:.28;
+}
+
+.operator-job-card.current{
+  opacity:1;
+  padding:8px;
+}
+
+.operator-job-card.next{
+  opacity:.72;
+}
+
+.operator-job-card.current strong{
+  font-size:8px;
+}
+
+.operator-job-card.current b{
+  font-size:12px;
+}
+
+.operator-job-card.done{
+  display:none;
+}
+
+/* Wire remains available but visually recedes. */
+.ticker-panel{
+  opacity:.58;
+}
+
+.ticker-panel:hover{
+  opacity:1;
+}
+
+.operator-ticker{
+  height:116px;
+}
+
+.ticker-line{
+  padding:4px 2px;
+}
+
+.ticker-line strong{
+  font-size:5px;
+}
+
+/* Schedule becomes one actionable event; full bureaucracy is opt-in. */
+.operator-next-event{
+  display:grid;
+  grid-template-columns:44px 1fr;
+  gap:4px 7px;
+  padding:8px;
+  background:#181519;
+  border-bottom:1px solid #403a40;
+}
+
+.operator-next-event > span{
+  grid-row:1/3;
+  color:#8d7d81;
+  font:bold 7px/1.2 "Courier New",monospace;
+}
+
+.operator-next-event strong{
+  color:#c5798b;
+  font:bold 8px/1.2 "Courier New",monospace;
+}
+
+.operator-next-event b{
+  color:#9a8d91;
+  font:bold 6px/1 "Courier New",monospace;
+}
+
+.operator-full-schedule{
+  color:#676064;
+  font:6px/1 "Courier New",monospace;
+}
+
+.operator-full-schedule summary{
+  padding:6px 8px;
+  cursor:pointer;
+  list-style:none;
+}
+
+.operator-full-schedule summary::before{
+  content:"+ ";
+}
+
+.operator-full-schedule[open] summary::before{
+  content:"- ";
+}
+
+.operator-full-schedule:not([open]) .operator-schedule{
+  display:none;
+}
+
+/* Peripheral systems should not compete with the live solve. */
+.operator-right-column .operator-panel:not(.queue-panel),
+.operator-left-column .operator-panel:not(.fortograph-panel):not(.omen-panel){
+  transition:opacity .14s ease;
+}
+
+@media (max-width:1280px){
+  .operator-grid{
+    grid-template-columns:170px minmax(650px,1fr) 185px;
+  }
+
+  .operator-number-window{
+    min-height:100px;
+  }
+
+  .operator-number-window strong{
+    font-size:45px;
+  }
+}
+
+@media (max-width:1050px){
+  .operator-grid{
+    grid-template-columns:1fr;
+  }
+
+  .operator-left-column,
+  .operator-right-column{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .operator-center-column{
+    order:-1;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .payout-panel .payout-ledger{
+    transition:none!important;
+  }
+}
