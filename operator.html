@@ -3,7 +3,7 @@ layout: default
 title: operator
 permalink: /operator/
 ---
-<link rel="stylesheet" href="/assets/operator.css?v=20261005a">
+<link rel="stylesheet" href="/assets/operator.css?v=20261005b">
 
 <div class="operator-page" id="operator-page">
   <header class="operator-topbar">
@@ -95,21 +95,18 @@ permalink: /operator/
 
       <section class="operator-panel omen-panel">
         <div class="operator-panel-head">
-          <span>OMENS</span>
-          <small>HELD / ACTIVE</small>
+          <span>ACTIVE OMEN</span>
+          <small>3 HELD</small>
         </div>
 
         <div class="omen-slot active">
           <span class="omen-code">O-17</span>
           <div><strong>LEFT SHOE UNTIED</strong><small>LEFT TOTAL +1 UNTIL CORRECTED</small></div>
         </div>
-        <div class="omen-slot">
-          <span class="omen-code">K-08</span>
-          <div><strong>COUNTY KEY No. 8</strong><small>DOOR STATUS / UNKNOWN</small></div>
-        </div>
-        <div class="omen-slot">
-          <span class="omen-code">R-04</span>
-          <div><strong>RECEIPT FACE-DOWN</strong><small>PURCHASE TIME -00:08</small></div>
+
+        <div class="omen-held-strip" aria-label="Held omens">
+          <span>K-08 / COUNTY KEY</span>
+          <span>R-04 / RECEIPT</span>
         </div>
       </section>
 
@@ -128,31 +125,28 @@ permalink: /operator/
     </aside>
 
     <main class="operator-center-column">
-      <section class="operator-panel dispatch-strip" id="dispatch-strip">
-        <div>
-          <span class="tiny-label">CURRENT ORDER</span>
-          <strong id="dispatch-name">NO ORDER LOADED</strong>
-        </div>
-        <div>
-          <span class="tiny-label">CLASS</span>
-          <strong id="dispatch-class">--</strong>
-        </div>
-        <div>
-          <span class="tiny-label">PAR</span>
-          <strong id="dispatch-par">--:--</strong>
-        </div>
-        <div>
-          <span class="tiny-label">TIME AWARD</span>
-          <strong id="dispatch-reward">+--:--</strong>
-        </div>
-        <button id="operator-engage" class="operator-engage" type="button">OPEN SHIFT</button>
-      </section>
-
       <section class="operator-balance" id="operator-balance">
+        <div class="operator-current-order" id="dispatch-strip">
+          <div class="order-identity">
+            <span class="tiny-label">CURRENT ORDER</span>
+            <strong id="dispatch-name">NO ORDER LOADED</strong>
+            <small id="dispatch-class">--</small>
+          </div>
+          <div class="order-par">
+            <span class="tiny-label">PAR</span>
+            <strong id="dispatch-par">--:--</strong>
+          </div>
+          <div class="order-award">
+            <span class="tiny-label">TIME AWARD</span>
+            <strong id="dispatch-reward">+--:--</strong>
+          </div>
+          <button id="operator-engage" class="operator-engage" type="button">OPEN SHIFT</button>
+        </div>
+
         <div class="operator-balance-head">
           <span>FORTUNA PRESENTS</span>
           <strong>THE BALANCE</strong>
-          <span id="operator-ruleline">AWAITING DISPATCH</span>
+          <span class="operator-ruleline" id="operator-ruleline">AWAITING DISPATCH</span>
         </div>
 
         <div class="operator-number-bank" id="operator-number-bank" aria-label="Balance number bank"></div>
@@ -195,7 +189,7 @@ permalink: /operator/
         </div>
       </section>
 
-      <section class="operator-panel payout-panel">
+      <section class="operator-panel payout-panel" id="payout-panel">
         <div class="operator-panel-head">
           <span>SETTLEMENT</span>
           <small id="settlement-state">NO ENTRY</small>
@@ -230,19 +224,29 @@ permalink: /operator/
 
       <section class="operator-panel schedule-panel">
         <div class="operator-panel-head">
-          <span>SHIFT TABLE</span>
+          <span>NEXT EVENT</span>
           <small>FST</small>
         </div>
-        <ol class="operator-schedule">
-          <li><time>06:17</time><span>SHIFT OPEN</span></li>
-          <li><time>07:00</time><span>THE BALANCE</span></li>
-          <li><time>09:15</time><span>BUS 44</span></li>
-          <li class="warning"><time>11:17</time><span>REVERSAL PERIOD</span></li>
-          <li><time>12:00</time><span>????????</span></li>
-          <li><time>17:30</time><span>SUPPER</span></li>
-          <li class="warning"><time>21:17</time><span>RECURRENCE</span></li>
-          <li><time>00:00</time><span>CLOSE OF DAY</span></li>
-        </ol>
+
+        <div class="operator-next-event">
+          <span>11:17</span>
+          <strong>REVERSAL PERIOD</strong>
+          <b>IN 04:12</b>
+        </div>
+
+        <details class="operator-full-schedule">
+          <summary>FULL SHIFT TABLE</summary>
+          <ol class="operator-schedule">
+            <li><time>06:17</time><span>SHIFT OPEN</span></li>
+            <li><time>07:00</time><span>THE BALANCE</span></li>
+            <li><time>09:15</time><span>BUS 44</span></li>
+            <li class="warning"><time>11:17</time><span>REVERSAL PERIOD</span></li>
+            <li><time>12:00</time><span>????????</span></li>
+            <li><time>17:30</time><span>SUPPER</span></li>
+            <li class="warning"><time>21:17</time><span>RECURRENCE</span></li>
+            <li><time>00:00</time><span>CLOSE OF DAY</span></li>
+          </ol>
+        </details>
       </section>
     </aside>
   </div>
@@ -542,6 +546,7 @@ permalink: /operator/
       const row = document.createElement('div');
       row.className = 'operator-job-card' +
         (index === activeJobIndex ? ' current' : '') +
+        (index === activeJobIndex + 1 ? ' next' : '') +
         (index < activeJobIndex ? ' done' : '');
 
       const top = document.createElement('div');
@@ -627,6 +632,7 @@ permalink: /operator/
   };
 
   const clearPayout = () => {
+    $('payout-panel').classList.remove('awake');
     $('pay-base').textContent = '+00:00';
     $('pay-quick').textContent = '+00:00';
     $('pay-first').textContent = '+00:00';
@@ -686,6 +692,7 @@ permalink: /operator/
     $('pay-chain').textContent = '×'+chain.toFixed(2);
     $('pay-total').textContent = formatAward(total);
     $('settlement-state').textContent = 'ACCEPTED';
+    $('payout-panel').classList.add('awake');
 
     timeMs += total;
     totalEarned += total;
