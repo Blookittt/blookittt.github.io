@@ -109,6 +109,16 @@ permalink: /balance/
           <div class="balance-actions">
             <span class="control-deck-label">SERVICE</span>
             <button class="old-button" id="balance-reset" type="button">RESET MACHINE</button>
+
+            <details class="balance-dev-access">
+              <summary>DEV ACCESS</summary>
+              <form id="balance-dev-form" class="balance-dev-form">
+                <label for="balance-dev-code">CODE</label>
+                <input id="balance-dev-code" type="password" autocomplete="off" spellcheck="false">
+                <button type="submit">APPLY</button>
+                <span id="balance-dev-result" aria-live="polite"></span>
+              </form>
+            </details>
           </div>
         </div>
       </section>
@@ -210,6 +220,9 @@ permalink: /balance/
   const keyValue = document.getElementById('balance-key-value');
   const reset = document.getElementById('balance-reset');
   const weighButton = document.getElementById('balance-weigh');
+  const devForm = document.getElementById('balance-dev-form');
+  const devCode = document.getElementById('balance-dev-code');
+  const devResult = document.getElementById('balance-dev-result');
   const attemptCount = document.getElementById('balance-attempt-count');
   const attemptPips = document.getElementById('balance-attempt-pips');
   const favorAwardEl = document.getElementById('balance-favor-award');
@@ -703,6 +716,55 @@ permalink: /balance/
   };
 
   weighButton.addEventListener('click', weigh);
+
+  const DEV_RESET_CODE = 'BLOO-RESET-17';
+
+  if (devForm) {
+    devForm.addEventListener('submit', event => {
+      event.preventDefault();
+
+      const entered = String(devCode ? devCode.value : '').trim().toUpperCase();
+
+      if (entered !== DEV_RESET_CODE) {
+        if (devResult) devResult.textContent = 'DENIED.';
+        return;
+      }
+
+      Object.keys(localStorage)
+        .filter(key => key.startsWith('fortuna.balance.'))
+        .forEach(key => localStorage.removeItem(key));
+
+      dailyState = {
+        remaining: MAX_WEIGHS,
+        locked: false,
+        solved: false,
+        key: ''
+      };
+
+      state = puzzle.shownPairs.map((pair, i) => ({
+        pair: pair.slice(),
+        flipped: false,
+        sealed: i === 0
+      }));
+
+      lastMeasurement = null;
+      arrangementDirty = true;
+
+      root.classList.remove('solved', 'day-locked');
+      keyBox.hidden = true;
+      status.textContent = 'DEV RESET ACCEPTED. ARRANGE THE NUMBERS.';
+
+      if (devCode) devCode.value = '';
+      if (devResult) {
+        devResult.textContent = 'RESET.';
+        window.setTimeout(() => {
+          if (devResult) devResult.textContent = '';
+        }, 1800);
+      }
+
+      render();
+    });
+  }
 
   reset.addEventListener('click', () => {
     if (dailyState.locked || dailyState.solved) return;
