@@ -33,9 +33,17 @@ title: home
       {% endfor %}
     </div>
 
-    <div class="machine-hardware">
-      <div class="machine-meter" aria-hidden="true"><span></span></div>
+    <div class="machine-progress" aria-hidden="true">
+      <div class="progress-head">
+        <span>PROCESS</span>
+        <span id="fortuna-progress-readout">00%</span>
+      </div>
+      <div class="progress-track">
+        <span id="fortuna-progress-fill"></span>
+      </div>
+    </div>
 
+    <div class="machine-hardware">
       <div class="ask-housing">
         <div class="control-label">QUERY</div>
         <span id="fortuna-lamp" class="fortuna-lamp" aria-hidden="true"></span>
@@ -43,8 +51,6 @@ title: home
           ASK
         </button>
       </div>
-
-      <div class="machine-meter" aria-hidden="true"><span></span></div>
     </div>
 
     <div id="lucky-reading" class="sr-only" aria-live="polite"></div>
