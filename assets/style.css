@@ -1037,3 +1037,47 @@ body::after{
     margin-top:13px;
   }
 }
+
+
+/* EXACT BLOOFORTUNE ASCII TITLE */
+.halftone-title{display:none !important}
+.masthead-center{
+  text-align:center;
+  background:transparent;
+  border:0;
+  box-shadow:none;
+}
+.exact-ascii-brand{
+  display:flex;
+  justify-content:center;
+  width:100%;
+  overflow:visible;
+}
+.exact-ascii-title{
+  margin:0 auto;
+  display:inline-block;
+  width:max-content;
+  max-width:none;
+  overflow:visible;
+  white-space:pre;
+  color:var(--ink);
+  font-family:"Courier New",Courier,monospace;
+  font-size:clamp(3.1px,.50vw,6.6px);
+  font-weight:700;
+  line-height:.94;
+  letter-spacing:-.025em;
+  text-align:left;
+  text-shadow:
+    0 0 5px rgba(243,231,238,.055),
+    0 0 13px rgba(255,115,200,.035);
+}
+.lucky-neon-center{
+  justify-content:center;
+  margin-top:18px;
+}
+@media (max-width:700px){
+  .exact-ascii-title{
+    font-size:clamp(2.25px,.56vw,3.9px);
+    letter-spacing:-.035em;
+  }
+}
