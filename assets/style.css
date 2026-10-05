@@ -53,12 +53,12 @@ body{
   margin:23px 0 28px;
   font-size:12px;
 }
-.nav a,.post-back a,.entry-title a,.archive-list a,.side-archive a,.all-link{
+.nav a,.post-back a,.entry-title a,.archive-list a,.all-link{
   color:var(--ink);
   text-decoration:none;
   border-bottom:1px solid var(--ink);
 }
-.nav a:hover,.post-back a:hover,.entry-title a:hover,.archive-list a:hover,.side-archive a:hover,.all-link:hover{
+.nav a:hover,.post-back a:hover,.entry-title a:hover,.archive-list a:hover,.all-link:hover{
   background:var(--ink);
   color:var(--paper);
 }
@@ -95,14 +95,15 @@ body{
 }
 .home-grid{
   display:grid;
-  grid-template-columns:190px minmax(0,1fr);
-  gap:30px;
+  grid-template-columns:minmax(0,1fr) 250px;
+  gap:34px;
   align-items:start;
 }
-.side-archive{
-  position:sticky;
-  top:28px;
-  margin-top:3px;
+.posts-column{min-width:0}
+.weekly-column{
+  display:flex;
+  flex-direction:column;
+  gap:28px;
 }
 .box-label{
   display:inline-block;
@@ -113,84 +114,12 @@ body{
   line-height:1.2;
   letter-spacing:.09em;
 }
-.side-archive-list{
-  list-style:none;
-  padding:0;
-  margin:9px 0 12px;
-  border-top:1px solid var(--ink);
-}
-.side-archive-list li{
-  padding:8px 0 9px;
-  border-bottom:1px dotted rgba(17,17,17,.48);
-}
-.side-archive-list span{
-  display:block;
-  font-size:9px;
-  line-height:1.2;
-  opacity:.7;
-}
-.side-archive-list a{
-  display:inline;
-  font-size:11px;
-  line-height:1.25;
-}
-.all-link{font-size:10px}
-.home-main{min-width:0}
-.weekly-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-  margin-bottom:32px;
-}
-.weekly-box{
-  min-height:188px;
-  border:1px solid var(--ink);
-  background:rgba(247,244,235,.58);
-  padding:12px;
-  box-shadow:3px 3px 0 rgba(17,17,17,.24);
-}
-.weekly-main-link{color:inherit;text-decoration:none}
-.song-title{
-  margin-top:24px;
-  font-size:22px;
-  line-height:1.05;
-}
-.song-artist{
-  margin-top:6px;
-  font-size:12px;
-  text-transform:uppercase;
-}
-.weekly-note{
-  margin:18px 0 0;
-  font-size:11px;
-}
-.picture-box img{
-  display:block;
-  width:100%;
-  height:126px;
-  margin-top:10px;
-  object-fit:cover;
-  filter:grayscale(100%) contrast(1.04);
-  border:1px solid var(--ink);
-}
-.picture-placeholder{
-  display:grid;
-  place-items:center;
-  height:126px;
-  margin-top:10px;
-  border:1px dashed var(--ink);
-  font-size:10px;
-}
-.picture-caption{
-  margin-top:7px;
-  font-size:10px;
-}
 .latest-label{margin-bottom:7px}
 .entry{
   border-top:1px solid var(--ink);
   padding:17px 0 26px;
 }
-.entry:last-child{border-bottom:1px solid var(--ink)}
+.entry:last-of-type{border-bottom:1px solid var(--ink)}
 .entry-meta,.post-meta{
   font-size:10px;
   text-transform:uppercase;
@@ -212,6 +141,58 @@ body{
   margin:0;
   max-width:68ch;
   font-size:13px;
+}
+.posts-all-link{
+  display:inline-block;
+  margin-top:13px;
+  font-size:10px;
+}
+.weekly-widget h3{
+  margin:0 0 8px;
+  font-size:11px;
+  font-weight:normal;
+  letter-spacing:.08em;
+}
+.weekly-frame{
+  border:1px solid var(--ink);
+  background:rgba(247,244,235,.58);
+  box-shadow:3px 3px 0 rgba(17,17,17,.24);
+  padding:11px;
+}
+.song-frame{min-height:135px}
+.weekly-main-link{color:inherit;text-decoration:none}
+.song-title{
+  margin-top:4px;
+  font-size:20px;
+  line-height:1.05;
+}
+.song-artist{
+  margin-top:6px;
+  font-size:11px;
+  text-transform:uppercase;
+}
+.weekly-note{
+  margin:17px 0 0;
+  font-size:10px;
+}
+.picture-frame img{
+  display:block;
+  width:100%;
+  height:172px;
+  object-fit:cover;
+  filter:grayscale(100%) contrast(1.04);
+  border:1px solid var(--ink);
+}
+.picture-placeholder{
+  display:grid;
+  place-items:center;
+  height:172px;
+  border:1px dashed var(--ink);
+  font-size:10px;
+}
+.picture-caption{
+  margin-top:7px;
+  font-size:10px;
 }
 .post{
   border-top:2px solid var(--ink);
@@ -294,24 +275,16 @@ body{
 ::selection{background:var(--ink);color:var(--paper)}
 @media (max-width:760px){
   .home-grid{grid-template-columns:1fr}
-  .side-archive{
-    position:static;
-    order:2;
-    margin-top:4px;
-  }
-  .home-main{order:1}
-  .side-archive-list{
+  .weekly-column{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:0 18px;
+    gap:18px;
   }
 }
 @media (max-width:560px){
   .shell{padding-top:24px}
   .fortune{font-size:16px}
-  .weekly-grid{grid-template-columns:1fr}
-  .weekly-box{min-height:0}
   .entry-title{font-size:18px}
   .archive-list li{grid-template-columns:75px 1fr}
-  .side-archive-list{grid-template-columns:1fr}
+  .weekly-column{grid-template-columns:1fr}
 }
