@@ -1,0 +1,164 @@
+---
+layout: default
+title: settings
+permalink: /settings/
+---
+<div class="settings-page">
+  <div class="section-title-row settings-title">
+    <h1>USER SETTINGS</h1>
+    <span>LOCAL PROTOTYPE</span>
+  </div>
+
+  <div class="settings-notice">
+    These controls are real on this browser, but this GitHub Pages build has no account database yet.
+    They are the front-end plumbing for the eventual multi-user version.
+  </div>
+
+  <form id="profile-settings" class="settings-form">
+    <fieldset>
+      <legend>IDENTITY</legend>
+
+      <label>
+        <span>DISPLAY NAME</span>
+        <input name="displayName" maxlength="28" autocomplete="off">
+      </label>
+
+      <label>
+        <span>FORTUNE ID</span>
+        <input name="fortuneId" maxlength="18" autocomplete="off">
+      </label>
+
+      <label>
+        <span>STATUS</span>
+        <input name="status" maxlength="80" autocomplete="off">
+      </label>
+
+      <label>
+        <span>BIO</span>
+        <textarea name="bio" rows="7" maxlength="1000"></textarea>
+      </label>
+
+      <label>
+        <span>AVATAR URL</span>
+        <input name="avatarUrl" type="url" placeholder="https://...">
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>PAGE</legend>
+
+      <label>
+        <span>PAGE COLOR</span>
+        <div class="color-input-row">
+          <input name="pageColor" type="color">
+          <input name="pageColorText" maxlength="7" autocomplete="off">
+        </div>
+      </label>
+
+      <label>
+        <span>LINK COLOR</span>
+        <div class="color-input-row">
+          <input name="linkColor" type="color">
+          <input name="linkColorText" maxlength="7" autocomplete="off">
+        </div>
+      </label>
+
+      <label>
+        <span>FORTUNA ACCENT</span>
+        <div class="color-input-row">
+          <input name="accentColor" type="color">
+          <input name="accentColorText" maxlength="7" autocomplete="off">
+        </div>
+      </label>
+
+      <label>
+        <span>CURRENT SONG</span>
+        <input name="currentSong" maxlength="120" autocomplete="off">
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>EMBEDS</legend>
+      <p class="settings-help">Paste YouTube, Spotify, direct image, or ordinary web links. Three slots for now.</p>
+
+      <label><span>EMBED 1</span><input name="embed1" type="url" placeholder="https://..."></label>
+      <label><span>EMBED 2</span><input name="embed2" type="url" placeholder="https://..."></label>
+      <label><span>EMBED 3</span><input name="embed3" type="url" placeholder="https://..."></label>
+    </fieldset>
+
+    <div class="settings-actions">
+      <button class="old-button" type="submit">SAVE SETTINGS</button>
+      <button class="old-button" id="reset-settings" type="button">RESET DEFAULTS</button>
+      <a class="old-button link-button" href="/profile/">VIEW PAGE</a>
+      <span id="settings-result" class="settings-result" aria-live="polite"></span>
+    </div>
+  </form>
+</div>
+
+<script>
+(() => {
+  if (!window.FortunaProfile) return;
+
+  const form = document.getElementById('profile-settings');
+  const result = document.getElementById('settings-result');
+  const reset = document.getElementById('reset-settings');
+
+  const validHex = value => /^#[0-9a-f]{6}$/i.test(value || '');
+  const profile = FortunaProfile.load();
+
+  const fill = p => {
+    for (const key of ['displayName','fortuneId','status','bio','avatarUrl','currentSong','embed1','embed2','embed3']) {
+      if (form.elements[key]) form.elements[key].value = p[key] || '';
+    }
+
+    for (const key of ['pageColor','linkColor','accentColor']) {
+      form.elements[key].value = p[key];
+      form.elements[key + 'Text'].value = p[key];
+    }
+  };
+
+  const syncPair = key => {
+    const picker = form.elements[key];
+    const text = form.elements[key + 'Text'];
+
+    picker.addEventListener('input', () => {
+      text.value = picker.value;
+    });
+
+    text.addEventListener('input', () => {
+      if (validHex(text.value)) picker.value = text.value;
+    });
+  };
+
+  ['pageColor','linkColor','accentColor'].forEach(syncPair);
+  fill(profile);
+
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const current = FortunaProfile.load();
+    const next = Object.assign({}, current);
+
+    for (const key of ['displayName','fortuneId','status','bio','avatarUrl','currentSong','embed1','embed2','embed3']) {
+      next[key] = form.elements[key].value.trim();
+    }
+
+    for (const key of ['pageColor','linkColor','accentColor']) {
+      const text = form.elements[key + 'Text'].value.trim();
+      next[key] = validHex(text) ? text : form.elements[key].value;
+    }
+
+    FortunaProfile.save(next);
+    result.textContent = 'SAVED.';
+    window.setTimeout(() => result.textContent = '', 1800);
+  });
+
+  reset.addEventListener('click', () => {
+    const keepFavor = FortunaProfile.load().favor;
+    const next = Object.assign({}, FortunaProfile.defaults, { favor: keepFavor });
+    FortunaProfile.save(next);
+    fill(next);
+    result.textContent = 'DEFAULTS RESTORED.';
+    window.setTimeout(() => result.textContent = '', 1800);
+  });
+})();
+</script>
