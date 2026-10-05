@@ -4,7 +4,7 @@ title: home
 ---
 {% assign latest_fortune = site.categories.fortune | first %}
 {% if latest_fortune %}
-  <a class="fortune-link" href="{{ latest_fortune.url }}" style="color:inherit;text-decoration:none">
+  <a class="fortune-link" href="{{ latest_fortune.url }}">
     <div class="fortune">
       {{ latest_fortune.fortune_text | default: latest_fortune.title }}
       <small>FORTUNE No. {{ latest_fortune.fortune_no | default: "???" }} / {{ latest_fortune.date | date: "%m.%d.%y" }}</small>
@@ -12,23 +12,68 @@ title: home
   </a>
 {% endif %}
 
-<p class="pile-note">newest things first / no minimum word count / scraps count</p>
+<div class="home-grid">
+  <aside class="side-archive">
+    <div class="box-label">ARCHIVE</div>
+    <ol class="side-archive-list">
+      {% for post in site.posts limit:12 %}
+        <li>
+          <span>{{ post.date | date: "%m.%d" }}</span>
+          <a href="{{ post.url }}">{{ post.title }}</a>
+        </li>
+      {% endfor %}
+    </ol>
+    <a class="all-link" href="/archive/">ALL POSTS →</a>
+  </aside>
 
-<section class="pile">
-  {% for post in site.posts %}
-    <article class="entry">
-      <div class="entry-meta">
-        {{ post.date | date: "%m.%d.%y" }}
-        {% if post.category %}<span class="tag">{{ post.category | upcase }}</span>{% endif %}
-      </div>
+  <div class="home-main">
+    <section class="weekly-grid">
+      <article class="weekly-box song-box">
+        <div class="box-label">SONG OF THE WEEK</div>
+        {% if site.data.weekly.song_url and site.data.weekly.song_url != "" %}
+          <a class="weekly-main-link" href="{{ site.data.weekly.song_url }}">
+        {% endif %}
+            <div class="song-title">{{ site.data.weekly.song_title }}</div>
+            <div class="song-artist">{{ site.data.weekly.song_artist }}</div>
+        {% if site.data.weekly.song_url and site.data.weekly.song_url != "" %}
+          </a>
+        {% endif %}
+        {% if site.data.weekly.song_note and site.data.weekly.song_note != "" %}
+          <p class="weekly-note">{{ site.data.weekly.song_note }}</p>
+        {% endif %}
+      </article>
 
-      <h2 class="entry-title">
-        <a href="{{ post.url }}">{{ post.title }}</a>
-      </h2>
+      <article class="weekly-box picture-box">
+        <div class="box-label">PICTURE OF THE WEEK</div>
+        {% if site.data.weekly.picture_image and site.data.weekly.picture_image != "" %}
+          <img src="{{ site.data.weekly.picture_image }}" alt="{{ site.data.weekly.picture_alt | default: "picture of the week" }}">
+        {% else %}
+          <div class="picture-placeholder">NO PICTURE YET</div>
+        {% endif %}
+        {% if site.data.weekly.picture_caption and site.data.weekly.picture_caption != "" %}
+          <div class="picture-caption">{{ site.data.weekly.picture_caption }}</div>
+        {% endif %}
+      </article>
+    </section>
 
-      {% if post.excerpt %}
-        <p class="entry-excerpt">{{ post.excerpt | strip_html | truncatewords: 34 }}</p>
-      {% endif %}
-    </article>
-  {% endfor %}
-</section>
+    <section class="pile">
+      <div class="box-label latest-label">LATEST</div>
+      {% for post in site.posts limit:7 %}
+        <article class="entry">
+          <div class="entry-meta">
+            {{ post.date | date: "%m.%d.%y" }}
+            {% if post.category %}<span class="tag">{{ post.category | upcase }}</span>{% endif %}
+          </div>
+
+          <h2 class="entry-title">
+            <a href="{{ post.url }}">{{ post.title }}</a>
+          </h2>
+
+          {% if post.excerpt %}
+            <p class="entry-excerpt">{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </section>
+  </div>
+</div>
