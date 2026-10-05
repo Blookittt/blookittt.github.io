@@ -25,7 +25,10 @@ permalink: /settings/
 
       <label>
         <span>FORTUNE ID</span>
-        <input name="fortuneId" maxlength="18" autocomplete="off">
+        <div>
+          <input name="fortuneId" maxlength="18" autocomplete="off" readonly>
+          <div class="settings-help">assigned once / not editable</div>
+        </div>
       </label>
 
       <label>
@@ -138,7 +141,7 @@ permalink: /settings/
     const current = FortunaProfile.load();
     const next = Object.assign({}, current);
 
-    for (const key of ['displayName','fortuneId','status','bio','avatarUrl','currentSong','embed1','embed2','embed3']) {
+    for (const key of ['displayName','status','bio','avatarUrl','currentSong','embed1','embed2','embed3']) {
       next[key] = form.elements[key].value.trim();
     }
 
