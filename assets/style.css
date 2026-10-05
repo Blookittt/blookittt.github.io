@@ -2395,3 +2395,71 @@ body:has(.balance-page-v2) .page-wrap{
   .weather-a,.weather-b,.help-a,.help-b,.almanac-figure .two-frame span{animation:none!important}
   .weather-b,.help-b,.almanac-figure .two-frame span:last-child{display:none}
 }
+
+
+/* BALANCE DEV ACCESS */
+.balance-dev-access{
+  width:100%;
+  margin-top:2px;
+  border-top:1px dotted #8b7d68;
+  padding-top:5px;
+}
+
+.balance-dev-access summary{
+  cursor:pointer;
+  list-style:none;
+  color:#716554;
+  text-align:center;
+  font:7px/1.2 "Courier New",monospace;
+  letter-spacing:.10em;
+}
+
+.balance-dev-access summary::-webkit-details-marker{display:none}
+
+.balance-dev-access summary::before{
+  content:"[ ";
+}
+
+.balance-dev-access summary::after{
+  content:" ]";
+}
+
+.balance-dev-form{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  gap:4px;
+  align-items:center;
+  margin-top:6px;
+}
+
+.balance-dev-form label{
+  color:#6a5d4c;
+  font:7px/1 "Courier New",monospace;
+}
+
+.balance-dev-form input{
+  min-width:0;
+  width:100%;
+  padding:4px 5px;
+  border:1px solid #756855;
+  background:#efe6d5;
+  color:#2c261f;
+  font:8px/1 "Courier New",monospace;
+}
+
+.balance-dev-form button{
+  padding:4px 6px;
+  border:1px solid #5b4f40;
+  background:#d8ccb6;
+  color:#3a3229;
+  font:bold 7px/1 "Courier New",monospace;
+  cursor:pointer;
+}
+
+.balance-dev-form span{
+  grid-column:1/-1;
+  min-height:9px;
+  color:#8f5366;
+  text-align:center;
+  font:bold 7px/1 "Courier New",monospace;
+}
