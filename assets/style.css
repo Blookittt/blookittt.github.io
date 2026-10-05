@@ -3033,3 +3033,48 @@ body:has(.balance-page-v2) .page-wrap{
     animation:none!important;
   }
 }
+
+
+/* BALANCE — CLEANUP + WEIGH RITUAL */
+.balance-page-head p{
+  max-width:650px;
+}
+
+.balance-attraction-banner{
+  gap:8px;
+}
+
+.balance-side{
+  align-content:start;
+}
+
+.balance-help-gif{
+  height:72px;
+  font-size:42px;
+  line-height:72px;
+}
+
+.balance-apparatus.weighing .balance-status{
+  color:#efb3c1;
+  letter-spacing:.12em;
+}
+
+.balance-apparatus.weighing .balance-scale-chamber{
+  box-shadow:
+    inset 0 0 0 2px #e5dccd,
+    inset 0 -5px 12px rgba(79,60,39,.10),
+    0 0 0 1px rgba(137,81,77,.18);
+}
+
+.balance-apparatus.weighing .balance-weigh-button{
+  transform:translateY(3px);
+  box-shadow:inset 1px 2px 4px #8e8069;
+}
+
+.balance-apparatus.weighing .balance-total-box strong{
+  color:#7d756b;
+}
+
+.balance-beam{
+  transition:transform .15s cubic-bezier(.2,.7,.25,1);
+}
