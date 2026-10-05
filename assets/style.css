@@ -1693,3 +1693,281 @@ body,
     font-size:23px;
   }
 }
+
+
+/* FORTOMETER */
+.balance-intro-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.25fr) minmax(250px,.75fr);
+  gap:12px;
+  align-items:stretch;
+  margin:11px 0 15px;
+}
+
+.balance-intro-grid .balance-rule{
+  margin:0;
+}
+
+.fortometer{
+  background:#f3eee4;
+  border:1px solid #8f877c;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.65);
+}
+
+.fortometer-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:5px 7px;
+  background:#d8d0c4;
+  border-bottom:1px solid #958d82;
+  color:#4f4a45;
+  font:bold 9px/1 "Courier New",monospace;
+  letter-spacing:.12em;
+}
+
+.fortometer-head a{
+  width:18px;
+  height:18px;
+  display:grid;
+  place-items:center;
+  border:1px solid #81796f;
+  background:#f0ebe2;
+  color:#315b88;
+  text-decoration:none;
+  font:bold 10px/1 Georgia,"Times New Roman",serif;
+}
+
+.fortometer-body{
+  position:relative;
+  padding:10px;
+}
+
+.fortometer-glyph{
+  position:absolute;
+  right:9px;
+  top:8px;
+  width:34px;
+  height:34px;
+  overflow:hidden;
+  color:#7c645e;
+  border:1px solid #b4aa9c;
+  background:#e7dfd3;
+  font:23px/34px Georgia,"Times New Roman",serif;
+  text-align:center;
+}
+
+.weather-frame{
+  position:absolute;
+  inset:0;
+}
+
+.weather-a{
+  animation:fortometer-a 1.35s steps(1,end) infinite;
+}
+
+.weather-b{
+  animation:fortometer-b 1.35s steps(1,end) infinite;
+}
+
+@keyframes fortometer-a{
+  0%,49%{opacity:1}
+  50%,100%{opacity:0}
+}
+
+@keyframes fortometer-b{
+  0%,49%{opacity:0}
+  50%,100%{opacity:1}
+}
+
+.fortometer-reading{
+  padding-right:44px;
+}
+
+.fortometer-condition{
+  font:bold 17px/1.1 Georgia,"Times New Roman",serif;
+  letter-spacing:.06em;
+}
+
+.fortometer-pressure{
+  margin-top:3px;
+  color:#655f58;
+  font:9px/1.3 "Courier New",monospace;
+}
+
+.fortometer-pressure strong{
+  color:#2d2a27;
+  font-size:15px;
+}
+
+.fortometer-details{
+  display:grid;
+  grid-template-columns:max-content 1fr;
+  gap:3px 9px;
+  margin:9px 0 8px;
+  padding-top:7px;
+  border-top:1px dotted #aaa196;
+}
+
+.fortometer-details dt,
+.fortometer-details dd{
+  margin:0;
+  font:8px/1.3 "Courier New",monospace;
+}
+
+.fortometer-details dt{
+  color:#716a63;
+}
+
+.fortometer-details dd{
+  text-align:right;
+  color:#2f2c29;
+  font-weight:bold;
+}
+
+.fortometer-note{
+  margin:8px 0 7px;
+  color:#554f4a;
+  font:10px/1.45 Georgia,"Times New Roman",serif;
+}
+
+.fortometer-help{
+  font:8px "Courier New",monospace;
+}
+
+.almanac-page{
+  max-width:840px;
+  margin:0 auto;
+}
+
+.almanac-lede{
+  margin:10px 0 14px;
+  padding:10px 12px;
+  background:#f4efe6;
+  border:1px solid #9c9488;
+  font:13px/1.6 Georgia,"Times New Roman",serif;
+}
+
+.almanac-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 240px;
+  gap:14px;
+  align-items:start;
+}
+
+.almanac-article{
+  background:#f5f0e8;
+  border:1px solid #9c9488;
+}
+
+.almanac-article section{
+  padding:13px 14px;
+  border-bottom:1px solid #b3aa9d;
+}
+
+.almanac-article section:last-child{
+  border-bottom:0;
+}
+
+.almanac-article h2{
+  margin:0 0 6px;
+  font:bold 17px/1.2 Georgia,"Times New Roman",serif;
+}
+
+.almanac-article p{
+  margin:7px 0;
+  font:12px/1.62 Georgia,"Times New Roman",serif;
+}
+
+.almanac-figure{
+  float:right;
+  width:96px;
+  margin:0 0 8px 12px;
+  padding:7px;
+  text-align:center;
+  background:#e5ddd1;
+  border:1px solid #a49b8f;
+}
+
+.almanac-figure .two-frame{
+  position:relative;
+  height:52px;
+  font:34px/52px Georgia,"Times New Roman",serif;
+  color:#765f59;
+}
+
+.almanac-figure .two-frame span{
+  position:absolute;
+  inset:0;
+}
+
+.almanac-figure .two-frame span:first-child{
+  animation:fortometer-a 1.5s steps(1,end) infinite;
+}
+
+.almanac-figure .two-frame span:last-child{
+  animation:fortometer-b 1.5s steps(1,end) infinite;
+}
+
+.almanac-figure small{
+  display:block;
+  color:#6f6860;
+  font:7px/1.3 "Courier New",monospace;
+}
+
+.almanac-side .module-body{
+  font:9px/1.55 "Courier New",monospace;
+}
+
+.almanac-table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:8px;
+  font:9px/1.4 "Courier New",monospace;
+}
+
+.almanac-table th,
+.almanac-table td{
+  padding:5px 6px;
+  border:1px solid #a79e92;
+  text-align:left;
+}
+
+.almanac-table th{
+  background:#d9d2c6;
+}
+
+.almanac-faq dt{
+  margin-top:10px;
+  font:bold 10px/1.4 "Courier New",monospace;
+}
+
+.almanac-faq dd{
+  margin:3px 0 0;
+  font:11px/1.55 Georgia,"Times New Roman",serif;
+}
+
+@media (max-width:700px){
+  .balance-intro-grid,
+  .almanac-grid{
+    grid-template-columns:1fr;
+  }
+
+  .almanac-figure{
+    float:none;
+    margin:0 0 10px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .weather-a,
+  .weather-b,
+  .almanac-figure .two-frame span{
+    animation:none!important;
+  }
+
+  .weather-b,
+  .almanac-figure .two-frame span:last-child{
+    display:none;
+  }
+}
