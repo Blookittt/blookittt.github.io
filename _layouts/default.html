@@ -14,7 +14,14 @@
     <audio id="bg-song" preload="metadata" loop>
       <source src="{{ site.data.weekly.song_audio }}" type="audio/mpeg">
     </audio>
-    <button id="audio-toggle" class="audio-toggle" type="button" aria-label="toggle background music">♪ CLICK TO START</button>
+
+    <div class="audio-controls">
+      <button id="audio-toggle" class="audio-toggle" type="button" aria-label="toggle background music">♪ CLICK TO START</button>
+      <label class="volume-control" for="audio-volume">
+        <span id="volume-readout">VOL 08</span>
+        <input id="audio-volume" type="range" min="0" max="100" step="1" value="8" aria-label="background music volume">
+      </label>
+    </div>
   {% endif %}
 
   <main class="shell">
@@ -41,10 +48,23 @@
   (() => {
     const audio = document.getElementById('bg-song');
     const button = document.getElementById('audio-toggle');
-    if (!audio || !button) return;
+    const slider = document.getElementById('audio-volume');
+    const readout = document.getElementById('volume-readout');
+    if (!audio || !button || !slider || !readout) return;
 
-    const volume = {{ site.data.weekly.song_volume | default: 0.08 }};
-    audio.volume = Math.max(0, Math.min(1, volume));
+    const defaultVolume = Math.round(({{ site.data.weekly.song_volume | default: 0.08 }}) * 100);
+    const savedVolume = Number(localStorage.getItem('bloofortuneVolume'));
+    const initialVolume = Number.isFinite(savedVolume)
+      ? Math.max(0, Math.min(100, savedVolume))
+      : defaultVolume;
+
+    slider.value = String(initialVolume);
+    audio.volume = initialVolume / 100;
+
+    const updateReadout = () => {
+      readout.textContent = 'VOL ' + String(Math.round(Number(slider.value))).padStart(2, '0');
+    };
+    updateReadout();
 
     const savedTime = Number(sessionStorage.getItem('bloofortuneSongTime') || 0);
     const wantsMusic = sessionStorage.getItem('bloofortuneMusic') === 'on';
@@ -82,6 +102,14 @@
       event.stopPropagation();
       if (audio.paused) startMusic();
       else stopMusic();
+    });
+
+    slider.addEventListener('pointerdown', (event) => event.stopPropagation());
+    slider.addEventListener('input', () => {
+      const value = Math.max(0, Math.min(100, Number(slider.value)));
+      audio.volume = value / 100;
+      localStorage.setItem('bloofortuneVolume', String(value));
+      updateReadout();
     });
 
     const firstGesture = () => {
