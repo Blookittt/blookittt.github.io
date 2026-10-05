@@ -2223,3 +2223,115 @@ body,
     display:none;
   }
 }
+
+
+/* BALANCE STAKES */
+.balance-attempts{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:12px;
+  align-items:center;
+  margin-top:12px;
+  padding:8px 9px;
+  background:#cfc7ba;
+  border:1px solid #8f877c;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.42);
+}
+
+.balance-attempts > div:first-child span,
+.balance-attempts > div:first-child strong{
+  display:block;
+}
+
+.balance-attempts > div:first-child span{
+  color:#6b645d;
+  font:7px/1.2 "Courier New",monospace;
+  letter-spacing:.09em;
+}
+
+.balance-attempts > div:first-child strong{
+  margin-top:2px;
+  color:#2c2926;
+  font:bold 20px/1 "Courier New",monospace;
+}
+
+.attempt-pips{
+  display:flex;
+  justify-content:center;
+  gap:7px;
+}
+
+.attempt-pips span{
+  width:13px;
+  height:13px;
+  border-radius:50%;
+  background:#9d6074;
+  border:1px solid #694653;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.24),
+    0 0 4px rgba(157,96,116,.18);
+}
+
+.attempt-pips span.spent{
+  background:#8e877e;
+  border-color:#706960;
+  box-shadow:none;
+  opacity:.42;
+}
+
+.balance-weigh-button{
+  min-width:94px;
+  min-height:38px;
+  padding:7px 12px;
+  cursor:pointer;
+  border:1px solid #51483d;
+  background:
+    linear-gradient(#dfd3b8,#c8b99a);
+  color:#3b332a;
+  box-shadow:
+    inset 1px 1px 0 #f5ecd8,
+    inset -2px -2px 0 #958770,
+    0 3px 0 #675c4b;
+  font:bold 10px/1 "Courier New",monospace;
+  letter-spacing:.12em;
+}
+
+.balance-weigh-button:active:not(:disabled){
+  transform:translateY(3px);
+  box-shadow:inset 1px 2px 4px #8f826c;
+}
+
+.balance-weigh-button:disabled,
+.balance-actions button:disabled{
+  cursor:not-allowed;
+  filter:grayscale(.65);
+  opacity:.55;
+}
+
+.balance-machine.day-locked{
+  background:#d5cec3;
+}
+
+.balance-machine.day-locked .balance-tiles{
+  opacity:.66;
+}
+
+.balance-machine.day-locked .balance-status{
+  color:#caaeb7;
+}
+
+@media (max-width:520px){
+  .balance-attempts{
+    grid-template-columns:1fr auto;
+  }
+
+  .attempt-pips{
+    justify-content:flex-start;
+    grid-column:1;
+  }
+
+  .balance-weigh-button{
+    grid-column:2;
+    grid-row:1 / span 2;
+  }
+}
