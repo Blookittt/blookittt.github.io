@@ -1,0 +1,81 @@
+---
+layout: default
+title: archive
+permalink: /archive/
+---
+<section class="archive-head">
+  <h2>THE PILE</h2>
+  <p>everything, including the tiny stupid things.</p>
+</section>
+
+{% assign fortune_posts = site.categories.fortune %}
+<section class="archive-section" id="fortune">
+  <h3>FORTUNES</h3>
+  {% if fortune_posts.size > 0 %}
+  <ul class="archive-list">
+    {% for post in fortune_posts %}
+      <li><span class="archive-date">{{ post.date | date: "%m.%d.%y" }}</span><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+  {% else %}<p class="empty">nothing here yet.</p>{% endif %}
+</section>
+
+{% assign log_posts = site.categories.log %}
+<section class="archive-section" id="log">
+  <h3>LOG</h3>
+  {% if log_posts.size > 0 %}
+  <ul class="archive-list">
+    {% for post in log_posts %}
+      <li><span class="archive-date">{{ post.date | date: "%m.%d.%y" }}</span><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+  {% else %}<p class="empty">nothing here yet.</p>{% endif %}
+</section>
+
+{% assign found_posts = site.categories.found %}
+<section class="archive-section" id="found">
+  <h3>FOUND</h3>
+  {% if found_posts.size > 0 %}
+  <ul class="archive-list">
+    {% for post in found_posts %}
+      <li><span class="archive-date">{{ post.date | date: "%m.%d.%y" }}</span><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+  {% else %}<p class="empty">nothing here yet.</p>{% endif %}
+</section>
+
+{% assign music_posts = site.categories.music %}
+<section class="archive-section" id="music">
+  <h3>NOW PLAYING</h3>
+  {% if music_posts.size > 0 %}
+  <ul class="archive-list">
+    {% for post in music_posts %}
+      <li><span class="archive-date">{{ post.date | date: "%m.%d.%y" }}</span><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+  {% else %}<p class="empty">nothing here yet.</p>{% endif %}
+</section>
+
+{% assign project_posts = site.categories.project %}
+<section class="archive-section" id="project">
+  <h3>PROJECTS</h3>
+  {% if project_posts.size > 0 %}
+  <ul class="archive-list">
+    {% for post in project_posts %}
+      <li><span class="archive-date">{{ post.date | date: "%m.%d.%y" }}</span><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+  {% else %}<p class="empty">nothing here yet.</p>{% endif %}
+</section>
+
+{% assign scrap_posts = site.categories.scrap %}
+<section class="archive-section" id="scrap">
+  <h3>SCRAPS</h3>
+  {% if scrap_posts.size > 0 %}
+  <ul class="archive-list">
+    {% for post in scrap_posts %}
+      <li><span class="archive-date">{{ post.date | date: "%m.%d.%y" }}</span><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+  {% else %}<p class="empty">nothing here yet.</p>{% endif %}
+</section>
