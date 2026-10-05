@@ -107,6 +107,7 @@
     const button = document.getElementById('audio-toggle');
     const slider = document.getElementById('audio-volume');
     const readout = document.getElementById('volume-readout');
+    const eqCanvas = document.getElementById('song-eq');
     if (!audio || !button || !slider || !readout) return;
 
     const defaultVolume = Math.round(({{ site.data.weekly.song_volume | default: 0.08 }}) * 100);
@@ -117,6 +118,109 @@
 
     slider.value = String(initialVolume);
     audio.volume = initialVolume / 100;
+
+    let audioContext = null;
+    let mediaSource = null;
+    let analyser = null;
+    let eqFrame = 0;
+    let eqData = null;
+    const peakLevels = new Array(16).fill(0);
+
+    const ensureVisualizer = async () => {
+      if (!eqCanvas || analyser) {
+        if (audioContext && audioContext.state === 'suspended') {
+          try { await audioContext.resume(); } catch (_) {}
+        }
+        return;
+      }
+
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+
+      try {
+        audioContext = new AudioCtx();
+        mediaSource = audioContext.createMediaElementSource(audio);
+        analyser = audioContext.createAnalyser();
+        analyser.fftSize = 64;
+        analyser.smoothingTimeConstant = 0.82;
+        mediaSource.connect(analyser);
+        analyser.connect(audioContext.destination);
+        eqData = new Uint8Array(analyser.frequencyBinCount);
+        if (audioContext.state === 'suspended') await audioContext.resume();
+      } catch (_) {
+        analyser = null;
+      }
+    };
+
+    const drawVisualizer = () => {
+      if (!eqCanvas || !analyser || !eqData) {
+        eqFrame = 0;
+        return;
+      }
+
+      const rect = eqCanvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const width = Math.max(1, Math.round(rect.width * dpr));
+      const height = Math.max(1, Math.round(rect.height * dpr));
+
+      if (eqCanvas.width !== width || eqCanvas.height !== height) {
+        eqCanvas.width = width;
+        eqCanvas.height = height;
+      }
+
+      const ctx = eqCanvas.getContext('2d');
+      if (!ctx) {
+        eqFrame = 0;
+        return;
+      }
+
+      analyser.getByteFrequencyData(eqData);
+      ctx.clearRect(0, 0, width, height);
+
+      const styles = getComputedStyle(document.documentElement);
+      const ink = styles.getPropertyValue('--ink').trim() || '#f3e7ee';
+      const pink = styles.getPropertyValue('--pink').trim() || '#ff78c8';
+      const bars = 16;
+      const gap = 3 * dpr;
+      const barWidth = Math.max(1, (width - gap * (bars - 1)) / bars);
+      const usableHeight = height - 8 * dpr;
+      let anyPeak = false;
+
+      for (let i = 0; i < bars; i++) {
+        const bin = 1 + Math.floor((i / bars) * Math.max(1, eqData.length - 3));
+        const raw = audio.paused ? 0 : eqData[bin] / 255;
+        const level = Math.pow(raw, 0.82);
+        const barHeight = Math.max(1.2 * dpr, level * usableHeight);
+
+        peakLevels[i] = Math.max(level, peakLevels[i] - 0.018);
+        if (peakLevels[i] > 0.012) anyPeak = true;
+
+        const x = i * (barWidth + gap);
+        const y = height - barHeight;
+
+        ctx.globalAlpha = 0.74;
+        ctx.fillStyle = ink;
+        ctx.fillRect(x, y, barWidth, barHeight);
+
+        const peakY = height - peakLevels[i] * usableHeight - 2 * dpr;
+        ctx.globalAlpha = 0.92;
+        ctx.fillStyle = pink;
+        ctx.fillRect(x, Math.max(0, peakY), barWidth, Math.max(1, 1.5 * dpr));
+      }
+
+      ctx.globalAlpha = 1;
+
+      if (!audio.paused || anyPeak) {
+        eqFrame = requestAnimationFrame(drawVisualizer);
+      } else {
+        eqFrame = 0;
+      }
+    };
+
+    const startVisualizer = () => {
+      if (!eqCanvas || !analyser) return;
+      if (!eqFrame) eqFrame = requestAnimationFrame(drawVisualizer);
+    };
 
     const updateReadout = () => {
       readout.textContent = 'VOL ' + String(Math.round(Number(slider.value))).padStart(2, '0');
@@ -140,9 +244,11 @@
     const startMusic = async () => {
       try {
         if (savedTime > 0 && audio.currentTime < 1) audio.currentTime = savedTime;
+        await ensureVisualizer();
         await audio.play();
         sessionStorage.setItem('bloofortuneMusic', 'on');
         setButton();
+        startVisualizer();
       } catch (_) {
         button.textContent = '♪ CLICK TO START';
       }
@@ -153,6 +259,7 @@
       saveTime();
       sessionStorage.setItem('bloofortuneMusic', 'off');
       setButton();
+      startVisualizer();
     };
 
     button.addEventListener('click', (event) => {
@@ -176,6 +283,8 @@
     document.addEventListener('pointerdown', firstGesture, { once: true, capture: true });
     document.addEventListener('keydown', firstGesture, { once: true, capture: true });
     audio.addEventListener('timeupdate', saveTime);
+    audio.addEventListener('play', startVisualizer);
+    audio.addEventListener('pause', startVisualizer);
     window.addEventListener('pagehide', saveTime);
 
     if (wantsMusic) startMusic();
