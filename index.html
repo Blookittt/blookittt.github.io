@@ -4,16 +4,18 @@ title: home
 ---
 {% assign latest_fortune = site.categories.fortune | first %}
 {% if latest_fortune %}
-  <a class="fortune-link" href="{{ latest_fortune.url }}">
+  <div class="fortune-link">
     <div class="fortune" id="daily-fortune"
          data-fortune-no="{{ latest_fortune.fortune_no | default: "0" }}"
          data-song-title="{{ site.data.weekly.song_title | escape }}">
-      <div class="fortune-message">{{ latest_fortune.fortune_text | default: latest_fortune.title }}</div>
-      <small>FORTUNE No. {{ latest_fortune.fortune_no | default: "???" }} / {{ latest_fortune.date | date: "%m.%d.%y" }}</small>
+      <a class="fortune-copy-link" href="{{ latest_fortune.url }}">
+        <div class="fortune-message">{{ latest_fortune.fortune_text | default: latest_fortune.title }}</div>
+        <small>FORTUNE No. {{ latest_fortune.fortune_no | default: "???" }} / {{ latest_fortune.date | date: "%m.%d.%y" }}</small>
+      </a>
 
       <div class="lucky-strip">
         <div class="lucky-label">LUCKY NUMBERS</div>
-        <div class="lucky-rollers" id="daily-lucky-numbers" aria-hidden="true">
+        <div class="lucky-rollers shutters-closed" id="daily-lucky-numbers" aria-hidden="true">
           <span class="lucky-number"><span class="lucky-digit">0</span><span class="lucky-digit">0</span></span>
           <span class="lucky-number"><span class="lucky-digit">0</span><span class="lucky-digit">0</span></span>
           <span class="lucky-number"><span class="lucky-digit">0</span><span class="lucky-digit">0</span></span>
@@ -21,10 +23,17 @@ title: home
           <span class="lucky-number"><span class="lucky-digit">0</span><span class="lucky-digit">0</span></span>
           <span class="lucky-number"><span class="lucky-digit">0</span><span class="lucky-digit">0</span></span>
         </div>
-        <span id="lucky-reading" class="sr-only"></span>
+
+        <div class="lucky-trigger-well">
+          <button id="lucky-trigger" class="lucky-trigger" type="button" aria-controls="daily-lucky-numbers">
+            <span class="lucky-trigger-cap">PUSH</span>
+          </button>
+        </div>
+
+        <span id="lucky-reading" class="sr-only" aria-live="polite"></span>
       </div>
     </div>
-  </a>
+  </div>
 {% endif %}
 
 <div class="home-grid">
