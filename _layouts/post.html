@@ -1,0 +1,21 @@
+---
+layout: default
+---
+<article class="post">
+  <div class="post-meta">
+    {{ page.date | date: "%m.%d.%y" }}
+    {% if page.category %}
+      <span class="tag">{{ page.category | upcase }}</span>
+    {% endif %}
+  </div>
+
+  <h2 class="post-title">{{ page.title }}</h2>
+
+  <div class="post-body">
+    {{ content }}
+  </div>
+
+  <div class="post-back">
+    <a href="/">← back to the pile</a>
+  </div>
+</article>
