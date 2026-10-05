@@ -509,18 +509,6 @@
 
     resetMachine();
 
-      // Button depresses first. Then six little shutters lift like a carnival machine.
-      window.setTimeout(() => {
-        rollers.classList.remove('shutters-closed');
-        rollers.classList.add('shutters-open');
-
-        const shutterTime = reduced ? 90 : 950;
-        window.setTimeout(() => runNumber(0), shutterTime);
-      }, reduced ? 20 : 180);
-    };
-
-    resetMachine();
-
     if (trigger) {
       trigger.addEventListener('click', reveal);
     }
