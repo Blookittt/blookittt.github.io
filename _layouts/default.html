@@ -9,6 +9,14 @@
 </head>
 <body>
   <div class="noise" aria-hidden="true"></div>
+
+  {% if site.data.weekly.song_audio and site.data.weekly.song_audio != "" %}
+    <audio id="bg-song" preload="metadata" loop>
+      <source src="{{ site.data.weekly.song_audio }}" type="audio/mpeg">
+    </audio>
+    <button id="audio-toggle" class="audio-toggle" type="button" aria-label="toggle background music">♪ CLICK TO START</button>
+  {% endif %}
+
   <main class="shell">
     <header class="masthead">
       <a class="masthead-link" href="/">
@@ -27,5 +35,68 @@
 
     {{ content }}
   </main>
+
+  {% if site.data.weekly.song_audio and site.data.weekly.song_audio != "" %}
+  <script>
+  (() => {
+    const audio = document.getElementById('bg-song');
+    const button = document.getElementById('audio-toggle');
+    if (!audio || !button) return;
+
+    const volume = {{ site.data.weekly.song_volume | default: 0.08 }};
+    audio.volume = Math.max(0, Math.min(1, volume));
+
+    const savedTime = Number(sessionStorage.getItem('bloofortuneSongTime') || 0);
+    const wantsMusic = sessionStorage.getItem('bloofortuneMusic') === 'on';
+
+    const setButton = () => {
+      button.textContent = audio.paused ? '♪ OFF' : '♪ ON';
+      button.classList.toggle('is-playing', !audio.paused);
+    };
+
+    const saveTime = () => {
+      if (Number.isFinite(audio.currentTime)) {
+        sessionStorage.setItem('bloofortuneSongTime', String(audio.currentTime));
+      }
+    };
+
+    const startMusic = async () => {
+      try {
+        if (savedTime > 0 && audio.currentTime < 1) audio.currentTime = savedTime;
+        await audio.play();
+        sessionStorage.setItem('bloofortuneMusic', 'on');
+        setButton();
+      } catch (_) {
+        button.textContent = '♪ CLICK TO START';
+      }
+    };
+
+    const stopMusic = () => {
+      audio.pause();
+      saveTime();
+      sessionStorage.setItem('bloofortuneMusic', 'off');
+      setButton();
+    };
+
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      if (audio.paused) startMusic();
+      else stopMusic();
+    });
+
+    const firstGesture = () => {
+      if (sessionStorage.getItem('bloofortuneMusic') !== 'off') startMusic();
+    };
+
+    document.addEventListener('pointerdown', firstGesture, { once: true, capture: true });
+    document.addEventListener('keydown', firstGesture, { once: true, capture: true });
+    audio.addEventListener('timeupdate', saveTime);
+    window.addEventListener('pagehide', saveTime);
+
+    if (wantsMusic) startMusic();
+    else button.textContent = '♪ CLICK TO START';
+  })();
+  </script>
+  {% endif %}
 </body>
 </html>
