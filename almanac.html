@@ -1,0 +1,216 @@
+---
+layout: default
+title: almanac
+permalink: /almanac/
+---
+<div class="almanac-page">
+  <div class="section-title-row">
+    <h1>FORTUNA ALMANAC</h1>
+    <span>REFERENCE / CURRENT TABLES</span>
+  </div>
+
+  <div class="almanac-lede">
+    The Fortometer reports the amount and behavior of usable fortune in the surrounding day.
+    It is read alongside lunar position, seasonal carry, and the Standard Correction.
+    Atmospheric pressure concerns air. Fortune Pressure concerns fortune.
+  </div>
+
+  <div class="almanac-grid">
+    <main class="almanac-article">
+      <section id="pressure">
+        <div class="almanac-figure" aria-hidden="true">
+          <div class="two-frame">
+            <span>↙</span>
+            <span>↘</span>
+          </div>
+          <small>Fig. 1. Pressure settling between readings.</small>
+        </div>
+
+        <h2>Fortune Pressure</h2>
+
+        <p>
+          Fortune Pressure is the ordinary measurement used to describe how firmly fortune is attached to a date.
+          Higher readings are not necessarily better. Lower readings are not necessarily worse. Direction must be
+          considered before the reading can be used.
+        </p>
+
+        <p>
+          Pressure is recorded in <strong>fHg</strong>, the traditional unit used in Fortuna tables.
+          Conversion to ordinary pressure is discouraged because the values are not compatible.
+        </p>
+
+        <p>
+          A rising reading indicates that unused fortune is moving toward the present date. A falling reading means
+          that usable fortune is settling behind it. Steady pressure means the difference is too small to be useful
+          without consulting Carry.
+        </p>
+      </section>
+
+      <section id="lunar">
+        <div class="almanac-figure" aria-hidden="true">
+          <div class="two-frame">
+            <span>◐</span>
+            <span>◑</span>
+          </div>
+          <small>Fig. 2. A lunar shoulder passing normally.</small>
+        </div>
+
+        <h2>Lunar Correction</h2>
+
+        <p>
+          Fortune tends to arrive early during a waxing moon and late during a waning moon. Lunar Correction keeps
+          those differences from being mistaken for ordinary pressure change.
+        </p>
+
+        <p>
+          Correction is measured from the nearest <strong>lunar shoulder</strong>, rather than from visible phase.
+          A lunar shoulder is the three-day region surrounding a major change in moon behavior. The shoulder may
+          begin a day early when pressure is already falling.
+        </p>
+
+        <p>
+          This is why two evenings with nearly identical moons can produce different Balance strain.
+          The moon may look the same while belonging to a different shoulder.
+        </p>
+      </section>
+
+      <section id="carry">
+        <div class="almanac-figure" aria-hidden="true">
+          <div class="two-frame">
+            <span>←</span>
+            <span>→</span>
+          </div>
+          <small>Fig. 3. Seasonal Carry changing direction.</small>
+        </div>
+
+        <h2>Seasonal Carry</h2>
+
+        <p>
+          Seasonal Carry is fortune remaining from the preceding portion of the year. Carry generally travels west
+          through the warmer half of the year and east through the colder half. Transitional months should be read
+          according to local custom.
+        </p>
+
+        <p>
+          Carry does not create fortune. It changes where fortune is considered to be waiting. On western days,
+          reversals made late in a reading tend to hold better than reversals made early. Eastern days show the
+          opposite tendency except on late-month Tuesdays.
+        </p>
+
+        <p>
+          A change in Carry is not itself a condition change. It merely changes what the same pressure is allowed
+          to mean.
+        </p>
+      </section>
+
+      <section id="correction">
+        <h2>The Standard Correction</h2>
+
+        <p>
+          The Standard Correction is applied after ordinary pressure has been calculated. It accounts for known
+          discrepancy between calculated fortune and fortune as it actually occurred.
+        </p>
+
+        <p>
+          The current correction method was adopted in 1987 and supersedes the 1964 tables. Readings made under the
+          earlier tables should not be compared directly with modern fHg values.
+        </p>
+
+        <table class="almanac-table">
+          <thead>
+            <tr><th>DATE TYPE</th><th>ORDINARY ACTION</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>ordinary weekday</td><td>apply normally</td></tr>
+            <tr><td>western Thursday</td><td>reduce one place</td></tr>
+            <tr><td>late-month Tuesday</td><td>invert carry</td></tr>
+            <tr><td>double-O date</td><td>retain remainder</td></tr>
+            <tr><td>17 present</td><td>consult table</td></tr>
+          </tbody>
+        </table>
+
+        <p>
+          The historical 17 table is not reproduced here because modern Fortometers apply it automatically.
+        </p>
+      </section>
+
+      <section id="conditions">
+        <h2>Daily Conditions</h2>
+
+        <p>
+          A condition is not a second measurement. It is the ordinary name given to the combined pressure,
+          direction, carry, lunar position, and correction present at the start of the day.
+        </p>
+
+        <table class="almanac-table">
+          <tbody>
+            <tr><th>CLEAR</th><td>Corrections generally hold.</td></tr>
+            <tr><th>FAIR</th><td>Most reversals behave as expected.</td></tr>
+            <tr><th>VARIABLE</th><td>Small changes may carry farther than they look.</td></tr>
+            <tr><th>UNSETTLED</th><td>The first apparent balance should not be trusted.</td></tr>
+            <tr><th>HEAVY</th><td>Reversals may carry unusual weight.</td></tr>
+            <tr><th>CROSSED</th><td>Opposing values are likely to resemble one another.</td></tr>
+            <tr><th>SEVERE</th><td>Ordinary judgment may be unreliable.</td></tr>
+            <tr><th>STILL</th><td>Everything appears to be fine.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="faq">
+        <h2>Common Questions</h2>
+
+        <dl class="almanac-faq">
+          <dt>Why did my condition change while pressure stayed the same?</dt>
+          <dd>Conditions use direction and surrounding tendency in addition to pressure.</dd>
+
+          <dt>Yesterday was FAIR at 29.18 fHg. Why is today VARIABLE at 29.18 fHg?</dt>
+          <dd>Yesterday was likely rising.</dd>
+
+          <dt>Yesterday was falling.</dt>
+          <dd>Then the difference was probably seasonal.</dd>
+
+          <dt>What does fHg stand for?</dt>
+          <dd>fHg is the traditional unit used for Fortune Pressure.</dd>
+
+          <dt>Can I calculate tomorrow's condition myself?</dt>
+          <dd>Yes.</dd>
+
+          <dt>Should Fortune Pressure be converted to ordinary pressure?</dt>
+          <dd>No. The values are not compatible.</dd>
+        </dl>
+      </section>
+    </main>
+
+    <aside class="almanac-side">
+      <section class="module">
+        <div class="module-head">QUICK READING</div>
+        <div class="module-body">
+          1. Read pressure.<br>
+          2. Note direction.<br>
+          3. Check Carry.<br>
+          4. Apply lunar position.<br>
+          5. Observe correction.<br>
+          6. Use the published condition.
+        </div>
+      </section>
+
+      <section class="module">
+        <div class="module-head">IMPORTANT</div>
+        <div class="module-body">
+          Fortune Pressure should never be converted to ordinary pressure.
+        </div>
+      </section>
+
+      <section class="module">
+        <div class="module-head">SEE ALSO</div>
+        <div class="module-body">
+          <a href="/balance/">The Balance</a><br>
+          Lunar Shoulders<br>
+          Western Carry<br>
+          Historical 17 Table<br>
+          Reading a Falling Day
+        </div>
+      </section>
+    </aside>
+  </div>
+</div>
