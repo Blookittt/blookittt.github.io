@@ -4925,3 +4925,212 @@ html[data-fortuna-theme="dark"] body.fortuna-deep-draw .home-grid,
 html[data-fortuna-theme="dark"] body.fortuna-deep-draw .site-footer{
   filter:brightness(.68) saturate(.86);
 }
+
+
+/* BALANCE — DARK ROOM MODE
+   The apparatus stays cream because it is a physical object. The room, labels,
+   sidebar chassis, and page chrome go dark around it. */
+html[data-fortuna-theme="dark"] body:has(.balance-page-v2){
+  background:#0b0b0d!important;
+}
+
+html[data-fortuna-theme="dark"] body:has(.balance-page-v2) .site-shell{
+  background:#111113!important;
+}
+
+html[data-fortuna-theme="dark"] body:has(.balance-page-v2) .page-wrap{
+  background:#111113!important;
+}
+
+html[data-fortuna-theme="dark"] .balance-page-v2{
+  color:#d9d1c8!important;
+}
+
+html[data-fortuna-theme="dark"] .balance-page-head{
+  border-color:#49454a!important;
+}
+
+html[data-fortuna-theme="dark"] .balance-page-head h1{
+  color:#ded6ce!important;
+}
+
+html[data-fortuna-theme="dark"] .balance-page-head p{
+  color:#aaa19b!important;
+}
+
+html[data-fortuna-theme="dark"] .balance-title-sun{
+  color:#a15d55!important;
+}
+
+html[data-fortuna-theme="dark"] .balance-page-meta{
+  background:#1c1a1d!important;
+  border-color:#575158!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025)!important;
+}
+
+html[data-fortuna-theme="dark"] .balance-page-meta span,
+html[data-fortuna-theme="dark"] .balance-page-meta strong{
+  color:#aaa19a!important;
+  border-color:#4b464c!important;
+}
+
+html[data-fortuna-theme="dark"] .balance-page-meta strong{
+  color:#ddd4ca!important;
+}
+
+/* Keep the red attraction bar; it looks better against the dark room. */
+html[data-fortuna-theme="dark"] .balance-attraction-banner{
+  border-color:#4f2e2c!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.10),
+    inset 0 -3px 0 rgba(30,10,10,.18),
+    0 1px 0 rgba(255,255,255,.025)!important;
+}
+
+/* Main apparatus remains a warm physical object, but gets a darker silhouette. */
+html[data-fortuna-theme="dark"] .balance-apparatus{
+  box-shadow:
+    inset 0 0 0 3px #d6cbb8,
+    inset 0 0 0 7px #877961,
+    0 3px 0 rgba(255,255,255,.035),
+    0 10px 22px rgba(0,0,0,.46)!important;
+}
+
+/* Right rail becomes the dark instrument rack. */
+html[data-fortuna-theme="dark"] .balance-side-card,
+html[data-fortuna-theme="dark"] .fortometer-v3{
+  background:#181719!important;
+  border-color:#575157!important;
+  color:#d9d1c8!important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.025),
+    0 2px 0 rgba(0,0,0,.22)!important;
+}
+
+html[data-fortuna-theme="dark"] .balance-side-card::after,
+html[data-fortuna-theme="dark"] .fortometer-v3::after{
+  border-color:rgba(255,255,255,.035)!important;
+}
+
+html[data-fortuna-theme="dark"] .balance-side-card-head,
+html[data-fortuna-theme="dark"] .fortometer-v3 .fortometer-head{
+  color:#c7d3df!important;
+  background:linear-gradient(#29272a,#211f22)!important;
+  border-color:#565056!important;
+}
+
+html[data-fortuna-theme="dark"] .fortometer-v3 .fortometer-head > div > span{
+  color:#c7d3df!important;
+}
+
+html[data-fortuna-theme="dark"] .fortometer-v3 .fortometer-head small{
+  color:#8f8784!important;
+}
+
+html[data-fortuna-theme="dark"] .fortometer-v3 .fortometer-head a{
+  color:#c18a82!important;
+  background:#252226!important;
+  border-color:#625b60!important;
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.04)!important;
+}
+
+html[data-fortuna-theme="dark"] .balance-side-card-body,
+html[data-fortuna-theme="dark"] .fortometer-v3 .fortometer-body{
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 24px,
+      rgba(255,255,255,.012) 24px 25px
+    ),
+    #181719!important;
+}
+
+html[data-fortuna-theme="dark"] .daily-board-body p,
+html[data-fortuna-theme="dark"] .balance-side-card-body p{
+  color:#bdb4ad!important;
+}
+
+html[data-fortuna-theme="dark"] .daily-board-moon{
+  color:#bf8078!important;
+  background:#222023!important;
+  border-color:#5e575c!important;
+}
+
+/* Fortometer: dark chassis, cream instrument faces. */
+html[data-fortuna-theme="dark"] .fortometer-main-reading,
+html[data-fortuna-theme="dark"] .fortometer-gauge-wrap,
+html[data-fortuna-theme="dark"] .quickstat{
+  border-color:#665e56!important;
+  box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,.08),
+    0 2px 0 rgba(0,0,0,.22)!important;
+}
+
+html[data-fortuna-theme="dark"] .fortometer-main-reading{
+  background:linear-gradient(#d9cfbf,#c8baa6)!important;
+}
+
+html[data-fortuna-theme="dark"] .fortometer-gauge-wrap{
+  background:linear-gradient(#c5b499,#ad987b)!important;
+}
+
+html[data-fortuna-theme="dark"] .quickstat{
+  background:linear-gradient(#d8cebf,#c7baa8)!important;
+}
+
+html[data-fortuna-theme="dark"] .quickstat dt{
+  color:#6c6259!important;
+}
+
+html[data-fortuna-theme="dark"] .quickstat dd{
+  color:#294765!important;
+}
+
+html[data-fortuna-theme="dark"] .fortometer-note-strip{
+  background:#242125!important;
+  border-color:#595258!important;
+  border-left-color:#9e5a55!important;
+}
+
+html[data-fortuna-theme="dark"] .fortometer-note-strip p{
+  color:#c9c0b9!important;
+}
+
+html[data-fortuna-theme="dark"] .fortometer-v3 .fortometer-help{
+  color:#92afd0!important;
+}
+
+html[data-fortuna-theme="dark"] .fortometer-v3 .fortometer-stamp{
+  color:#c17670!important;
+  border-color:#9e5b56!important;
+}
+
+/* About / Favor read as auxiliary dark panels, not sheets of paper. */
+html[data-fortuna-theme="dark"] .balance-help-gif{
+  color:#aab8c7!important;
+  background:
+    repeating-linear-gradient(90deg,rgba(255,255,255,.012) 0 1px,transparent 1px 8px),
+    #211f22!important;
+  border-color:#575157!important;
+}
+
+html[data-fortuna-theme="dark"] .favor-card{
+  background:
+    repeating-linear-gradient(90deg,rgba(188,107,135,.022) 0 9px,transparent 9px 18px),
+    #181719!important;
+}
+
+html[data-fortuna-theme="dark"] .favor-award{
+  color:#cf829b!important;
+}
+
+html[data-fortuna-theme="dark"] .favor-card p{
+  color:#9f9792!important;
+}
+
+/* Balance footer / empty space should disappear into the room. */
+html[data-fortuna-theme="dark"] .balance-footnote{
+  color:#857d78!important;
+  background:#171619!important;
+  border-color:#454147!important;
+}
