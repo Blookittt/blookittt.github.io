@@ -48,14 +48,25 @@ permalink: /balance/
           </div>
         </div>
 
+        <div class="balance-attempts" id="balance-attempts">
+          <div>
+            <span>WEIGHS REMAINING</span>
+            <strong id="balance-attempt-count">3</strong>
+          </div>
+          <div class="attempt-pips" id="balance-attempt-pips" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <button class="balance-weigh-button" id="balance-weigh" type="button">WEIGH</button>
+        </div>
+
         <div class="balance-status" id="balance-status" aria-live="polite">
-          FORTUNA IS WAITING.
+          ARRANGE THE NUMBERS. WEIGH WHEN READY.
         </div>
 
         <div class="balance-key" id="balance-key" hidden>
           <span>KEY ISSUED</span>
           <strong id="balance-key-value">------</strong>
-          <small>FAVOR +17</small>
+          <small id="balance-key-favor">FAVOR +17</small>
         </div>
 
         <div class="balance-actions">
@@ -121,14 +132,17 @@ permalink: /balance/
           <p>
             The first number is sealed and cannot be changed.
           </p>
+          <p>
+            You may ask the apparatus to weigh your arrangement three times. A failed weighing is not returned.
+          </p>
         </div>
       </section>
 
       <section class="balance-side-card favor-card">
         <div class="balance-side-card-head">FAVOR</div>
         <div class="balance-side-card-body">
-          <strong class="favor-award">+17</strong>
-          <p>Issued once per daily Balance.</p>
+          <strong class="favor-award" id="balance-favor-award">+17</strong>
+          <p id="balance-favor-note">Issued once per daily Balance.</p>
         </div>
       </section>
     </aside>
@@ -148,6 +162,12 @@ permalink: /balance/
   const keyBox = document.getElementById('balance-key');
   const keyValue = document.getElementById('balance-key-value');
   const reset = document.getElementById('balance-reset');
+  const weighButton = document.getElementById('balance-weigh');
+  const attemptCount = document.getElementById('balance-attempt-count');
+  const attemptPips = document.getElementById('balance-attempt-pips');
+  const favorAwardEl = document.getElementById('balance-favor-award');
+  const favorNoteEl = document.getElementById('balance-favor-note');
+  const keyFavorEl = document.getElementById('balance-key-favor');
   const dateEl = document.getElementById('balance-date');
   const fortometerCondition = document.getElementById('fortometer-condition');
   const fortometerPressure = document.getElementById('fortometer-pressure');
@@ -321,6 +341,53 @@ permalink: /balance/
   if (fortometerTomorrow) fortometerTomorrow.textContent = almanac.tomorrow;
   if (fortometerNote) fortometerNote.textContent = almanac.note;
 
+  const favorForCondition = condition => ({
+    CLEAR:8,
+    FAIR:12,
+    VARIABLE:17,
+    UNSETTLED:24,
+    HEAVY:32,
+    CROSSED:45,
+    SEVERE:60,
+    STILL:100
+  }[condition] || 17);
+
+  const favorAward = favorForCondition(almanac.condition);
+  if (favorAwardEl) favorAwardEl.textContent = '+' + favorAward;
+  if (favorNoteEl) favorNoteEl.textContent =
+    almanac.condition + ' condition / issued once per daily Balance.';
+  if (keyFavorEl) keyFavorEl.textContent = 'FAVOR +' + favorAward;
+
+  const MAX_WEIGHS = 3;
+  const DAILY_STATE_KEY = 'fortuna.balance.day.' + dateKey;
+
+  const loadDailyState = () => {
+    try {
+      const raw = JSON.parse(localStorage.getItem(DAILY_STATE_KEY) || 'null');
+      if (raw && typeof raw === 'object') {
+        return {
+          remaining: Math.max(0, Math.min(MAX_WEIGHS, Number(raw.remaining) || 0)),
+          locked: Boolean(raw.locked),
+          solved: Boolean(raw.solved),
+          key: typeof raw.key === 'string' ? raw.key : ''
+        };
+      }
+    } catch (_) {}
+
+    return {
+      remaining: MAX_WEIGHS,
+      locked: false,
+      solved: false,
+      key: ''
+    };
+  };
+
+  let dailyState = loadDailyState();
+
+  const saveDailyState = () => {
+    localStorage.setItem(DAILY_STATE_KEY, JSON.stringify(dailyState));
+  };
+
   const random = rng(hash('FORTUNA/BALANCE/' + dateKey));
 
   const oriented = (pair, flipped) => flipped ? [pair[1], pair[0]] : pair;
@@ -415,6 +482,37 @@ permalink: /balance/
 
   const pairNow = item => item.flipped ? [item.pair[1], item.pair[0]] : item.pair;
 
+  let lastMeasurement = null;
+  let arrangementDirty = true;
+
+  const currentPairs = () => state.map(pairNow);
+
+  const measure = () => {
+    const pairs = currentPairs();
+    const left = pairs.reduce((sum, p) => sum + p[0], 0);
+    const right = pairs.reduce((sum, p) => sum + p[1], 0);
+    return { pairs, left, right, diff:left - right };
+  };
+
+  const setControlsLocked = locked => {
+    root.classList.toggle('day-locked', locked);
+    if (weighButton) weighButton.disabled = locked;
+    if (reset) reset.disabled = locked;
+
+    tiles.querySelectorAll('.balance-tile:not(.sealed)').forEach(button => {
+      button.disabled = locked;
+    });
+  };
+
+  const renderAttempts = () => {
+    if (attemptCount) attemptCount.textContent = String(dailyState.remaining);
+    if (attemptPips) {
+      Array.from(attemptPips.children).forEach((pip, index) => {
+        pip.classList.toggle('spent', index >= dailyState.remaining);
+      });
+    }
+  };
+
   const render = () => {
     tiles.innerHTML = '';
 
@@ -423,7 +521,7 @@ permalink: /balance/
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'balance-tile' + (item.sealed ? ' sealed' : '');
-      button.disabled = item.sealed;
+      button.disabled = item.sealed || dailyState.locked || dailyState.solved;
       button.setAttribute(
         'aria-label',
         item.sealed
@@ -441,7 +539,17 @@ permalink: /balance/
 
       if (!item.sealed) {
         button.addEventListener('click', () => {
+          if (dailyState.locked || dailyState.solved) return;
           state[index].flipped = !state[index].flipped;
+          arrangementDirty = true;
+          root.classList.remove('solved');
+
+          if (lastMeasurement) {
+            status.textContent = 'ARRANGEMENT CHANGED. WEIGH AGAIN WHEN READY.';
+          } else {
+            status.textContent = 'ARRANGE THE NUMBERS. WEIGH WHEN READY.';
+          }
+
           render();
         });
       }
@@ -449,40 +557,114 @@ permalink: /balance/
       tiles.appendChild(button);
     });
 
-    const pairs = state.map(pairNow);
-    const left = pairs.reduce((sum, p) => sum + p[0], 0);
-    const right = pairs.reduce((sum, p) => sum + p[1], 0);
-    const diff = left - right;
+    renderAttempts();
 
-    leftEl.textContent = String(left).padStart(2,'0');
-    rightEl.textContent = String(right).padStart(2,'0');
-    beam.style.transform = 'rotate(' + Math.max(-9, Math.min(9, diff * 1.3)) + 'deg)';
+    if (dailyState.solved) {
+      root.classList.add('solved');
+      keyBox.hidden = false;
+      keyValue.textContent = dailyState.key || '------';
+      status.textContent = 'CLUNK. THE BALANCE ACCEPTS IT.';
+      leftEl.textContent = '--';
+      rightEl.textContent = '--';
+      beam.style.transform = 'rotate(0deg)';
+      setControlsLocked(true);
+      return;
+    }
 
-    const solved = diff === 0;
-    root.classList.toggle('solved', solved);
-    keyBox.hidden = !solved;
+    if (dailyState.locked) {
+      keyBox.hidden = true;
+      leftEl.textContent = lastMeasurement ? String(lastMeasurement.left).padStart(2,'0') : '--';
+      rightEl.textContent = lastMeasurement ? String(lastMeasurement.right).padStart(2,'0') : '--';
+      beam.style.transform = lastMeasurement
+        ? 'rotate(' + Math.max(-9, Math.min(9, lastMeasurement.diff * 1.3)) + 'deg)'
+        : 'rotate(0deg)';
+      status.textContent = 'NO WEIGHS REMAIN. THE APPARATUS IS LOCKED UNTIL TOMORROW.';
+      setControlsLocked(true);
+      return;
+    }
 
-    if (solved) {
-      const key = pairs.map(p => p[0]).join('');
+    keyBox.hidden = true;
+    setControlsLocked(false);
+
+    // Exact totals are only revealed by an official weighing.
+    if (lastMeasurement && !arrangementDirty) {
+      leftEl.textContent = String(lastMeasurement.left).padStart(2,'0');
+      rightEl.textContent = String(lastMeasurement.right).padStart(2,'0');
+      beam.style.transform = 'rotate(' + Math.max(-9, Math.min(9, lastMeasurement.diff * 1.3)) + 'deg)';
+    } else {
+      leftEl.textContent = '--';
+      rightEl.textContent = '--';
+      beam.style.transform = 'rotate(0deg)';
+    }
+  };
+
+  const weigh = () => {
+    if (dailyState.locked || dailyState.solved || dailyState.remaining <= 0) return;
+
+    lastMeasurement = measure();
+    arrangementDirty = false;
+
+    leftEl.textContent = String(lastMeasurement.left).padStart(2,'0');
+    rightEl.textContent = String(lastMeasurement.right).padStart(2,'0');
+    beam.style.transform =
+      'rotate(' + Math.max(-9, Math.min(9, lastMeasurement.diff * 1.3)) + 'deg)';
+
+    if (lastMeasurement.diff === 0) {
+      const key = lastMeasurement.pairs.map(p => p[0]).join('');
+      dailyState.solved = true;
+      dailyState.key = key;
+      saveDailyState();
+
+      root.classList.add('solved');
+      keyBox.hidden = false;
       keyValue.textContent = key;
       status.textContent = 'CLUNK. THE BALANCE ACCEPTS IT.';
 
       if (window.FortunaProfile) {
-        FortunaProfile.bumpFavorOnce('balance:' + dateKey, 17);
+        FortunaProfile.bumpFavorOnce('balance:' + dateKey, favorAward);
       }
-    } else {
-      status.textContent = (diff > 0 ? 'LEFT' : 'RIGHT') + ' IS HEAVIER BY ' + Math.abs(diff) + '.';
+
+      render();
+      return;
     }
+
+    dailyState.remaining -= 1;
+
+    if (dailyState.remaining <= 0) {
+      dailyState.remaining = 0;
+      dailyState.locked = true;
+      status.textContent = 'NO WEIGHS REMAIN. THE APPARATUS IS LOCKED UNTIL TOMORROW.';
+    } else {
+      status.textContent =
+        (lastMeasurement.diff > 0 ? 'LEFT' : 'RIGHT') +
+        ' IS HEAVIER BY ' +
+        Math.abs(lastMeasurement.diff) +
+        '. ' +
+        dailyState.remaining +
+        ' WEIGH' +
+        (dailyState.remaining === 1 ? '' : 'S') +
+        ' REMAIN.';
+    }
+
+    saveDailyState();
+    render();
   };
 
+  weighButton.addEventListener('click', weigh);
+
   reset.addEventListener('click', () => {
+    if (dailyState.locked || dailyState.solved) return;
+
     state = puzzle.shownPairs.map((pair, i) => ({
       pair: pair.slice(),
       flipped: false,
       sealed: i === 0
     }));
+
+    lastMeasurement = null;
+    arrangementDirty = true;
+    status.textContent = 'ARRANGE THE NUMBERS. WEIGH WHEN READY.';
     render();
-    status.textContent = 'FORTUNA IS WAITING.';
   });
 
   render();
