@@ -3718,3 +3718,370 @@ body:has(.balance-page-v2) .page-wrap{
     transition:none!important;
   }
 }
+
+
+/* FORTOMETER V3 — CLEAN MACHINE READOUT */
+.fortometer-v3{
+  overflow:hidden;
+  border:2px solid #7f7466;
+  background:
+    linear-gradient(rgba(255,255,255,.14),rgba(255,255,255,0)),
+    #e8dfd2;
+  box-shadow:
+    inset 0 0 0 2px #d7ccbd,
+    0 2px 0 rgba(255,255,255,.24);
+}
+
+.fortometer-v3 .fortometer-head{
+  min-height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:7px 9px 7px 10px;
+  background:linear-gradient(#d9cdbc,#c6b8a5);
+  border-bottom:1px solid #8d8170;
+}
+
+.fortometer-head-copy{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+
+.fortometer-head-copy > span{
+  color:#27425f;
+  font:bold 11px/1 "Courier New",monospace;
+  letter-spacing:.12em;
+}
+
+.fortometer-head-copy > span::before{
+  content:"✦ ";
+  color:#a25e57;
+}
+
+.fortometer-head-copy small{
+  color:#73685d;
+  font:6px/1 "Courier New",monospace;
+  letter-spacing:.12em;
+}
+
+.fortometer-v3 .fortometer-head a{
+  width:22px;
+  height:22px;
+  display:grid;
+  place-items:center;
+  border:1px solid #786c5d;
+  background:linear-gradient(#f1e9dc,#d9cdbc);
+  color:#844f4b;
+  text-decoration:none;
+  box-shadow:
+    inset 1px 1px 0 rgba(255,255,255,.6),
+    0 1px 0 rgba(255,255,255,.18);
+  font:bold 12px/1 Georgia,"Times New Roman",serif;
+}
+
+.fortometer-v3 .fortometer-body{
+  padding:9px;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 24px,
+      rgba(92,72,47,.035) 24px 25px
+    );
+}
+
+.fortometer-hero{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 132px;
+  gap:8px;
+  align-items:stretch;
+  margin-bottom:8px;
+}
+
+.fortometer-main-reading{
+  min-width:0;
+  padding:10px 11px 9px;
+  background:linear-gradient(#eee5d7,#dfd2bf);
+  border:1px solid #9c8f7d;
+  box-shadow:inset 0 0 0 2px #f4edde;
+}
+
+.fortometer-v3 .fortometer-label{
+  margin-bottom:4px;
+  color:#756a5f;
+  font:bold 6px/1 "Courier New",monospace;
+  letter-spacing:.13em;
+}
+
+.fortometer-v3 .fortometer-condition{
+  margin:0 0 7px;
+  color:#21486d;
+  font:normal 33px/.92 Georgia,"Times New Roman",serif;
+  letter-spacing:.02em;
+  text-transform:uppercase;
+}
+
+.fortometer-pressure-line{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:4px;
+  color:#6e6256;
+  font:8px/1.2 "Courier New",monospace;
+  letter-spacing:.07em;
+}
+
+.fortometer-pressure-line strong{
+  color:#985754;
+  font:normal 18px/1 Georgia,"Times New Roman",serif;
+}
+
+.pressure-slash{
+  color:#ab9f8f;
+}
+
+.fortometer-dial-wrap{
+  padding:8px 8px 7px;
+  background:linear-gradient(#ddd0bd,#c8baa3);
+  border:1px solid #9b8d79;
+  box-shadow:inset 0 0 0 2px #efe7d8;
+}
+
+.fortometer-dial-title{
+  margin-bottom:5px;
+  color:#71665c;
+  text-align:center;
+  font:bold 6px/1 "Courier New",monospace;
+  letter-spacing:.13em;
+}
+
+.fortometer-v3 .fortometer-dial{
+  --fortometer-angle:-15deg;
+  position:relative;
+  width:100%;
+  height:102px;
+  overflow:hidden;
+  background:linear-gradient(#f2eada,#ddd0bc);
+  border:2px solid #655847;
+  box-shadow:
+    inset 0 0 0 3px #c7b89f,
+    inset 0 7px 10px rgba(255,255,255,.28),
+    inset 0 -6px 9px rgba(74,54,35,.1);
+}
+
+.fortometer-v3 .fortometer-dial::before{
+  content:"";
+  position:absolute;
+  left:12px;
+  right:12px;
+  bottom:-44px;
+  height:98px;
+  border:8px solid #4a6986;
+  border-bottom-color:transparent;
+  border-left-color:#b68479;
+  border-right-color:#b39775;
+  border-radius:50% 50% 0 0;
+  opacity:.75;
+}
+
+.fortometer-v3 .fortometer-scale{
+  position:absolute;
+  inset:0;
+}
+
+.fortometer-v3 .fortometer-scale .tick{
+  position:absolute;
+  left:50%;
+  bottom:11px;
+  width:1px;
+  height:43px;
+  transform-origin:50% 100%;
+}
+
+.fortometer-v3 .fortometer-scale .tick::before{
+  content:"";
+  position:absolute;
+  left:-1px;
+  top:0;
+  width:3px;
+  height:8px;
+  background:#706455;
+}
+
+.fortometer-v3 .fortometer-scale .t1{transform:translateX(-50%) rotate(-60deg)}
+.fortometer-v3 .fortometer-scale .t2{transform:translateX(-50%) rotate(-45deg)}
+.fortometer-v3 .fortometer-scale .t3{transform:translateX(-50%) rotate(-30deg)}
+.fortometer-v3 .fortometer-scale .t4{transform:translateX(-50%) rotate(-15deg)}
+.fortometer-v3 .fortometer-scale .t5{transform:translateX(-50%) rotate(0deg)}
+.fortometer-v3 .fortometer-scale .t6{transform:translateX(-50%) rotate(15deg)}
+.fortometer-v3 .fortometer-scale .t7{transform:translateX(-50%) rotate(30deg)}
+.fortometer-v3 .fortometer-scale .t8{transform:translateX(-50%) rotate(45deg)}
+.fortometer-v3 .fortometer-scale .t9{transform:translateX(-50%) rotate(60deg)}
+
+.fortometer-v3 .dial-word{
+  position:absolute;
+  z-index:3;
+  color:#62584f;
+  font:bold 5px/1 "Courier New",monospace;
+  letter-spacing:.05em;
+}
+
+.fortometer-v3 .dial-stable{left:7px;bottom:8px;transform:rotate(-14deg)}
+.fortometer-v3 .dial-variable{left:50%;top:8px;transform:translateX(-50%)}
+.fortometer-v3 .dial-absurd{right:6px;bottom:8px;transform:rotate(14deg)}
+
+.fortometer-v3 .fortometer-needle{
+  position:absolute;
+  z-index:4;
+  left:50%;
+  bottom:15px;
+  width:44px;
+  height:3px;
+  transform:
+    translateX(-2px)
+    rotate(var(--fortometer-angle))
+    translateX(2px);
+  transform-origin:2px 50%;
+  background:linear-gradient(90deg,#74433f,#a05b53 65%,#5a332f);
+  border-radius:3px;
+  box-shadow:0 1px 0 rgba(255,255,255,.12);
+  transition:transform .9s cubic-bezier(.18,.72,.2,1);
+}
+
+.fortometer-v3 .fortometer-hub{
+  position:absolute;
+  z-index:5;
+  left:50%;
+  bottom:10px;
+  width:13px;
+  height:13px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 36% 30%,#c89b68 0 20%,#80613b 42%,#4b3929 75%);
+  border:1px solid #46382b;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+.fortometer-v3 .fortometer-weather{
+  position:absolute;
+  left:8px;
+  top:8px;
+  width:22px;
+  height:22px;
+  color:#8d5953;
+  background:#e6dccb;
+  border:1px solid #a29380;
+  text-align:center;
+  font:15px/22px Georgia,"Times New Roman",serif;
+}
+
+.fortometer-v3 .fortometer-weather .weather-frame{
+  position:absolute;
+  inset:0;
+}
+
+.fortometer-quickstats{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:6px;
+  margin:0 0 8px;
+  padding:0;
+}
+
+.quickstat{
+  min-width:0;
+  padding:7px 8px 6px;
+  background:linear-gradient(#f0e8dc,#e3d7c7);
+  border:1px solid #a99c89;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45);
+}
+
+.quickstat dt{
+  margin:0 0 3px;
+  color:#796d61;
+  font:bold 6px/1 "Courier New",monospace;
+  letter-spacing:.12em;
+}
+
+.quickstat dd{
+  margin:0;
+  color:#2f4661;
+  font:bold 13px/1.1 Georgia,"Times New Roman",serif;
+}
+
+.fortometer-note-strip{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:8px;
+  align-items:start;
+  margin-bottom:8px;
+  padding:8px 9px;
+  background:#ded3c3;
+  border-left:3px solid #a15d56;
+  border-top:1px solid #b4a696;
+  border-bottom:1px solid #b4a696;
+}
+
+.fortometer-note-strip > span{
+  color:#945854;
+  font:bold 6px/1.2 "Courier New",monospace;
+  letter-spacing:.12em;
+}
+
+.fortometer-note-strip p{
+  margin:0;
+  color:#4e4741;
+  font:italic 10px/1.35 Georgia,"Times New Roman",serif;
+}
+
+.fortometer-v3 .fortometer-footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:8px;
+}
+
+.fortometer-v3 .fortometer-stamp{
+  margin:0;
+  padding:3px 5px 2px;
+  color:#985754;
+  border:1px solid #985754;
+  transform:rotate(-4deg);
+  background:transparent;
+  font:bold 6px/1 "Courier New",monospace;
+  letter-spacing:.09em;
+}
+
+.fortometer-v3 .fortometer-help{
+  margin:0;
+  color:#315778;
+  border-bottom:1px dotted currentColor;
+  text-decoration:none;
+  font:bold 6px/1.2 "Courier New",monospace;
+  letter-spacing:.08em;
+}
+
+.fortometer-v3 .fortometer-help:hover{
+  color:#92534f;
+}
+
+@media (max-width:620px){
+  .fortometer-hero{
+    grid-template-columns:1fr;
+  }
+
+  .fortometer-dial-wrap{
+    order:-1;
+  }
+
+  .fortometer-quickstats{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .fortometer-v3 .fortometer-needle{
+    transition:none!important;
+  }
+}
