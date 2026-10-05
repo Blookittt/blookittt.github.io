@@ -230,7 +230,7 @@
       popScreen();
     };
 
-    const writeWords = async (element, text, delay = 58) => {
+    const writeWords = async (element, text, delay = 92) => {
       const parts = String(text || '').trim().split(/\s+/).filter(Boolean);
       element.textContent = '';
 
@@ -307,8 +307,8 @@
         const item = diagnostics[i];
         kicker.textContent = 'FORTUNA / COMPUTE ' + String(i + 1).padStart(2,'0');
         sub.textContent = item.detail;
-        await writeWords(main, item.text, 48);
-        await sleep(reduced ? 1 : 95);
+        await writeWords(main, item.text, 88);
+        await sleep(reduced ? 1 : 220);
       }
 
       machine.classList.remove('computing');
@@ -371,7 +371,7 @@
 
       kicker.textContent = 'FORTUNA / DRAW ' + String(index + 1).padStart(2,'0');
       sub.textContent = 'CHANNEL ' + String(index + 1).padStart(2,'0') + ' / ACTIVE';
-      const screenWords = writeWords(main, 'NUMBER ' + (index + 1) + ' IN MOTION', 40);
+      const screenWords = writeWords(main, 'NUMBER ' + (index + 1) + ' IN MOTION', 74);
 
       await Promise.all([
         screenWords,
@@ -386,7 +386,7 @@
 
       kicker.textContent = 'FORTUNA / DRAW ' + String(index + 1).padStart(2,'0');
       sub.textContent = 'VALUE ACCEPTED';
-      await writeWords(main, 'NUMBER ' + (index + 1) + ' LOCKED', 36);
+      await writeWords(main, 'NUMBER ' + (index + 1) + ' LOCKED', 68);
       await sleep(reduced ? 5 : 105);
     };
 
@@ -398,7 +398,7 @@
       kicker.textContent = 'FORTUNA';
       sub.textContent = '';
 
-      await writeWords(main, message, 82);
+      await writeWords(main, message, 118);
 
       sub.textContent =
         'FORTUNE No. ' +
@@ -424,10 +424,10 @@
 
       kicker.textContent = 'FORTUNA / QUERY';
       sub.textContent = 'INPUT ACCEPTED';
-      await writeWords(main, 'QUERY ACCEPTED', 52);
+      await writeWords(main, 'QUERY ACCEPTED', 96);
 
       lamp.classList.add('flicker');
-      await sleep(reduced ? 15 : 430);
+      await sleep(reduced ? 15 : 520);
 
       lamp.classList.remove('flicker');
       lamp.classList.add('on');
@@ -438,10 +438,10 @@
 
       kicker.textContent = 'FORTUNA / DRAW';
       sub.textContent = 'BANK PREP';
-      await writeWords(main, 'PREPARING DRAW', 48);
+      await writeWords(main, 'PREPARING DRAW', 86);
 
       machine.classList.add('shutters-open');
-      await sleep(reduced ? 30 : 720);
+      await sleep(reduced ? 30 : 820);
 
       for (let i = 0; i < boxes.length; i++) {
         await runBox(i);
