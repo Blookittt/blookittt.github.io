@@ -5,10 +5,27 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>{% if page.title and page.title != "home" %}{{ page.title | escape }} / {% endif %}BLOOFORTUNE</title>
   <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | strip_newlines | escape }}">
+  <script>
+    try {
+      if (sessionStorage.getItem('bloofortuneIntroSeen')) {
+        document.documentElement.classList.add('skip-intro');
+      } else {
+        document.documentElement.classList.add('play-intro');
+      }
+    } catch (_) {
+      document.documentElement.classList.add('play-intro');
+    }
+  </script>
   <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
+  <div id="crt-intro" class="crt-intro" aria-hidden="true">
+    <div class="intro-static"></div>
+    <div class="intro-tear"></div>
+    <div class="intro-word">LUCKY YOU</div>
+  </div>
   <div class="noise" aria-hidden="true"></div>
+  <div class="crt-lines" aria-hidden="true"></div>
 
   {% if site.data.weekly.song_audio and site.data.weekly.song_audio != "" %}
     <audio id="bg-song" preload="metadata" loop>
@@ -27,7 +44,7 @@
   <main class="shell">
     <header class="masthead">
       <a class="masthead-link" href="/">
-        <h1>BLOOFORTUNE.COM</h1>
+        <h1>BLOOFORTUNE</h1>
       </a>
     </header>
 
@@ -42,6 +59,33 @@
 
     {{ content }}
   </main>
+
+  <script>
+  (() => {
+    const root = document.documentElement;
+    const intro = document.getElementById('crt-intro');
+
+    if (!root.classList.contains('play-intro')) {
+      if (intro) intro.remove();
+      return;
+    }
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const hold = reduced ? 80 : 1250;
+    const removeAt = reduced ? 140 : 1540;
+
+    window.setTimeout(() => {
+      if (intro) intro.classList.add('intro-out');
+      root.classList.remove('play-intro');
+      root.classList.add('intro-finished');
+      try { sessionStorage.setItem('bloofortuneIntroSeen', '1'); } catch (_) {}
+    }, hold);
+
+    window.setTimeout(() => {
+      if (intro) intro.remove();
+    }, removeAt);
+  })();
+  </script>
 
   {% if site.data.weekly.song_audio and site.data.weekly.song_audio != "" %}
   <script>
