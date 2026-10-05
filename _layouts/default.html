@@ -141,7 +141,7 @@
         audioContext = new AudioCtx();
         mediaSource = audioContext.createMediaElementSource(audio);
         analyser = audioContext.createAnalyser();
-        analyser.fftSize = 64;
+        analyser.fftSize = 128;
         analyser.smoothingTimeConstant = 0.82;
         mediaSource.connect(analyser);
         analyser.connect(audioContext.destination);
@@ -186,10 +186,33 @@
       const usableHeight = height - 8 * dpr;
       let anyPeak = false;
 
+      const nyquist = audioContext ? audioContext.sampleRate / 2 : 22050;
+      const minHz = 70;
+      const maxHz = Math.min(8000, nyquist * 0.78);
+
       for (let i = 0; i < bars; i++) {
-        const bin = 1 + Math.floor((i / bars) * Math.max(1, eqData.length - 3));
-        const raw = audio.paused ? 0 : eqData[bin] / 255;
-        const level = Math.pow(raw, 0.82);
+        const t0 = i / bars;
+        const t1 = (i + 1) / bars;
+        const lowHz = minHz * Math.pow(maxHz / minHz, t0);
+        const highHz = minHz * Math.pow(maxHz / minHz, t1);
+
+        const lowBin = Math.max(1, Math.floor((lowHz / nyquist) * eqData.length));
+        const highBin = Math.max(
+          lowBin + 1,
+          Math.min(eqData.length - 1, Math.ceil((highHz / nyquist) * eqData.length))
+        );
+
+        let sum = 0;
+        let count = 0;
+        for (let bin = lowBin; bin <= highBin; bin++) {
+          sum += eqData[bin];
+          count++;
+        }
+
+        const averaged = count ? (sum / count) / 255 : 0;
+        const highLift = 1 + (i / Math.max(1, bars - 1)) * 0.55;
+        const raw = audio.paused ? 0 : Math.min(1, averaged * highLift);
+        const level = Math.pow(raw, 0.80);
         const barHeight = Math.max(1.2 * dpr, level * usableHeight);
 
         peakLevels[i] = Math.max(level, peakLevels[i] - 0.018);
