@@ -4085,3 +4085,196 @@ body:has(.balance-page-v2) .page-wrap{
     transition:none!important;
   }
 }
+
+
+/* FORTOMETER V3 — REMODELED DIAL */
+.fortometer-v3 .fortometer-dial-wrap{
+  padding:7px 7px 8px;
+  background:linear-gradient(#d6c7b0,#c2b299);
+  border:1px solid #8e806b;
+  box-shadow:
+    inset 0 0 0 2px #efe5d6,
+    inset 0 -4px 8px rgba(72,54,35,.08);
+}
+
+.fortometer-v3 .fortometer-dial-title{
+  margin-bottom:6px;
+  color:#675d54;
+  text-align:center;
+  font:bold 6px/1 "Courier New",monospace;
+  letter-spacing:.16em;
+}
+
+.fortometer-v3 .fortometer-dial{
+  --fortometer-angle:-8deg;
+  position:relative;
+  width:100%;
+  height:112px;
+  overflow:hidden;
+  background:
+    linear-gradient(#f3eadb,#e0d2be);
+  border:2px solid #5f5446;
+  box-shadow:
+    inset 0 0 0 3px #cab99d,
+    inset 0 8px 10px rgba(255,255,255,.25),
+    inset 0 -7px 10px rgba(74,54,35,.10);
+}
+
+/* glass glare */
+.fortometer-v3 .fortometer-dial::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:8;
+  pointer-events:none;
+  background:
+    linear-gradient(125deg,rgba(255,255,255,.22),transparent 24%),
+    linear-gradient(to bottom,rgba(255,255,255,.06),transparent 38%);
+}
+
+/* clean colored arc */
+.fortometer-v3 .fortometer-dial::before{
+  content:"";
+  position:absolute;
+  left:11px;
+  right:11px;
+  bottom:11px;
+  height:82px;
+  border-radius:82px 82px 0 0;
+  background:
+    conic-gradient(
+      from 180deg at 50% 100%,
+      #5d7892 0deg 56deg,
+      #aeb39b 56deg 124deg,
+      #b37a6f 124deg 180deg
+    );
+  -webkit-mask:
+    radial-gradient(circle at 50% 100%,transparent 0 43px,#000 44px);
+  mask:
+    radial-gradient(circle at 50% 100%,transparent 0 43px,#000 44px);
+  opacity:.95;
+}
+
+/* tiny equipment tag instead of weather icon */
+.fortometer-mini-plate{
+  position:absolute;
+  left:9px;
+  top:9px;
+  z-index:7;
+  min-width:24px;
+  height:18px;
+  padding:0 4px;
+  display:grid;
+  place-items:center;
+  color:#7f4d49;
+  background:#e7dbc8;
+  border:1px solid #9e907a;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35);
+  font:bold 7px/1 "Courier New",monospace;
+  letter-spacing:.08em;
+}
+
+.fortometer-v3 .fortometer-scale{
+  position:absolute;
+  inset:0;
+  z-index:2;
+}
+
+.fortometer-v3 .fortometer-scale .tick{
+  position:absolute;
+  left:50%;
+  bottom:12px;
+  width:1px;
+  height:46px;
+  transform-origin:50% 100%;
+}
+
+.fortometer-v3 .fortometer-scale .tick::before{
+  content:"";
+  position:absolute;
+  left:-1px;
+  top:0;
+  width:3px;
+  height:10px;
+  background:#6b6054;
+  border-radius:1px;
+}
+
+.fortometer-v3 .fortometer-scale .t1{transform:translateX(-50%) rotate(-60deg)}
+.fortometer-v3 .fortometer-scale .t2{transform:translateX(-50%) rotate(-45deg)}
+.fortometer-v3 .fortometer-scale .t3{transform:translateX(-50%) rotate(-30deg)}
+.fortometer-v3 .fortometer-scale .t4{transform:translateX(-50%) rotate(-15deg)}
+.fortometer-v3 .fortometer-scale .t5{transform:translateX(-50%) rotate(0deg)}
+.fortometer-v3 .fortometer-scale .t6{transform:translateX(-50%) rotate(15deg)}
+.fortometer-v3 .fortometer-scale .t7{transform:translateX(-50%) rotate(30deg)}
+.fortometer-v3 .fortometer-scale .t8{transform:translateX(-50%) rotate(45deg)}
+.fortometer-v3 .fortometer-scale .t9{transform:translateX(-50%) rotate(60deg)}
+
+.fortometer-v3 .dial-word{
+  position:absolute;
+  z-index:4;
+  color:#61584f;
+  font:bold 5px/1 "Courier New",monospace;
+  letter-spacing:.07em;
+}
+
+.fortometer-v3 .dial-stable{
+  left:8px;
+  bottom:8px;
+}
+
+.fortometer-v3 .dial-variable{
+  left:50%;
+  bottom:22px;
+  transform:translateX(-50%);
+}
+
+.fortometer-v3 .dial-absurd{
+  right:7px;
+  bottom:8px;
+}
+
+/* actual gauge needle */
+.fortometer-v3 .fortometer-needle{
+  position:absolute;
+  z-index:6;
+  left:50%;
+  bottom:15px;
+  width:47px;
+  height:4px;
+  transform:
+    translateX(-3px)
+    rotate(var(--fortometer-angle))
+    translateX(3px);
+  transform-origin:3px 50%;
+  background:
+    linear-gradient(90deg,#6b3d3a,#9f5a53 68%,#512e2b);
+  border-radius:999px;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.12),
+    0 0 0 1px rgba(74,45,41,.15);
+  transition:transform 1.15s cubic-bezier(.16,.82,.22,1);
+}
+
+.fortometer-v3 .fortometer-hub{
+  position:absolute;
+  z-index:7;
+  left:50%;
+  bottom:10px;
+  width:16px;
+  height:16px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 35% 30%,#d2ab77 0 18%,#8b6943 45%,#4b3929 80%);
+  border:1px solid #46382b;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.18),
+    0 1px 0 rgba(255,255,255,.12);
+}
+
+@media (prefers-reduced-motion:reduce){
+  .fortometer-v3 .fortometer-needle{
+    transition:none!important;
+  }
+}
