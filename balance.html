@@ -7,7 +7,7 @@ permalink: /balance/
   <header class="balance-page-head">
     <div>
       <div class="balance-eyebrow">DAILY APPARATUS</div>
-      <h1>THE BALANCE</h1>
+      <h1><span class="balance-title-sun" aria-hidden="true">☼</span>THE BALANCE</h1>
       <p>
         Flip the numbers until the left digits and right digits weigh exactly the same.
         The sealed number stays put.
@@ -119,6 +119,14 @@ permalink: /balance/
     </main>
 
     <aside class="balance-side">
+      <section class="balance-side-card daily-board-card">
+        <div class="balance-side-card-head">ONE BOARD PER DAY</div>
+        <div class="balance-side-card-body daily-board-body">
+          <span class="daily-board-moon" aria-hidden="true">◐</span>
+          <p>A new arrangement appears every day at 00:00 UTC.</p>
+        </div>
+      </section>
+
       <section class="fortometer" id="fortometer" aria-label="Today's Fortuna condition">
         <div class="fortometer-head">
           <span>FORTOMETER</span>
@@ -398,7 +406,7 @@ permalink: /balance/
   if (keyFavorEl) keyFavorEl.textContent = 'FAVOR +' + favorAward;
 
   const MAX_WEIGHS = 3;
-  const DAILY_STATE_KEY = 'fortuna.balance.day.' + dateKey;
+  const DAILY_STATE_KEY = 'fortuna.balance.v2.day.' + dateKey;
 
   const loadDailyState = () => {
     try {
