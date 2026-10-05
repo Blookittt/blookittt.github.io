@@ -707,3 +707,128 @@ html.skip-intro .crt-intro {
   }
 
 }
+
+
+/* CRT POLISH v1 — subtle, readable, lights-off */
+body{
+  background:
+    radial-gradient(circle at 50% -8%,rgba(255,115,200,.055),transparent 30%),
+    radial-gradient(circle at 86% 16%,rgba(132,92,144,.05),transparent 24%),
+    linear-gradient(180deg,#0b0910 0%,#08070d 62%,#060609 100%);
+  text-shadow:0 0 5px rgba(255,255,255,.012);
+}
+
+/* faint living screen texture, not a VHS filter */
+.noise{
+  position:fixed;
+  inset:0;
+  z-index:27;
+  pointer-events:none;
+  opacity:.024;
+  mix-blend-mode:screen;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.74' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter id='n'/%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+}
+
+.crt-lines{
+  position:fixed;
+  inset:0;
+  z-index:28;
+  pointer-events:none;
+  opacity:.11;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,.018) 0,
+      rgba(255,255,255,.018) 1px,
+      rgba(0,0,0,.08) 1px,
+      rgba(0,0,0,.08) 4px
+    );
+  mix-blend-mode:soft-light;
+}
+
+/* glass falloff */
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:29;
+  pointer-events:none;
+  box-shadow:
+    inset 0 0 110px rgba(0,0,0,.54),
+    inset 0 0 24px rgba(255,115,200,.018);
+}
+
+/* keep bloom where the "tube" would actually bloom */
+.masthead h1{
+  text-shadow:
+    0 0 7px rgba(242,233,239,.05),
+    0 0 14px rgba(255,115,200,.055);
+}
+.song-title,
+.box-label,
+.archive-section h3{
+  text-shadow:0 0 8px rgba(255,115,200,.08);
+}
+.nav a,
+.entry-title a,
+.past-post-list a{
+  text-shadow:0 0 5px rgba(242,233,239,.025);
+}
+
+/* quieter glassy panels */
+.masthead{
+  border-color:rgba(255,115,200,.48);
+  background:rgba(16,12,22,.86);
+  box-shadow:
+    4px 4px 0 #050508,
+    0 0 15px rgba(255,115,200,.035);
+}
+.fortune,
+.weekly-frame,
+.audio-toggle,
+.volume-control{
+  border-color:rgba(255,115,200,.34);
+  background:rgba(18,13,25,.88);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.012),
+    2px 2px 0 #050508,
+    0 0 13px rgba(255,115,200,.028);
+}
+
+/* soften the opener so the static reads like a TV, not a flashlight */
+.crt-intro-gif{
+  filter:contrast(1.03) brightness(.58);
+  opacity:.86;
+}
+.crt-intro::after{
+  background:
+    radial-gradient(circle at center,transparent 55%,rgba(0,0,0,.22) 100%),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,.025) 0,
+      rgba(255,255,255,.025) 1px,
+      rgba(0,0,0,.08) 1px,
+      rgba(0,0,0,.08) 4px
+    );
+}
+.crt-intro-word{
+  text-shadow:
+    0 0 7px rgba(255,115,200,.52),
+    0 0 16px rgba(255,115,200,.22),
+    1px 0 0 rgba(100,180,255,.10),
+    -1px 0 0 rgba(255,255,255,.08);
+}
+
+/* microscopic instability: only enough to stop feeling digitally frozen */
+@media (prefers-reduced-motion:no-preference){
+  .masthead,
+  .fortune,
+  .weekly-frame{
+    animation:crt-breathe 11s ease-in-out infinite;
+  }
+}
+@keyframes crt-breathe{
+  0%,100%{filter:brightness(1)}
+  48%{filter:brightness(.997)}
+  52%{filter:brightness(1.003)}
+}
