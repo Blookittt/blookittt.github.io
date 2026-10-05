@@ -13,23 +13,33 @@ title: home
 {% endif %}
 
 <div class="home-grid">
-  <aside class="side-archive">
-    <div class="box-label">ARCHIVE</div>
-    <ol class="side-archive-list">
-      {% for post in site.posts limit:12 %}
-        <li>
-          <span>{{ post.date | date: "%m.%d" }}</span>
-          <a href="{{ post.url }}">{{ post.title }}</a>
-        </li>
-      {% endfor %}
-    </ol>
-    <a class="all-link" href="/archive/">ALL POSTS →</a>
-  </aside>
+  <section class="posts-column">
+    <div class="box-label latest-label">LATEST</div>
 
-  <div class="home-main">
-    <section class="weekly-grid">
-      <article class="weekly-box song-box">
-        <div class="box-label">SONG OF THE WEEK</div>
+    {% for post in site.posts limit:10 %}
+      <article class="entry">
+        <div class="entry-meta">
+          {{ post.date | date: "%m.%d.%y" }}
+          {% if post.category %}<span class="tag">{{ post.category | upcase }}</span>{% endif %}
+        </div>
+
+        <h2 class="entry-title">
+          <a href="{{ post.url }}">{{ post.title }}</a>
+        </h2>
+
+        {% if post.excerpt %}
+          <p class="entry-excerpt">{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
+        {% endif %}
+      </article>
+    {% endfor %}
+
+    <a class="all-link posts-all-link" href="/archive/">ALL POSTS →</a>
+  </section>
+
+  <aside class="weekly-column">
+    <section class="weekly-widget">
+      <h3>SONG OF THE WEEK</h3>
+      <div class="weekly-frame song-frame">
         {% if site.data.weekly.song_url and site.data.weekly.song_url != "" %}
           <a class="weekly-main-link" href="{{ site.data.weekly.song_url }}">
         {% endif %}
@@ -41,10 +51,12 @@ title: home
         {% if site.data.weekly.song_note and site.data.weekly.song_note != "" %}
           <p class="weekly-note">{{ site.data.weekly.song_note }}</p>
         {% endif %}
-      </article>
+      </div>
+    </section>
 
-      <article class="weekly-box picture-box">
-        <div class="box-label">PICTURE OF THE WEEK</div>
+    <section class="weekly-widget">
+      <h3>PICTURE OF THE WEEK</h3>
+      <div class="weekly-frame picture-frame">
         {% if site.data.weekly.picture_image and site.data.weekly.picture_image != "" %}
           <img src="{{ site.data.weekly.picture_image }}" alt="{{ site.data.weekly.picture_alt | default: "picture of the week" }}">
         {% else %}
@@ -53,27 +65,7 @@ title: home
         {% if site.data.weekly.picture_caption and site.data.weekly.picture_caption != "" %}
           <div class="picture-caption">{{ site.data.weekly.picture_caption }}</div>
         {% endif %}
-      </article>
+      </div>
     </section>
-
-    <section class="pile">
-      <div class="box-label latest-label">LATEST</div>
-      {% for post in site.posts limit:7 %}
-        <article class="entry">
-          <div class="entry-meta">
-            {{ post.date | date: "%m.%d.%y" }}
-            {% if post.category %}<span class="tag">{{ post.category | upcase }}</span>{% endif %}
-          </div>
-
-          <h2 class="entry-title">
-            <a href="{{ post.url }}">{{ post.title }}</a>
-          </h2>
-
-          {% if post.excerpt %}
-            <p class="entry-excerpt">{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
-          {% endif %}
-        </article>
-      {% endfor %}
-    </section>
-  </div>
+  </aside>
 </div>
