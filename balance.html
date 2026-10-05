@@ -26,8 +26,6 @@ permalink: /balance/
     <span>FORTUNA COUNTY WEIGHTS &amp; MEASURES</span>
     <span class="banner-dot">•</span>
     <span>DAILY PUBLIC DEMONSTRATION</span>
-    <span class="banner-dot">•</span>
-    <span>EST. 1987 TABLES</span>
     <span class="banner-star">✦</span>
   </div>
 
@@ -70,20 +68,18 @@ permalink: /balance/
           </div>
 
           <div class="apparatus-side-legend right" aria-hidden="true">
-            <span>A MORE</span>
-            <span>BALANCED</span>
-            <span>YOU</span>
+            <span>BALANCE</span>
+            <span>IS GOOD</span>
+            <span>FOR YOU</span>
             <span class="legend-rule"></span>
-            <span>SAME</span>
-            <span>TOMORROW</span>
-            <span>BRIGHTER</span>
-            <span>ANYWAY</span>
+            <span>FORTUNA</span>
+            <span>APPROVED</span>
           </div>
         </div>
 
         <div class="weigh-station-label" aria-hidden="true">
           <span>PUBLIC WEIGH STATION</span>
-          <span>NO REFUNDS AFTER WEIGHING</span>
+          <span>WEIGH ONLY WHEN READY</span>
         </div>
 
         <div class="balance-scale-chamber">
@@ -107,8 +103,11 @@ permalink: /balance/
           </div>
         </div>
 
-        <div class="balance-status" id="balance-status" aria-live="polite">
-          ARRANGE THE NUMBERS. WEIGH WHEN READY.
+        <div class="balance-status-wrap">
+          <span class="weigh-lamp" id="weigh-lamp" aria-hidden="true"></span>
+          <div class="balance-status" id="balance-status" aria-live="polite">
+            ARRANGE THE NUMBERS. WEIGH WHEN READY.
+          </div>
         </div>
 
         <div class="apparatus-control-deck">
@@ -147,8 +146,6 @@ permalink: /balance/
       </section>
 
       <div class="balance-footnote">
-        <span>KEEP HANDS CLEAR OF NUMBER BANK</span>
-        <span>•</span>
         <span>SAME BALANCE FOR EVERYBODY TODAY</span>
         <span>•</span>
         <span>THE KEY DOES NOT EXPLAIN ITSELF</span>
@@ -212,24 +209,11 @@ permalink: /balance/
             <span class="balance-help-frame help-b">⚖</span>
           </div>
           <p>
-            Each tile is a two-digit number. Flip a tile to reverse its digits.
-            When both digit columns total the same amount, the Balance is complete.
+            Flip any blue tile to reverse its digits. Match the left and right totals.
           </p>
           <p>
-            The first number is sealed and cannot be changed.
+            The red tile is sealed. You get three official weighings.
           </p>
-          <p>
-            You may ask the apparatus to weigh your arrangement three times. A failed weighing is not returned.
-          </p>
-        </div>
-      </section>
-
-      <section class="balance-side-card visitor-notice">
-        <div class="balance-side-card-head">VISITOR'S NOTICE</div>
-        <div class="balance-side-card-body">
-          <div class="notice-hand" aria-hidden="true">☞</div>
-          <p>Three official weighings are permitted. Rearrangement between weighings is allowed.</p>
-          <p class="notice-small">Tampering with sealed numbers voids nothing because you cannot do that.</p>
         </div>
       </section>
 
@@ -254,6 +238,7 @@ permalink: /balance/
   const rightEl = document.getElementById('balance-right');
   const beam = document.getElementById('balance-beam');
   const status = document.getElementById('balance-status');
+  const weighLamp = document.getElementById('weigh-lamp');
   const keyBox = document.getElementById('balance-key');
   const keyValue = document.getElementById('balance-key-value');
   const reset = document.getElementById('balance-reset');
@@ -582,6 +567,7 @@ permalink: /balance/
 
   let lastMeasurement = null;
   let arrangementDirty = true;
+  let weighing = false;
 
   const currentPairs = () => state.map(pairNow);
 
@@ -594,8 +580,8 @@ permalink: /balance/
 
   const setControlsLocked = locked => {
     root.classList.toggle('day-locked', locked);
-    if (weighButton) weighButton.disabled = locked;
-    if (reset) reset.disabled = locked;
+    if (weighButton) weighButton.disabled = locked || weighing;
+    if (reset) reset.disabled = locked || weighing;
 
     tiles.querySelectorAll('.balance-tile:not(.sealed)').forEach(button => {
       button.disabled = locked;
@@ -619,7 +605,7 @@ permalink: /balance/
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'balance-tile' + (item.sealed ? ' sealed' : '');
-      button.disabled = item.sealed || dailyState.locked || dailyState.solved;
+      button.disabled = item.sealed || dailyState.locked || dailyState.solved || weighing;
       button.setAttribute(
         'aria-label',
         item.sealed
@@ -701,8 +687,56 @@ permalink: /balance/
     }
   };
 
-  const weigh = () => {
-    if (dailyState.locked || dailyState.solved || dailyState.remaining <= 0) return;
+  const wait = ms => new Promise(resolve => window.setTimeout(resolve, ms));
+
+  const weighTeases = [
+    ['HOLD STILL.', 520],
+    ['SETTLING THE PAN...', 680],
+    ['FORTUNA IS LOOKING.', 720],
+    ['DO NOT HELP IT.', 560]
+  ];
+
+  const runWeighTease = async () => {
+    root.classList.add('is-weighing');
+    if (weighLamp) weighLamp.classList.add('on');
+
+    const seed = hash(dateKey + '|' + dailyState.remaining + '|' + currentPairs().map(p => p.join('')).join('-'));
+    const teaseRand = rng(seed);
+    const pool = weighTeases.slice();
+
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(teaseRand() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+
+    status.textContent = 'WEIGHING...';
+    await wait(430);
+
+    // One or two tiny fake-outs, never enough to become annoying.
+    const count = teaseRand() < .68 ? 2 : 1;
+    for (let i = 0; i < count; i++) {
+      status.textContent = pool[i][0];
+      beam.classList.remove('tease-left','tease-right');
+      void beam.offsetWidth;
+      beam.classList.add(i % 2 ? 'tease-right' : 'tease-left');
+      await wait(pool[i][1]);
+    }
+
+    status.textContent = '...';
+    await wait(520);
+    beam.classList.remove('tease-left','tease-right');
+  };
+
+  const weigh = async () => {
+    if (weighing || dailyState.locked || dailyState.solved || dailyState.remaining <= 0) return;
+
+    weighing = true;
+    render();
+
+    // Hide the answer during the little ceremony.
+    leftEl.textContent = '--';
+    rightEl.textContent = '--';
+    await runWeighTease();
 
     lastMeasurement = measure();
     arrangementDirty = false;
@@ -711,6 +745,9 @@ permalink: /balance/
     rightEl.textContent = String(lastMeasurement.right).padStart(2,'0');
     beam.style.transform =
       'rotate(' + Math.max(-9, Math.min(9, lastMeasurement.diff * 1.3)) + 'deg)';
+
+    root.classList.remove('is-weighing');
+    if (weighLamp) weighLamp.classList.remove('on');
 
     if (lastMeasurement.diff === 0) {
       const key = lastMeasurement.pairs.map(p => p[0]).join('');
@@ -727,6 +764,7 @@ permalink: /balance/
         FortunaProfile.bumpFavorOnce('balance:' + dateKey, favorAward);
       }
 
+      weighing = false;
       render();
       return;
     }
@@ -738,19 +776,28 @@ permalink: /balance/
       dailyState.locked = true;
       status.textContent = 'NO WEIGHS REMAIN. THE APPARATUS IS LOCKED UNTIL TOMORROW.';
     } else {
-      status.textContent =
-        (lastMeasurement.diff > 0 ? 'LEFT' : 'RIGHT') +
-        ' IS HEAVIER BY ' +
-        Math.abs(lastMeasurement.diff) +
-        '. ' +
-        dailyState.remaining +
-        ' WEIGH' +
-        (dailyState.remaining === 1 ? '' : 'S') +
-        ' REMAIN.';
+      // Pause on the totals for a beat before Fortuna comments.
+      const direction = lastMeasurement.diff > 0 ? 'LEFT' : 'RIGHT';
+      const amount = Math.abs(lastMeasurement.diff);
+      const remainingText = dailyState.remaining + ' WEIGH' + (dailyState.remaining === 1 ? '' : 'S') + ' REMAIN.';
+
+      const wrongLines = [
+        direction + ' IS HEAVIER BY ' + amount + '. ' + remainingText,
+        'NOT QUITE. ' + direction + ' CARRIES ' + amount + ' TOO MUCH. ' + remainingText,
+        direction + ' HAS ' + amount + ' TOO MUCH WEIGHT. ' + remainingText
+      ];
+
+      status.textContent = wrongLines[Math.floor(teaseRandForResult(dateKey, amount, dailyState.remaining) * wrongLines.length)];
     }
 
     saveDailyState();
+    weighing = false;
     render();
+  };
+
+  const teaseRandForResult = (day, amount, remain) => {
+    const r = rng(hash('FORTUNA/WEIGH/' + day + '/' + amount + '/' + remain));
+    return r();
   };
 
   weighButton.addEventListener('click', weigh);
