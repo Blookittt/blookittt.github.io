@@ -132,6 +132,7 @@
     };
 
     const chars = (str) => Array.from(str).reduce((sum, ch, i) => sum + ch.charCodeAt(0) * (i + 3), 0);
+
     const rng = (seed) => () => {
       seed |= 0;
       seed = seed + 0x6D2B79F5 | 0;
@@ -139,28 +140,37 @@
       t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
       return ((t ^ t >>> 14) >>> 0) / 4294967296;
     };
-    const norm = (n) => ((Math.abs(Math.trunc(n)) - 1) % 60 + 60) % 60 + 1;
 
+    const norm = (n) => ((Math.abs(Math.trunc(n)) - 1) % 60 + 60) % 60 + 1;
     const seed = hash(dateKey + '|' + message + '|' + fortuneNo + '|' + songTitle);
     const random = rng(seed);
+
     const middleWord = words.length ? words[Math.floor(words.length / 2)] : '';
     const firstWord = words[0] || '';
     const lastWord = words[words.length - 1] || '';
+    const firstHalf = message.slice(0, Math.floor(message.length / 2));
+    const secondHalf = message.slice(Math.ceil(message.length / 2));
     const blooConstant = 17;
+
+    const fakeMoonResidue = norm(Math.floor((dayOfYear + (yyyy % 19) * 11 + dd * 3) * .87));
+    const weekdaySurcharge = norm((weekday + 1) * 7 + dd + punctuation);
+    const apostropheSurcharge = norm(apostrophes * 13 + 3 + mm);
+    const vowelDebt = norm(consonants - vowels + yy);
+    const middleWordTax = norm(chars(middleWord) + middleWord.length * dd);
+    const fortuneFold = norm(chars(firstHalf) - chars(secondHalf));
+    const gasStationReceipt = norm((dd * mm) + yy + letters + 24 + 7);
+    const songContamination = norm(chars(songTitle) + songWords * 11);
+    const receiptTail = norm(hash(dateKey + '|receipt') % 97);
 
     const nonsense = [
       dd, mm, yy, dd + mm, dd + yy, mm * dd, dayOfYear,
       words.length, letters, vowels, consonants, punctuation,
       fortuneNo, fortuneNo + dd, fortuneNo + words.length,
-      norm(Math.floor((dayOfYear + (yyyy % 19) * 11 + dd * 3) * .87)),
-      norm((weekday + 1) * 7 + dd + punctuation),
-      norm(apostrophes * 13 + 3 + mm),
-      norm(consonants - vowels + yy),
-      norm(chars(middleWord) + middleWord.length * dd),
+      fakeMoonResidue, weekdaySurcharge, apostropheSurcharge,
+      vowelDebt, middleWordTax,
       norm(chars(firstWord) - chars(lastWord) + dayOfYear),
-      norm((dd * mm) + yy + letters + 24 + 7),
-      norm(chars(songTitle) + songWords * 11),
-      blooConstant,
+      fortuneFold, gasStationReceipt, songContamination,
+      blooConstant, receiptTail,
       norm(hash(message + 'lucky') % 60),
       norm(hash(songTitle + 'you') % 60)
     ].map(norm);
@@ -184,6 +194,7 @@
 
       let guard = 0;
       const hop = 3 + ((dd + weekday + fortuneNo) % 11);
+
       while (used.has(candidate) && guard < 60) {
         candidate = norm(candidate + hop + punctuation + (guard % 5));
         guard++;
@@ -204,16 +215,33 @@
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let busy = false;
 
-    const setDisplay = (a, b, c) => {
-      kicker.textContent = a || '';
-      main.textContent = b || '';
-      sub.textContent = c || '';
+    const sleep = (ms) => new Promise(resolve => window.setTimeout(resolve, ms));
+
+    const popScreen = () => {
       machine.classList.remove('screen-pop');
       void machine.offsetWidth;
       machine.classList.add('screen-pop');
     };
 
-    const sleep = (ms) => new Promise(resolve => window.setTimeout(resolve, ms));
+    const setDisplay = (a, b, c) => {
+      kicker.textContent = a || '';
+      main.textContent = b || '';
+      sub.textContent = c || '';
+      popScreen();
+    };
+
+    const writeWords = async (element, text, delay = 58) => {
+      const parts = String(text || '').trim().split(/\s+/).filter(Boolean);
+      element.textContent = '';
+
+      for (let i = 0; i < parts.length; i++) {
+        element.textContent += (i ? ' ' : '') + parts[i];
+        element.classList.remove('word-step');
+        void element.offsetWidth;
+        element.classList.add('word-step');
+        await sleep(reduced ? 1 : delay);
+      }
+    };
 
     const localRandom = (boxIndex, digitIndex) => rng(
       seed ^
@@ -221,18 +249,69 @@
       ((digitIndex + 1) * 0x27d4eb2d)
     );
 
+    const diagnosticPool = [
+      { text:'READING DATE KEY', detail:dateKey.replaceAll('-', '.') },
+      { text:'CHECKING WEEKDAY SURCHARGE', detail:'LOAD ' + String(weekdaySurcharge).padStart(2,'0') },
+      { text:'MEASURING VOWEL DEBT', detail:'V ' + vowels + ' / C ' + consonants + ' / D ' + vowelDebt },
+      { text:'RESOLVING PUNCTUATION', detail:'MARKS ' + punctuation + ' / PASS ' + String(norm(punctuation + dd)).padStart(2,'0') },
+      { text:'CHECKING MIDDLE WORD TAX', detail:(middleWord || 'NONE').toUpperCase() + ' / ' + String(middleWordTax).padStart(2,'0') },
+      { text:'VERIFYING RECEIPT TAIL', detail:'24/7 / TAIL ' + String(receiptTail).padStart(2,'0') },
+      { text:'SCANNING SONG CONTAMINATION', detail:'LOAD ' + String(songContamination).padStart(2,'0') },
+      { text:'RESOLVING FORTUNE FOLD', detail:'OFFSET ' + String(fortuneFold).padStart(2,'0') },
+      { text:'APPLYING BLOO CONSTANT', detail:'CONST ' + blooConstant + ' / ACCEPTED' },
+      { text:'CHECKING MOON RESIDUE', detail:'TRACE ' + String(fakeMoonResidue).padStart(2,'0') }
+    ];
+
+    const chooseDiagnostics = () => {
+      const r = rng(seed ^ 0x0B100F17);
+      const pool = diagnosticPool.slice();
+
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(r() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+
+      return pool.slice(0, 4);
+    };
+
     const reset = () => {
-      machine.classList.remove('awake', 'shutters-open', 'fortune-revealed', 'machine-finished');
+      machine.classList.remove(
+        'awake',
+        'computing',
+        'shutters-open',
+        'fortune-revealed',
+        'machine-finished',
+        'screen-pop'
+      );
+
       lamp.classList.remove('on', 'flicker');
+
       boxes.forEach((box, i) => {
         box.classList.remove('rolling', 'settled');
         const digits = box.querySelectorAll('.lucky-digit');
+
         digits.forEach((digit, d) => {
           digit.className = 'lucky-digit';
           digit.textContent = String((8 - i - d + 10) % 10);
         });
       });
+
       setDisplay('FORTUNA', 'LUCKY YOU', 'PRESS ASK');
+    };
+
+    const runDiagnostics = async () => {
+      machine.classList.add('computing');
+      const diagnostics = chooseDiagnostics();
+
+      for (let i = 0; i < diagnostics.length; i++) {
+        const item = diagnostics[i];
+        kicker.textContent = 'FORTUNA / COMPUTE ' + String(i + 1).padStart(2,'0');
+        sub.textContent = item.detail;
+        await writeWords(main, item.text, 48);
+        await sleep(reduced ? 1 : 95);
+      }
+
+      machine.classList.remove('computing');
     };
 
     const rollDigit = async (digit, targetChar, r) => {
@@ -248,27 +327,33 @@
         digit.classList.remove('tick');
       };
 
-      for (let i = 0; i < (reduced ? 1 : 10); i++) await down(28 + i * 3);
-      for (let i = 0; i < (reduced ? 0 : 6); i++) await down(55 + i * 7);
+      for (let i = 0; i < (reduced ? 1 : 6); i++) {
+        await down(24 + i * 2);
+      }
+
+      for (let i = 0; i < (reduced ? 0 : 3); i++) {
+        await down(44 + i * 5);
+      }
 
       let clicks = 0;
-      while ((current !== target || clicks < 2) && clicks < 24) {
-        await down(105 + Math.min(clicks, 8) * 8);
+      while ((current !== target || clicks < 2) && clicks < 14) {
+        await down(64 + Math.min(clicks, 6) * 4);
         clicks++;
       }
 
       if (!reduced) {
         digit.classList.add('near');
-        await sleep(150);
+        await sleep(88);
         digit.classList.remove('near');
-        await down(160);
+
+        await down(92);
         digit.classList.add('slip');
-        await sleep(120);
+        await sleep(72);
         digit.classList.remove('slip');
 
         clicks = 0;
-        while ((current !== target || clicks < 3) && clicks < 24) {
-          await down(145 + Math.min(clicks, 8) * 10);
+        while ((current !== target || clicks < 3) && clicks < 14) {
+          await down(84 + Math.min(clicks, 6) * 5);
           clicks++;
         }
       }
@@ -281,30 +366,46 @@
       const box = boxes[index];
       const target = String(picks[index]).padStart(2, '0');
       const digits = Array.from(box.querySelectorAll('.lucky-digit'));
+
       box.classList.add('rolling');
 
-      await Promise.all(
-        digits.map((digit, d) => sleep(d * (reduced ? 0 : 70)).then(() => rollDigit(digit, target[d], localRandom(index, d))))
-      );
+      kicker.textContent = 'FORTUNA / DRAW ' + String(index + 1).padStart(2,'0');
+      sub.textContent = 'CHANNEL ' + String(index + 1).padStart(2,'0') + ' / ACTIVE';
+      const screenWords = writeWords(main, 'NUMBER ' + (index + 1) + ' IN MOTION', 40);
+
+      await Promise.all([
+        screenWords,
+        ...digits.map((digit, d) =>
+          sleep(d * (reduced ? 0 : 48))
+            .then(() => rollDigit(digit, target[d], localRandom(index, d)))
+        )
+      ]);
 
       box.classList.remove('rolling');
       box.classList.add('settled');
-      setDisplay('FORTUNA', 'NUMBER ' + (index + 1) + ' / 6', 'ACCEPTED');
-      await sleep(reduced ? 20 : 210);
+
+      kicker.textContent = 'FORTUNA / DRAW ' + String(index + 1).padStart(2,'0');
+      sub.textContent = 'VALUE ACCEPTED';
+      await writeWords(main, 'NUMBER ' + (index + 1) + ' LOCKED', 36);
+      await sleep(reduced ? 5 : 105);
     };
 
     const revealFortune = async () => {
       setDisplay('', '', '');
-      await sleep(reduced ? 10 : 240);
+      await sleep(reduced ? 5 : 170);
+
       machine.classList.add('fortune-revealed');
-
       kicker.textContent = 'FORTUNA';
-      main.textContent = message;
-      sub.textContent = 'FORTUNE No. ' + String(fortuneNo || '???').padStart(3, '0') + '  /  FAVOR +17';
+      sub.textContent = '';
 
-      machine.classList.remove('screen-pop');
-      void machine.offsetWidth;
-      machine.classList.add('screen-pop');
+      await writeWords(main, message, 82);
+
+      sub.textContent =
+        'FORTUNE No. ' +
+        String(fortuneNo || '???').padStart(3, '0') +
+        '  /  FAVOR +17';
+
+      popScreen();
 
       if (reading) {
         reading.textContent = message + '. Lucky numbers: ' + picks.join(', ') + '.';
@@ -313,34 +414,44 @@
 
     const ask = async () => {
       if (busy) return;
+
       busy = true;
       trigger.disabled = true;
       reset();
 
+      document.body.classList.add('fortuna-power-draw');
       trigger.classList.add('down');
-      setDisplay('FORTUNA', 'PLEASE WAIT', '');
-      await sleep(reduced ? 20 : 180);
+
+      kicker.textContent = 'FORTUNA / QUERY';
+      sub.textContent = 'INPUT ACCEPTED';
+      await writeWords(main, 'QUERY ACCEPTED', 52);
 
       lamp.classList.add('flicker');
-      await sleep(reduced ? 20 : 620);
+      await sleep(reduced ? 15 : 430);
+
       lamp.classList.remove('flicker');
       lamp.classList.add('on');
       machine.classList.add('awake');
       trigger.classList.remove('down');
 
-      setDisplay('FORTUNA', 'CONSIDERING', 'THE MATTER');
-      await sleep(reduced ? 30 : 760);
+      await runDiagnostics();
+
+      kicker.textContent = 'FORTUNA / DRAW';
+      sub.textContent = 'BANK PREP';
+      await writeWords(main, 'PREPARING DRAW', 48);
 
       machine.classList.add('shutters-open');
-      await sleep(reduced ? 40 : 980);
+      await sleep(reduced ? 30 : 720);
 
       for (let i = 0; i < boxes.length; i++) {
-        setDisplay('FORTUNA', 'NUMBER ' + (i + 1) + ' / 6', 'IN MOTION');
         await runBox(i);
       }
 
       machine.classList.add('machine-finished');
       await revealFortune();
+
+      await sleep(reduced ? 10 : 520);
+      document.body.classList.remove('fortuna-power-draw');
 
       trigger.disabled = false;
       busy = false;
