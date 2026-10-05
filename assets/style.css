@@ -1090,3 +1090,113 @@ body::after{
   margin-right:auto;
   transform:translateX(-1px);
 }
+
+
+/* BLOOFORTUNE UI PASS v2 — lighter night, bigger masthead, real EQ */
+:root{
+  --paper:#1a141d;
+  --paper2:#241c27;
+  --panel:#211923;
+  --night:#171119;
+  --ink:#f3e8ef;
+  --muted:#b39fac;
+  --pink:#ff78c8;
+  --pink-dim:#c16b9b;
+  --blue:#ff78c8;
+}
+html{
+  background:#120e15;
+}
+body{
+  background:
+    radial-gradient(circle at 50% -10%,rgba(255,120,200,.07),transparent 33%),
+    radial-gradient(circle at 88% 20%,rgba(151,102,153,.055),transparent 27%),
+    radial-gradient(circle at 10% 78%,rgba(102,76,126,.045),transparent 29%),
+    linear-gradient(180deg,#211925 0%,#1b151f 54%,#171119 100%);
+}
+body::after{
+  box-shadow:
+    inset 0 0 100px rgba(0,0,0,.38),
+    inset 0 0 24px rgba(255,120,200,.018);
+}
+.exact-ascii-title{
+  font-size:clamp(3.8px,.62vw,8.2px);
+  text-shadow:
+    0 0 6px rgba(243,232,239,.07),
+    0 0 15px rgba(255,120,200,.04);
+}
+.masthead-center{
+  padding-top:27px;
+  padding-bottom:17px;
+}
+.lucky-neon-center{
+  margin-top:15px;
+}
+.nav{
+  margin-top:20px;
+}
+.fortune,
+.weekly-frame,
+.audio-toggle,
+.volume-control{
+  background:rgba(36,28,39,.88);
+  border-color:rgba(255,120,200,.30);
+}
+.weekly-frame{
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.012),
+    2px 2px 0 rgba(8,6,10,.46),
+    0 0 13px rgba(255,120,200,.025);
+}
+.entry-excerpt,
+.post-body,
+.song-artist,
+.weekly-note,
+.picture-caption{
+  color:#ddced8;
+}
+.entry-meta,
+.post-meta,
+.archive-date,
+.past-post-list span,
+.empty{
+  color:var(--muted);
+}
+.left-picture-widget{
+  margin-top:34px;
+}
+.left-picture-widget .picture-frame{
+  padding:8px;
+}
+.left-picture-widget .picture-frame img,
+.left-picture-widget .picture-placeholder{
+  width:100%;
+  height:auto;
+  aspect-ratio:1 / 1;
+  object-fit:cover;
+}
+.weekly-column{
+  gap:0;
+}
+.song-frame{
+  min-height:0;
+}
+.song-eq{
+  display:block;
+  width:100%;
+  height:54px;
+  margin-top:18px;
+  border-top:1px solid rgba(243,232,239,.11);
+  border-bottom:1px solid rgba(243,232,239,.07);
+  background:rgba(8,6,10,.10);
+}
+@media (max-width:700px){
+  .exact-ascii-title{
+    font-size:clamp(2.35px,.58vw,4px);
+  }
+}
+@media (max-width:860px){
+  .left-picture-widget{
+    max-width:220px;
+  }
+}
