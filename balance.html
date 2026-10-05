@@ -19,11 +19,9 @@ permalink: /balance/
   </header>
 
   <div class="balance-attraction-banner" aria-hidden="true">
-    <span class="banner-star">✦</span>
-    <span>FORTUNA COUNTY WEIGHTS &amp; MEASURES</span>
-    <span class="banner-dot">•</span>
-    <span>DAILY PUBLIC DEMONSTRATION</span>
-    <span class="banner-star">✦</span>
+    <span class="banner-pin"></span>
+    <span class="banner-medallion">✦</span>
+    <span class="banner-pin"></span>
   </div>
 
   <div class="balance-ui-grid">
@@ -142,11 +140,6 @@ permalink: /balance/
         </div>
       </section>
 
-      <div class="balance-footnote">
-        <span>SAME BALANCE FOR EVERYBODY TODAY</span>
-        <span>•</span>
-        <span>THE KEY DOES NOT EXPLAIN ITSELF</span>
-      </div>
     </main>
 
     <aside class="balance-side">
@@ -619,24 +612,44 @@ permalink: /balance/
 
       const note = document.createElement('span');
       note.className = 'balance-tile-control';
-      note.textContent = item.sealed ? '▣ SEALED' : '▲ FLIP ▼';
+      note.textContent = item.sealed ? 'SEALED' : 'FLIP';
 
       button.append(windowFrame, note);
 
       if (!item.sealed) {
-        button.addEventListener('click', () => {
-          if (dailyState.locked || dailyState.solved) return;
-          state[index].flipped = !state[index].flipped;
+        button.addEventListener('click', async () => {
+          if (dailyState.locked || dailyState.solved || weighing || button.classList.contains('roller-busy')) return;
+
+          const nextFlipped = !state[index].flipped;
+          const nextPair = nextFlipped ? [item.pair[1], item.pair[0]] : item.pair;
+
+          button.classList.add('roller-busy', 'roller-out');
+          button.disabled = true;
+          note.textContent = 'CLACK';
+
+          await wait(115);
+
+          state[index].flipped = nextFlipped;
+          number.textContent = nextPair.join('');
+          button.classList.remove('roller-out');
+          void number.offsetWidth;
+          button.classList.add('roller-in');
+
+          await wait(155);
+
+          button.classList.remove('roller-in', 'roller-busy');
+          button.disabled = false;
+          note.textContent = 'FLIP';
+
           arrangementDirty = true;
           root.classList.remove('solved');
+          leftEl.textContent = '--';
+          rightEl.textContent = '--';
+          beam.style.transform = 'rotate(0deg)';
 
-          if (lastMeasurement) {
-            status.textContent = 'ARRANGEMENT CHANGED. WEIGH AGAIN WHEN READY.';
-          } else {
-            status.textContent = 'ARRANGE THE NUMBERS. WEIGH WHEN READY.';
-          }
-
-          render();
+          status.textContent = lastMeasurement
+            ? 'ARRANGEMENT CHANGED. WEIGH AGAIN WHEN READY.'
+            : 'ARRANGE THE NUMBERS. WEIGH WHEN READY.';
         });
       }
 
@@ -762,8 +775,6 @@ permalink: /balance/
       }
 
       weighing = false;
-      root.classList.remove('weighing');
-      weighBusy = false;
       render();
       return;
     }
