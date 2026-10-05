@@ -95,9 +95,46 @@ body{
 }
 .home-grid{
   display:grid;
-  grid-template-columns:minmax(0,1fr) 250px;
-  gap:34px;
+  grid-template-columns:170px minmax(0,1fr) 220px;
+  gap:28px;
   align-items:start;
+}
+.past-posts{
+  min-width:0;
+}
+.past-posts h3,
+.weekly-widget h3{
+  margin:0 0 8px;
+  font-size:11px;
+  font-weight:normal;
+  letter-spacing:.08em;
+}
+.past-post-list{
+  list-style:none;
+  padding:0;
+  margin:0 0 12px;
+  border-top:1px solid var(--ink);
+}
+.past-post-list li{
+  padding:8px 0 9px;
+  border-bottom:1px dotted rgba(17,17,17,.48);
+}
+.past-post-list span{
+  display:block;
+  font-size:9px;
+  line-height:1.2;
+  opacity:.68;
+}
+.past-post-list a{
+  color:var(--ink);
+  text-decoration:none;
+  border-bottom:1px solid var(--ink);
+  font-size:11px;
+  line-height:1.2;
+}
+.past-post-list a:hover{
+  background:var(--ink);
+  color:var(--paper);
 }
 .posts-column{min-width:0}
 .weekly-column{
@@ -146,12 +183,6 @@ body{
   display:inline-block;
   margin-top:13px;
   font-size:10px;
-}
-.weekly-widget h3{
-  margin:0 0 8px;
-  font-size:11px;
-  font-weight:normal;
-  letter-spacing:.08em;
 }
 .weekly-frame{
   border:1px solid var(--ink);
@@ -273,9 +304,12 @@ body{
 .archive-date{font-size:10px;padding-top:3px}
 .empty{margin:10px 0 0;font-size:11px;opacity:.55}
 ::selection{background:var(--ink);color:var(--paper)}
-@media (max-width:760px){
-  .home-grid{grid-template-columns:1fr}
+@media (max-width:860px){
+  .home-grid{
+    grid-template-columns:150px minmax(0,1fr);
+  }
   .weekly-column{
+    grid-column:1 / -1;
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:18px;
@@ -283,6 +317,19 @@ body{
 }
 @media (max-width:560px){
   .shell{padding-top:24px}
+  .fortune{font-size:16px}
+  .home-grid{grid-template-columns:1fr}
+  .past-posts{order:2}
+  .posts-column{order:1}
+  .weekly-column{
+    order:3;
+    grid-column:auto;
+    grid-template-columns:1fr;
+  }
+  .entry-title{font-size:18px}
+  .archive-list li{grid-template-columns:75px 1fr}
+}
+
   .fortune{font-size:16px}
   .entry-title{font-size:18px}
   .archive-list li{grid-template-columns:75px 1fr}
