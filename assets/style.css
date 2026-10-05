@@ -1721,3 +1721,44 @@ body{
     animation:none;
   }
 }
+
+
+/* LUCKY ROLLER TEASE PASS */
+.lucky-number.is-rolling{
+  border-color:rgba(167,155,203,.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    inset 0 -1px 0 rgba(0,0,0,.34),
+    0 0 10px rgba(120,144,216,.05),
+    0 2px 5px rgba(0,0,0,.13);
+}
+
+.lucky-digit.is-ticking{
+  transform:translateY(-2px);
+  filter:blur(.22px) brightness(1.08);
+}
+
+.lucky-digit.is-near{
+  color:#fff3ea;
+  text-shadow:
+    0 0 4px rgba(255,255,255,.16),
+    0 0 9px rgba(217,108,147,.12);
+}
+
+.lucky-digit.is-slip{
+  animation:lucky-slip .17s ease-out 1;
+}
+
+@keyframes lucky-slip{
+  0%{transform:translateY(0)}
+  35%{transform:translateY(4px);filter:brightness(1.14)}
+  100%{transform:translateY(-1px);filter:brightness(1)}
+}
+
+.lucky-digit{
+  transition:
+    color .08s linear,
+    text-shadow .08s linear,
+    filter .06s linear,
+    transform .06s linear;
+}
