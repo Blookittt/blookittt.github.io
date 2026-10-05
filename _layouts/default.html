@@ -97,6 +97,8 @@
     const main = document.getElementById('screen-main');
     const sub = document.getElementById('screen-sub');
     const reading = document.getElementById('lucky-reading');
+    const progressFill = document.getElementById('fortuna-progress-fill');
+    const progressReadout = document.getElementById('fortuna-progress-readout');
 
     if (!machine || !rollers || !trigger || !kicker || !main || !sub) return;
 
@@ -216,6 +218,45 @@
     let busy = false;
 
     const sleep = (ms) => new Promise(resolve => window.setTimeout(resolve, ms));
+
+    let progressToken = 0;
+
+    const setProgress = (value) => {
+      const shown = Math.max(0, Math.min(100, Math.round(value)));
+      if (progressFill) progressFill.style.width = shown + '%';
+      if (progressReadout) progressReadout.textContent = String(shown).padStart(2, '0') + '%';
+    };
+
+    const progressPrograms = [
+      [[3,420],[11,620],[24,560],[39,720],[39,680],[58,520],[76,760],[91,620],[97,840],[99,1120],[72,560],[88,720],[96,680],[99,1400]],
+      [[5,540],[17,720],[17,740],[33,520],[61,780],[82,620],[94,740],[98,920],[99,1180],[64,520],[79,560],[93,820],[99,1500]],
+      [[2,460],[9,520],[28,760],[47,540],[66,660],[83,720],[95,760],[99,1300],[99,900],[81,480],[90,620],[97,800],[99,1600]],
+      [[7,620],[21,520],[46,760],[45,520],[63,640],[87,880],[96,720],[99,1100],[74,560],[86,620],[92,720],[99,1700]]
+    ];
+
+    const runFakeProgress = async (token) => {
+      const r = rng(seed ^ 0xF017A);
+      const program = progressPrograms[Math.floor(r() * progressPrograms.length)];
+
+      for (const [value, delay] of program) {
+        if (token !== progressToken) return;
+        setProgress(value);
+        await sleep(reduced ? 1 : delay);
+      }
+    };
+
+    const startFakeProgress = () => {
+      progressToken++;
+      const token = progressToken;
+      setProgress(0);
+      runFakeProgress(token);
+    };
+
+    const finishFakeProgress = async () => {
+      progressToken++;
+      setProgress(100);
+      await sleep(reduced ? 1 : 480);
+    };
 
     const popScreen = () => {
       machine.classList.remove('screen-pop');
@@ -357,6 +398,8 @@
       );
 
       lamp.classList.remove('on', 'flicker');
+      progressToken++;
+      setProgress(0);
 
       boxes.forEach((box, i) => {
         box.classList.remove('rolling', 'settled');
@@ -490,6 +533,7 @@
       busy = true;
       trigger.disabled = true;
       reset();
+      startFakeProgress();
 
       document.body.classList.add('fortuna-power-draw');
       trigger.classList.add('down');
@@ -521,6 +565,7 @@
 
       machine.classList.add('machine-finished');
       await revealFortune();
+      await finishFakeProgress();
 
       await sleep(reduced ? 10 : 760);
       document.body.classList.remove('fortuna-power-draw');
