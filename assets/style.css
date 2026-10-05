@@ -62,6 +62,25 @@ body{
   background:var(--ink);
   color:var(--paper);
 }
+.audio-toggle{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  z-index:40;
+  border:1px solid var(--ink);
+  background:var(--paper2);
+  color:var(--ink);
+  box-shadow:2px 2px 0 var(--ink);
+  padding:7px 9px 6px;
+  font:10px/1 "Courier New",Courier,monospace;
+  letter-spacing:.05em;
+  cursor:pointer;
+}
+.audio-toggle:hover,
+.audio-toggle.is-playing{
+  background:var(--ink);
+  color:var(--paper);
+}
 .fortune-link{color:inherit;text-decoration:none}
 .fortune{
   position:relative;
@@ -99,9 +118,7 @@ body{
   gap:28px;
   align-items:start;
 }
-.past-posts{
-  min-width:0;
-}
+.past-posts{min-width:0}
 .past-posts h3,
 .weekly-widget h3{
   margin:0 0 8px;
@@ -305,9 +322,7 @@ body{
 .empty{margin:10px 0 0;font-size:11px;opacity:.55}
 ::selection{background:var(--ink);color:var(--paper)}
 @media (max-width:860px){
-  .home-grid{
-    grid-template-columns:150px minmax(0,1fr);
-  }
+  .home-grid{grid-template-columns:150px minmax(0,1fr)}
   .weekly-column{
     grid-column:1 / -1;
     display:grid;
@@ -328,10 +343,5 @@ body{
   }
   .entry-title{font-size:18px}
   .archive-list li{grid-template-columns:75px 1fr}
-}
-
-  .fortune{font-size:16px}
-  .entry-title{font-size:18px}
-  .archive-list li{grid-template-columns:75px 1fr}
-  .weekly-column{grid-template-columns:1fr}
+  .audio-toggle{right:10px;bottom:10px}
 }
