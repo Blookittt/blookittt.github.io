@@ -3,93 +3,135 @@ layout: default
 title: balance
 permalink: /balance/
 ---
-<div class="balance-page">
-  <div class="section-title-row">
-    <h1>THE BALANCE</h1>
-    <span id="balance-date">DAILY</span>
-  </div>
-
-  <div class="balance-intro-grid">
-    <div class="balance-rule">
-      Flip the numbers until the left digits and right digits weigh exactly the same.
-      The sealed number stays put.
+<div class="balance-page balance-page-v2">
+  <header class="balance-page-head">
+    <div>
+      <div class="balance-eyebrow">DAILY APPARATUS</div>
+      <h1>THE BALANCE</h1>
+      <p>
+        Flip the numbers until the left digits and right digits weigh exactly the same.
+        The sealed number stays put.
+      </p>
     </div>
 
-    <aside class="fortometer" id="fortometer" aria-label="Today's Fortuna condition">
-      <div class="fortometer-head">
-        <span>FORTOMETER</span>
-        <a href="/almanac/" aria-label="What does the Fortometer mean?">?</a>
-      </div>
+    <div class="balance-page-meta">
+      <span>BOARD</span>
+      <strong>No. 001</strong>
+      <span id="balance-date">DAILY</span>
+    </div>
+  </header>
 
-      <div class="fortometer-body">
-        <div class="fortometer-glyph" aria-hidden="true">
-          <span class="weather-frame weather-a">☼</span>
-          <span class="weather-frame weather-b">◐</span>
+  <div class="balance-ui-grid">
+    <main class="balance-main">
+      <section class="balance-machine" id="balance-machine">
+        <div class="balance-machine-head">
+          <span>APPARATUS / ACTIVE</span>
+          <span>ONE BOARD PER DAY</span>
         </div>
 
-        <div class="fortometer-reading">
-          <div class="fortometer-condition" id="fortometer-condition">VARIABLE</div>
-          <div class="fortometer-pressure">
-            <strong id="fortometer-pressure">29.41</strong>
-            <span>fHg</span>
-            <span id="fortometer-trend">FALLING</span>
+        <div class="balance-tiles" id="balance-tiles" aria-label="Balance number tiles"></div>
+
+        <div class="balance-readout">
+          <div>
+            <span>LEFT TOTAL</span>
+            <strong id="balance-left">00</strong>
+          </div>
+
+          <div class="balance-scale" aria-hidden="true">
+            <div class="balance-beam" id="balance-beam"></div>
+            <div class="balance-pivot"></div>
+          </div>
+
+          <div class="right">
+            <span>RIGHT TOTAL</span>
+            <strong id="balance-right">00</strong>
           </div>
         </div>
 
-        <dl class="fortometer-details">
-          <dt>LUNAR AGE</dt><dd id="fortometer-lunar">--.- d</dd>
-          <dt>SEASONAL CARRY</dt><dd id="fortometer-carry">WEST</dd>
-          <dt>STANDARD CORR.</dt><dd id="fortometer-correction">+0.0</dd>
-          <dt>BALANCE STRAIN</dt><dd id="fortometer-strain">--</dd>
-          <dt>TOMORROW</dt><dd id="fortometer-tomorrow">VARIABLE</dd>
-        </dl>
+        <div class="balance-status" id="balance-status" aria-live="polite">
+          FORTUNA IS WAITING.
+        </div>
 
-        <p class="fortometer-note" id="fortometer-note">
-          Corrections generally hold.
-        </p>
+        <div class="balance-key" id="balance-key" hidden>
+          <span>KEY ISSUED</span>
+          <strong id="balance-key-value">------</strong>
+          <small>FAVOR +17</small>
+        </div>
 
-        <a class="fortometer-help" href="/almanac/">what does any of this mean?</a>
+        <div class="balance-actions">
+          <button class="old-button" id="balance-reset" type="button">RESET MACHINE</button>
+        </div>
+      </section>
+
+      <div class="balance-footnote">
+        Same Balance for everybody today. The key does not explain itself.
       </div>
+    </main>
+
+    <aside class="balance-side">
+      <section class="fortometer" id="fortometer" aria-label="Today's Fortuna condition">
+        <div class="fortometer-head">
+          <span>FORTOMETER</span>
+          <a href="/almanac/" aria-label="What does the Fortometer mean?">?</a>
+        </div>
+
+        <div class="fortometer-body">
+          <div class="fortometer-glyph" aria-hidden="true">
+            <span class="weather-frame weather-a">☼</span>
+            <span class="weather-frame weather-b">◐</span>
+          </div>
+
+          <div class="fortometer-reading">
+            <div class="fortometer-label">TODAY'S CONDITION</div>
+            <div class="fortometer-condition" id="fortometer-condition">VARIABLE</div>
+            <div class="fortometer-pressure">
+              <strong id="fortometer-pressure">29.41</strong>
+              <span>fHg</span>
+              <span id="fortometer-trend">FALLING</span>
+            </div>
+          </div>
+
+          <dl class="fortometer-details">
+            <dt>LUNAR AGE</dt><dd id="fortometer-lunar">--.- d</dd>
+            <dt>SEASONAL CARRY</dt><dd id="fortometer-carry">WEST</dd>
+            <dt>STANDARD CORR.</dt><dd id="fortometer-correction">+0.0</dd>
+            <dt>BALANCE STRAIN</dt><dd id="fortometer-strain">--</dd>
+            <dt>TOMORROW</dt><dd id="fortometer-tomorrow">VARIABLE</dd>
+          </dl>
+
+          <p class="fortometer-note" id="fortometer-note">
+            Corrections generally hold.
+          </p>
+
+          <a class="fortometer-help" href="/almanac/">WHAT DOES ANY OF THIS MEAN?</a>
+        </div>
+      </section>
+
+      <section class="balance-side-card">
+        <div class="balance-side-card-head">ABOUT THE BALANCE</div>
+        <div class="balance-side-card-body">
+          <div class="balance-help-gif" aria-hidden="true">
+            <span class="balance-help-frame help-a">⚖</span>
+            <span class="balance-help-frame help-b">⚖</span>
+          </div>
+          <p>
+            Each tile is a two-digit number. Flip a tile to reverse its digits.
+            When both digit columns total the same amount, the Balance is complete.
+          </p>
+          <p>
+            The first number is sealed and cannot be changed.
+          </p>
+        </div>
+      </section>
+
+      <section class="balance-side-card favor-card">
+        <div class="balance-side-card-head">FAVOR</div>
+        <div class="balance-side-card-body">
+          <strong class="favor-award">+17</strong>
+          <p>Issued once per daily Balance.</p>
+        </div>
+      </section>
     </aside>
-  </div>
-
-  <section class="balance-machine" id="balance-machine">
-    <div class="balance-tiles" id="balance-tiles" aria-label="Balance number tiles"></div>
-
-    <div class="balance-readout">
-      <div>
-        <span>LEFT</span>
-        <strong id="balance-left">00</strong>
-      </div>
-
-      <div class="balance-scale" aria-hidden="true">
-        <div class="balance-beam" id="balance-beam"></div>
-        <div class="balance-pivot"></div>
-      </div>
-
-      <div class="right">
-        <span>RIGHT</span>
-        <strong id="balance-right">00</strong>
-      </div>
-    </div>
-
-    <div class="balance-status" id="balance-status" aria-live="polite">
-      FORTUNA IS WAITING.
-    </div>
-
-    <div class="balance-key" id="balance-key" hidden>
-      <span>KEY ISSUED</span>
-      <strong id="balance-key-value">------</strong>
-      <small>FAVOR +17</small>
-    </div>
-
-    <div class="balance-actions">
-      <button class="old-button" id="balance-reset" type="button">RESET MACHINE</button>
-    </div>
-  </section>
-
-  <div class="balance-footnote">
-    One board per day. Same Balance for everybody. The key does not explain itself.
   </div>
 </div>
 
