@@ -12,6 +12,8 @@ title: home
          data-fortune-url="{{ latest_fortune.url }}"
          data-song-title="{{ site.data.weekly.song_title | escape }}">
   <div class="machine-case">
+    <div class="case-stamp">MODEL F-17 / DAILY APPARATUS</div>
+    <div class="machine-plate-label display-label">DISPLAY</div>
     <div class="machine-screen" id="fortuna-screen" aria-live="polite">
       <div class="screen-glass" aria-hidden="true"></div>
       <div class="screen-copy">
@@ -21,6 +23,7 @@ title: home
       </div>
     </div>
 
+    <div class="machine-plate-label number-bank-label">NUMBER BANK</div>
     <div class="roller-bank" id="daily-lucky-numbers" aria-hidden="true">
       {% for i in (1..6) %}
       <div class="lucky-number">
@@ -34,6 +37,7 @@ title: home
       <div class="machine-meter" aria-hidden="true"><span></span></div>
 
       <div class="ask-housing">
+        <div class="control-label">QUERY</div>
         <span id="fortuna-lamp" class="fortuna-lamp" aria-hidden="true"></span>
         <button id="lucky-trigger" class="lucky-trigger" type="button" aria-controls="daily-lucky-numbers">
           ASK
