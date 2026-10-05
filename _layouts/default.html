@@ -230,7 +230,7 @@
       popScreen();
     };
 
-    const writeWords = async (element, text, delay = 92) => {
+    const writeWords = async (element, text, delay = 210) => {
       const parts = String(text || '').trim().split(/\s+/).filter(Boolean);
       element.textContent = '';
 
@@ -240,6 +240,10 @@
         void element.offsetWidth;
         element.classList.add('word-step');
         await sleep(reduced ? 1 : delay);
+      }
+
+      if (!reduced && parts.length > 1) {
+        await sleep(220);
       }
     };
 
@@ -307,8 +311,8 @@
         const item = diagnostics[i];
         kicker.textContent = 'FORTUNA / COMPUTE ' + String(i + 1).padStart(2,'0');
         sub.textContent = item.detail;
-        await writeWords(main, item.text, 88);
-        await sleep(reduced ? 1 : 220);
+        await writeWords(main, item.text, 190);
+        await sleep(reduced ? 1 : 520);
       }
 
       machine.classList.remove('computing');
@@ -371,7 +375,7 @@
 
       kicker.textContent = 'FORTUNA / DRAW ' + String(index + 1).padStart(2,'0');
       sub.textContent = 'CHANNEL ' + String(index + 1).padStart(2,'0') + ' / ACTIVE';
-      const screenWords = writeWords(main, 'NUMBER ' + (index + 1) + ' IN MOTION', 74);
+      const screenWords = writeWords(main, 'NUMBER ' + (index + 1) + ' IN MOTION', 155);
 
       await Promise.all([
         screenWords,
@@ -386,19 +390,19 @@
 
       kicker.textContent = 'FORTUNA / DRAW ' + String(index + 1).padStart(2,'0');
       sub.textContent = 'VALUE ACCEPTED';
-      await writeWords(main, 'NUMBER ' + (index + 1) + ' LOCKED', 68);
+      await writeWords(main, 'NUMBER ' + (index + 1) + ' LOCKED', 145);
       await sleep(reduced ? 5 : 105);
     };
 
     const revealFortune = async () => {
       setDisplay('', '', '');
-      await sleep(reduced ? 5 : 170);
+      await sleep(reduced ? 5 : 360);
 
       machine.classList.add('fortune-revealed');
       kicker.textContent = 'FORTUNA';
       sub.textContent = '';
 
-      await writeWords(main, message, 118);
+      await writeWords(main, message, 235);
 
       sub.textContent =
         'FORTUNE No. ' +
@@ -424,10 +428,10 @@
 
       kicker.textContent = 'FORTUNA / QUERY';
       sub.textContent = 'INPUT ACCEPTED';
-      await writeWords(main, 'QUERY ACCEPTED', 96);
+      await writeWords(main, 'QUERY ACCEPTED', 190);
 
       lamp.classList.add('flicker');
-      await sleep(reduced ? 15 : 520);
+      await sleep(reduced ? 15 : 760);
 
       lamp.classList.remove('flicker');
       lamp.classList.add('on');
@@ -438,10 +442,10 @@
 
       kicker.textContent = 'FORTUNA / DRAW';
       sub.textContent = 'BANK PREP';
-      await writeWords(main, 'PREPARING DRAW', 86);
+      await writeWords(main, 'PREPARING DRAW', 175);
 
       machine.classList.add('shutters-open');
-      await sleep(reduced ? 30 : 820);
+      await sleep(reduced ? 30 : 1120);
 
       for (let i = 0; i < boxes.length; i++) {
         await runBox(i);
@@ -450,7 +454,7 @@
       machine.classList.add('machine-finished');
       await revealFortune();
 
-      await sleep(reduced ? 10 : 520);
+      await sleep(reduced ? 10 : 760);
       document.body.classList.remove('fortuna-power-draw');
 
       trigger.disabled = false;
