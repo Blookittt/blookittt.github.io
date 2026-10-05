@@ -13,10 +13,23 @@ title: home
 {% endif %}
 
 <div class="home-grid">
+  <aside class="past-posts">
+    <h3>PAST POSTS</h3>
+    <ol class="past-post-list">
+      {% for post in site.posts offset:1 limit:12 %}
+        <li>
+          <span>{{ post.date | date: "%m.%d" }}</span>
+          <a href="{{ post.url }}">{{ post.title }}</a>
+        </li>
+      {% endfor %}
+    </ol>
+    <a class="all-link" href="/archive/">ARCHIVE →</a>
+  </aside>
+
   <section class="posts-column">
     <div class="box-label latest-label">LATEST</div>
 
-    {% for post in site.posts limit:10 %}
+    {% for post in site.posts limit:6 %}
       <article class="entry">
         <div class="entry-meta">
           {{ post.date | date: "%m.%d.%y" }}
