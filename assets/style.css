@@ -1200,3 +1200,98 @@ body::after{
     max-width:220px;
   }
 }
+
+
+/* BLOOFORTUNE SCALE PASS v3 — let the rails breathe */
+.shell{
+  width:min(1340px,calc(100% - 44px));
+  padding-top:34px;
+}
+.masthead-center{
+  padding-top:12px;
+  padding-bottom:13px;
+}
+.exact-ascii-title{
+  font-size:clamp(5px,.78vw,11.8px);
+  line-height:.92;
+  letter-spacing:-.03em;
+}
+.lucky-neon-center{
+  margin-top:14px;
+  font-size:clamp(16px,1.45vw,22px);
+}
+.nav{
+  margin:20px 0 34px;
+  gap:8px 19px;
+}
+.fortune{
+  width:min(680px,86%);
+  margin-top:22px;
+  margin-bottom:44px;
+}
+
+.home-grid{
+  grid-template-columns:240px minmax(0,620px) 280px;
+  justify-content:space-between;
+  gap:34px;
+  align-items:start;
+}
+.past-posts{
+  width:100%;
+  justify-self:start;
+}
+.posts-column{
+  width:100%;
+  justify-self:center;
+}
+.weekly-column{
+  width:100%;
+  justify-self:end;
+}
+.past-posts h3,
+.weekly-widget h3{
+  font-size:12px;
+}
+.past-post-list a{
+  font-size:12px;
+}
+.left-picture-widget{
+  margin-top:38px;
+}
+.left-picture-widget .picture-frame{
+  padding:10px;
+}
+.song-frame{
+  padding:14px;
+}
+.song-title{
+  font-size:22px;
+}
+.song-eq{
+  height:64px;
+  margin-top:20px;
+}
+
+@media (max-width:1180px){
+  .shell{
+    width:min(1080px,calc(100% - 36px));
+  }
+  .home-grid{
+    grid-template-columns:190px minmax(0,1fr) 240px;
+    gap:28px;
+  }
+  .exact-ascii-title{
+    font-size:clamp(4px,.72vw,8.4px);
+  }
+}
+@media (max-width:900px){
+  .home-grid{
+    grid-template-columns:170px minmax(0,1fr);
+  }
+  .weekly-column{
+    grid-column:1 / -1;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+  }
+}
