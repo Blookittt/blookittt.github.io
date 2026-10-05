@@ -1,0 +1,261 @@
+---
+layout: default
+title: balance
+permalink: /balance/
+---
+<div class="balance-page">
+  <div class="section-title-row">
+    <h1>THE BALANCE</h1>
+    <span id="balance-date">DAILY</span>
+  </div>
+
+  <div class="balance-rule">
+    Flip the numbers until the left digits and right digits weigh exactly the same.
+    The sealed number stays put.
+  </div>
+
+  <section class="balance-machine" id="balance-machine">
+    <div class="balance-tiles" id="balance-tiles" aria-label="Balance number tiles"></div>
+
+    <div class="balance-readout">
+      <div>
+        <span>LEFT</span>
+        <strong id="balance-left">00</strong>
+      </div>
+
+      <div class="balance-scale" aria-hidden="true">
+        <div class="balance-beam" id="balance-beam"></div>
+        <div class="balance-pivot"></div>
+      </div>
+
+      <div class="right">
+        <span>RIGHT</span>
+        <strong id="balance-right">00</strong>
+      </div>
+    </div>
+
+    <div class="balance-status" id="balance-status" aria-live="polite">
+      FORTUNA IS WAITING.
+    </div>
+
+    <div class="balance-key" id="balance-key" hidden>
+      <span>KEY ISSUED</span>
+      <strong id="balance-key-value">------</strong>
+      <small>FAVOR +17</small>
+    </div>
+
+    <div class="balance-actions">
+      <button class="old-button" id="balance-reset" type="button">RESET MACHINE</button>
+    </div>
+  </section>
+
+  <div class="balance-footnote">
+    One board per day. Same Balance for everybody. The key does not explain itself.
+  </div>
+</div>
+
+<script>
+(() => {
+  const root = document.getElementById('balance-machine');
+  if (!root) return;
+
+  const tiles = document.getElementById('balance-tiles');
+  const leftEl = document.getElementById('balance-left');
+  const rightEl = document.getElementById('balance-right');
+  const beam = document.getElementById('balance-beam');
+  const status = document.getElementById('balance-status');
+  const keyBox = document.getElementById('balance-key');
+  const keyValue = document.getElementById('balance-key-value');
+  const reset = document.getElementById('balance-reset');
+  const dateEl = document.getElementById('balance-date');
+
+  const now = new Date();
+  const dateKey =
+    now.getFullYear() + '-' +
+    String(now.getMonth() + 1).padStart(2,'0') + '-' +
+    String(now.getDate()).padStart(2,'0');
+
+  dateEl.textContent = dateKey.replaceAll('-', '.');
+
+  const hash = str => {
+    let h = 2166136261 >>> 0;
+    for (let i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  };
+
+  const rng = seed => () => {
+    seed |= 0;
+    seed = seed + 0x6D2B79F5 | 0;
+    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+
+  const random = rng(hash('FORTUNA/BALANCE/' + dateKey));
+
+  const oriented = (pair, flipped) => flipped ? [pair[1], pair[0]] : pair;
+
+  const countSolutions = pairs => {
+    let count = 0;
+    let solvedMask = 0;
+
+    for (let mask = 0; mask < 32; mask++) {
+      let left = pairs[0][0];
+      let right = pairs[0][1];
+
+      for (let i = 1; i < 6; i++) {
+        const flipped = Boolean(mask & (1 << (i - 1)));
+        const p = oriented(pairs[i], flipped);
+        left += p[0];
+        right += p[1];
+      }
+
+      if (left === right) {
+        count++;
+        solvedMask = mask;
+      }
+    }
+
+    return { count, solvedMask };
+  };
+
+  const makePuzzle = () => {
+    for (let attempt = 0; attempt < 5000; attempt++) {
+      const solvedPairs = [];
+      let diff = 0;
+
+      for (let i = 0; i < 5; i++) {
+        let a = Math.floor(random() * 10);
+        let b = Math.floor(random() * 10);
+        if (a === b) b = (b + 1 + Math.floor(random() * 8)) % 10;
+        solvedPairs.push([a,b]);
+        diff += a - b;
+      }
+
+      if (Math.abs(diff) > 9) continue;
+
+      const needed = -diff;
+      const candidates = [];
+      for (let a = 0; a <= 9; a++) {
+        const b = a - needed;
+        if (b >= 0 && b <= 9 && a !== b) candidates.push([a,b]);
+      }
+      if (!candidates.length) continue;
+
+      solvedPairs.push(candidates[Math.floor(random() * candidates.length)]);
+
+      const solutionInfo = countSolutions(solvedPairs);
+      if (solutionInfo.count !== 1) continue;
+
+      const solvedMask = solutionInfo.solvedMask;
+      let scrambleMask = 0;
+      let flips = 0;
+
+      while (flips < 2 || flips > 4 || scrambleMask === solvedMask) {
+        scrambleMask = Math.floor(random() * 32);
+        flips = 0;
+        for (let i = 0; i < 5; i++) {
+          if (scrambleMask & (1 << i)) flips++;
+        }
+      }
+
+      const shownPairs = solvedPairs.map((pair, i) => {
+        if (i === 0) return pair.slice();
+        const flip = Boolean(scrambleMask & (1 << (i - 1)));
+        return oriented(pair, flip).slice();
+      });
+
+      return { solvedPairs, shownPairs };
+    }
+
+    return {
+      solvedPairs:[[3,8],[2,7],[4,9],[6,3],[6,0],[7,1]],
+      shownPairs:[[3,8],[7,2],[4,9],[3,6],[6,0],[7,1]]
+    };
+  };
+
+  const puzzle = makePuzzle();
+  let state = puzzle.shownPairs.map((pair, i) => ({
+    pair: pair.slice(),
+    flipped: false,
+    sealed: i === 0
+  }));
+
+  const pairNow = item => item.flipped ? [item.pair[1], item.pair[0]] : item.pair;
+
+  const render = () => {
+    tiles.innerHTML = '';
+
+    state.forEach((item, index) => {
+      const p = pairNow(item);
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'balance-tile' + (item.sealed ? ' sealed' : '');
+      button.disabled = item.sealed;
+      button.setAttribute(
+        'aria-label',
+        item.sealed
+          ? 'Sealed number ' + p.join('')
+          : 'Flip ' + p.join('') + ' to ' + p[1] + p[0]
+      );
+
+      const number = document.createElement('strong');
+      number.textContent = p.join('');
+
+      const note = document.createElement('span');
+      note.textContent = item.sealed ? 'SEALED' : 'FLIP';
+
+      button.append(number, note);
+
+      if (!item.sealed) {
+        button.addEventListener('click', () => {
+          state[index].flipped = !state[index].flipped;
+          render();
+        });
+      }
+
+      tiles.appendChild(button);
+    });
+
+    const pairs = state.map(pairNow);
+    const left = pairs.reduce((sum, p) => sum + p[0], 0);
+    const right = pairs.reduce((sum, p) => sum + p[1], 0);
+    const diff = left - right;
+
+    leftEl.textContent = String(left).padStart(2,'0');
+    rightEl.textContent = String(right).padStart(2,'0');
+    beam.style.transform = 'rotate(' + Math.max(-9, Math.min(9, diff * 1.3)) + 'deg)';
+
+    const solved = diff === 0;
+    root.classList.toggle('solved', solved);
+    keyBox.hidden = !solved;
+
+    if (solved) {
+      const key = pairs.map(p => p[0]).join('');
+      keyValue.textContent = key;
+      status.textContent = 'CLUNK. THE BALANCE ACCEPTS IT.';
+
+      if (window.FortunaProfile) {
+        FortunaProfile.bumpFavorOnce('balance:' + dateKey, 17);
+      }
+    } else {
+      status.textContent = (diff > 0 ? 'LEFT' : 'RIGHT') + ' IS HEAVIER BY ' + Math.abs(diff) + '.';
+    }
+  };
+
+  reset.addEventListener('click', () => {
+    state = puzzle.shownPairs.map((pair, i) => ({
+      pair: pair.slice(),
+      flipped: false,
+      sealed: i === 0
+    }));
+    render();
+    status.textContent = 'FORTUNA IS WAITING.';
+  });
+
+  render();
+})();
+</script>
