@@ -316,84 +316,132 @@
 
     const teaseDigit = (digit, targetChar, localRand, delayBase, onDone) => {
       const target = Number(targetChar);
-      const fakeNeighbor = (target + (localRand() < .5 ? 1 : 9)) % 10;
-      const fakeNeighbor2 = (target + (localRand() < .5 ? 2 : 8)) % 10;
+
+      // All motion is downward. No teleporty random flickering.
+      let current = 9 - Math.floor(localRand() * 3);
+      digit.textContent = String(current);
+
+      const down = () => {
+        current = (current - 1 + 10) % 10;
+        digit.textContent = String(current);
+      };
 
       const phases = [
-        { count: 9 + Math.floor(localRand() * 4), delay: 34 },
-        { count: 7 + Math.floor(localRand() * 4), delay: 48 },
-        { count: 5 + Math.floor(localRand() * 3), delay: 67 },
-        { count: 4, delay: 92 }
+        { count: 12 + Math.floor(localRand() * 5), delay: 30 },
+        { count: 10 + Math.floor(localRand() * 4), delay: 44 },
+        { count: 8 + Math.floor(localRand() * 4), delay: 63 },
+        { count: 6 + Math.floor(localRand() * 3), delay: 88 },
+        { count: 4 + Math.floor(localRand() * 2), delay: 122 }
       ];
 
       let phase = 0;
       let step = 0;
-      let teaseStage = 0;
 
-      const flash = (value, ms, next) => {
-        digit.textContent = String(value);
+      const pulse = () => {
+        digit.classList.add('is-ticking');
+        window.setTimeout(() => digit.classList.remove('is-ticking'), 42);
+      };
+
+      const runPhase = () => {
+        if (phase >= phases.length) {
+          runTease();
+          return;
+        }
+
+        const p = phases[phase];
+        down();
+        pulse();
+        step++;
+
+        if (step >= p.count) {
+          phase++;
+          step = 0;
+        }
+
+        const wobble = Math.floor(localRand() * 18);
+        window.setTimeout(runPhase, p.delay + wobble);
+      };
+
+      const descendUntil = (goal, delay, callback, loopsMinimum = 0) => {
+        let loops = 0;
+        const stepDown = () => {
+          down();
+          pulse();
+          if (current === goal && loops >= loopsMinimum) {
+            callback();
+            return;
+          }
+          loops++;
+          window.setTimeout(stepDown, delay + Math.floor(localRand() * 24));
+        };
+        stepDown();
+      };
+
+      const fakeLand = (holdMs, slipDelay, callback) => {
+        digit.textContent = targetChar;
+        current = target;
         digit.classList.add('is-near');
         window.setTimeout(() => {
           digit.classList.remove('is-near');
-          next();
-        }, ms);
-      };
 
-      const tick = () => {
-        const p = phases[Math.min(phase, phases.length - 1)];
-
-        if (phase < phases.length) {
-          let value = Math.floor(localRand() * 10);
-
-          // As it slows, suspiciously drift toward the answer.
-          if (phase >= 2 && localRand() < .45) {
-            value = (target + (localRand() < .5 ? 1 : 9)) % 10;
-          }
-
-          digit.textContent = String(value);
-          digit.classList.add('is-ticking');
-          window.setTimeout(() => digit.classList.remove('is-ticking'), 34);
-
-          step++;
-          if (step >= p.count) {
-            phase++;
-            step = 0;
-          }
-
-          const wobble = Math.floor(localRand() * 18);
-          window.setTimeout(tick, p.delay + wobble);
-          return;
-        }
-
-        // The cheap carnival tease: "there it is— nope."
-        if (teaseStage === 0) {
-          teaseStage++;
-          flash(target, 115 + Math.floor(localRand() * 55), () => {
-            digit.textContent = String(fakeNeighbor);
+          // cruelly roll one click past the answer
+          window.setTimeout(() => {
+            down();
             digit.classList.add('is-slip');
             window.setTimeout(() => {
               digit.classList.remove('is-slip');
-              tick();
-            }, 150 + Math.floor(localRand() * 90));
-          });
-          return;
-        }
-
-        if (teaseStage === 1) {
-          teaseStage++;
-          flash(fakeNeighbor2, 140 + Math.floor(localRand() * 70), () => {
-            tick();
-          });
-          return;
-        }
-
-        // Final slow click.
-        digit.textContent = targetChar;
-        digit.classList.add('is-settled');
-        if (onDone) onDone();
+              callback();
+            }, 150 + Math.floor(localRand() * 80));
+          }, slipDelay);
+        }, holdMs);
       };
 
-      window.setTimeout(tick, delayBase);
+      const runTease = () => {
+        // First approach: several slow clicks, lands on the real digit, then betrays you.
+        descendUntil(
+          target,
+          145 + Math.floor(localRand() * 28),
+          () => fakeLand(
+            140 + Math.floor(localRand() * 70),
+            80 + Math.floor(localRand() * 55),
+            () => {
+              // One full-ish slow orbit before the second almost-win.
+              descendUntil(
+                target,
+                175 + Math.floor(localRand() * 35),
+                () => fakeLand(
+                  190 + Math.floor(localRand() * 85),
+                  110 + Math.floor(localRand() * 65),
+                  () => {
+                    // Final Zoltar crawl. This one takes its sweet time.
+                    descendUntil(
+                      target,
+                      225 + Math.floor(localRand() * 55),
+                      () => {
+                        window.setTimeout(() => {
+                          digit.textContent = targetChar;
+                          current = target;
+                          digit.classList.add('is-settled');
+                          if (onDone) onDone();
+                        }, 180 + Math.floor(localRand() * 90));
+                      },
+                      2
+                    );
+                  }
+                ),
+                4
+              );
+            }
+          ),
+          2
+        );
+      };
+
+      window.setTimeout(() => {
+        digit.classList.add('is-armed');
+        window.setTimeout(() => digit.classList.remove('is-armed'), 180);
+        runPhase();
+      }, delayBase);
     };
 
     numberEls.forEach((numberEl, index) => {
