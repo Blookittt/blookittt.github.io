@@ -832,3 +832,124 @@ body::after{
   48%{filter:brightness(.997)}
   52%{filter:brightness(1.003)}
 }
+
+
+/* ASCII station banner — candidate 01 */
+.sr-only{
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0;
+}
+.masthead-ascii{
+  position:relative;
+  overflow:hidden;
+  padding:20px 22px 17px;
+  border:0;
+  border-left:3px solid var(--pink);
+  border-bottom:1px solid rgba(255,115,200,.22);
+  background:
+    linear-gradient(90deg,rgba(255,115,200,.065),transparent 42%),
+    rgba(24,18,30,.72);
+  box-shadow:none;
+  transform:none;
+}
+.ascii-brand{
+  display:block;
+  width:100%;
+  color:inherit;
+  text-decoration:none;
+}
+.ascii-title{
+  margin:0;
+  max-width:100%;
+  overflow:hidden;
+  color:var(--ink);
+  font-family:"Courier New",Courier,monospace;
+  font-size:clamp(4.5px,.68vw,9px);
+  font-weight:700;
+  line-height:.90;
+  letter-spacing:-.08em;
+  white-space:pre;
+  text-shadow:
+    0 0 6px rgba(243,231,238,.055),
+    0 0 13px rgba(255,115,200,.035);
+}
+.lucky-neon{
+  display:flex;
+  align-items:center;
+  gap:.18em;
+  margin:14px 0 0 3px;
+  color:var(--pink);
+  font:500 clamp(14px,1.4vw,20px)/1 "Courier New",Courier,monospace;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.lucky-neon span:not(.neon-gap){
+  opacity:.14;
+  text-shadow:none;
+  animation:neon-letter-on .56s steps(1,end) forwards;
+}
+.lucky-neon .neon-gap{width:.45em}
+.lucky-neon span:nth-child(1){animation-delay:.08s}
+.lucky-neon span:nth-child(2){animation-delay:.16s}
+.lucky-neon span:nth-child(3){animation-delay:.28s}
+.lucky-neon span:nth-child(4){animation-delay:.39s}
+.lucky-neon span:nth-child(5){animation-delay:.49s}
+.lucky-neon span:nth-child(7){animation-delay:.62s}
+.lucky-neon span:nth-child(8){animation-delay:.72s}
+.lucky-neon span:nth-child(9){animation-delay:.84s}
+
+/* one slightly stubborn tube */
+.lucky-neon span:nth-child(3){
+  animation-name:neon-letter-bad;
+  animation-duration:.78s;
+}
+
+@keyframes neon-letter-on{
+  0%,18%{opacity:.12;text-shadow:none}
+  19%{
+    opacity:1;
+    text-shadow:
+      0 0 4px rgba(255,115,200,.88),
+      0 0 12px rgba(255,115,200,.42);
+  }
+  28%{opacity:.34;text-shadow:none}
+  38%,100%{
+    opacity:1;
+    text-shadow:
+      0 0 4px rgba(255,115,200,.82),
+      0 0 13px rgba(255,115,200,.35);
+  }
+}
+@keyframes neon-letter-bad{
+  0%,13%{opacity:.10;text-shadow:none}
+  14%{opacity:1;text-shadow:0 0 4px rgba(255,115,200,.9),0 0 13px rgba(255,115,200,.45)}
+  22%{opacity:.08;text-shadow:none}
+  31%{opacity:.88;text-shadow:0 0 4px rgba(255,115,200,.7)}
+  39%{opacity:.18;text-shadow:none}
+  50%,100%{opacity:1;text-shadow:0 0 4px rgba(255,115,200,.82),0 0 13px rgba(255,115,200,.35)}
+}
+@media (max-width:700px){
+  .masthead-ascii{padding:15px 12px 13px}
+  .ascii-title{
+    font-size:clamp(3px,.73vw,5.2px);
+    letter-spacing:-.10em;
+  }
+  .lucky-neon{
+    margin-top:11px;
+    font-size:13px;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .lucky-neon span:not(.neon-gap){
+    animation:none;
+    opacity:1;
+    text-shadow:0 0 4px rgba(255,115,200,.7),0 0 10px rgba(255,115,200,.25);
+  }
+}
