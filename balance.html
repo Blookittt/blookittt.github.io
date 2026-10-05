@@ -23,54 +23,93 @@ permalink: /balance/
 
   <div class="balance-ui-grid">
     <main class="balance-main">
-      <section class="balance-machine" id="balance-machine">
+      <section class="balance-machine balance-apparatus" id="balance-machine">
+        <div class="apparatus-corner screw-nw" aria-hidden="true"></div>
+        <div class="apparatus-corner screw-ne" aria-hidden="true"></div>
+        <div class="apparatus-corner screw-sw" aria-hidden="true"></div>
+        <div class="apparatus-corner screw-se" aria-hidden="true"></div>
+
         <div class="balance-machine-head">
-          <span>APPARATUS / ACTIVE</span>
+          <span>FORTUNA / APPARATUS No. 1</span>
           <span>ONE BOARD PER DAY</span>
         </div>
 
-        <div class="balance-tiles" id="balance-tiles" aria-label="Balance number tiles"></div>
+        <div class="apparatus-title-plate" aria-hidden="true">
+          <span>THE BALANCE</span>
+        </div>
 
-        <div class="balance-readout">
-          <div>
+        <div class="apparatus-number-deck">
+          <div class="apparatus-side-legend left" aria-hidden="true">
+            <span class="legend-star">✦</span>
+            <span>NUMBERS</span>
+            <span>HAVE</span>
+            <span>WEIGHT</span>
+          </div>
+
+          <div class="balance-bank-frame">
+            <div class="balance-bank-label">NUMBER BANK</div>
+            <div class="balance-tiles" id="balance-tiles" aria-label="Balance number tiles"></div>
+          </div>
+
+          <div class="apparatus-side-legend right" aria-hidden="true">
+            <span>A MORE</span>
+            <span>BALANCED</span>
+            <span>YOU</span>
+            <span class="legend-rule"></span>
+            <span>SAME</span>
+            <span>TOMORROW</span>
+            <span>BRIGHTER</span>
+            <span>ANYWAY</span>
+          </div>
+        </div>
+
+        <div class="balance-scale-chamber">
+          <div class="balance-total-box left-total-box">
             <span>LEFT TOTAL</span>
             <strong id="balance-left">00</strong>
           </div>
 
           <div class="balance-scale" aria-hidden="true">
-            <div class="balance-beam" id="balance-beam"></div>
+            <div class="balance-beam" id="balance-beam">
+              <span class="beam-weight beam-left"></span>
+              <span class="beam-weight beam-right"></span>
+            </div>
             <div class="balance-pivot"></div>
+            <div class="balance-base"></div>
           </div>
 
-          <div class="right">
+          <div class="balance-total-box right-total-box">
             <span>RIGHT TOTAL</span>
             <strong id="balance-right">00</strong>
           </div>
-        </div>
-
-        <div class="balance-attempts" id="balance-attempts">
-          <div>
-            <span>WEIGHS REMAINING</span>
-            <strong id="balance-attempt-count">3</strong>
-          </div>
-          <div class="attempt-pips" id="balance-attempt-pips" aria-hidden="true">
-            <span></span><span></span><span></span>
-          </div>
-          <button class="balance-weigh-button" id="balance-weigh" type="button">WEIGH</button>
         </div>
 
         <div class="balance-status" id="balance-status" aria-live="polite">
           ARRANGE THE NUMBERS. WEIGH WHEN READY.
         </div>
 
-        <div class="balance-key" id="balance-key" hidden>
-          <span>KEY ISSUED</span>
-          <strong id="balance-key-value">------</strong>
-          <small id="balance-key-favor">FAVOR +17</small>
-        </div>
+        <div class="apparatus-control-deck">
+          <div class="balance-attempts" id="balance-attempts">
+            <div class="attempt-copy">
+              <span>WEIGHS REMAINING</span>
+              <strong id="balance-attempt-count">3</strong>
+            </div>
+            <div class="attempt-pips" id="balance-attempt-pips" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+            <button class="balance-weigh-button" id="balance-weigh" type="button">WEIGH</button>
+          </div>
 
-        <div class="balance-actions">
-          <button class="old-button" id="balance-reset" type="button">RESET MACHINE</button>
+          <div class="balance-key" id="balance-key" hidden>
+            <span>KEY ISSUED</span>
+            <strong id="balance-key-value">------</strong>
+            <small id="balance-key-favor">FAVOR +17</small>
+          </div>
+
+          <div class="balance-actions">
+            <span class="control-deck-label">SERVICE</span>
+            <button class="old-button" id="balance-reset" type="button">RESET MACHINE</button>
+          </div>
         </div>
       </section>
 
@@ -529,13 +568,18 @@ permalink: /balance/
           : 'Flip ' + p.join('') + ' to ' + p[1] + p[0]
       );
 
+      const windowFrame = document.createElement('span');
+      windowFrame.className = 'balance-number-window';
+
       const number = document.createElement('strong');
       number.textContent = p.join('');
+      windowFrame.appendChild(number);
 
       const note = document.createElement('span');
-      note.textContent = item.sealed ? 'SEALED' : 'FLIP';
+      note.className = 'balance-tile-control';
+      note.textContent = item.sealed ? '▣ SEALED' : '▲ FLIP ▼';
 
-      button.append(number, note);
+      button.append(windowFrame, note);
 
       if (!item.sealed) {
         button.addEventListener('click', () => {
