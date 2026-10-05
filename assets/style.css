@@ -790,3 +790,262 @@ button,input{
     transition-duration:.001ms!important;
   }
 }
+
+
+/* FORTUNA — CLUNK / COMPUTE / POWER DRAW PASS */
+
+/* The rest of the website loses a little voltage while Fortuna is working. */
+body,
+.page-wrap,
+.site-header,
+.site-nav,
+.home-grid,
+.site-footer{
+  transition:
+    background-color .32s ease,
+    filter .32s ease;
+}
+
+.fortuna-power-draw{
+  background:#c3bcb2;
+}
+
+.fortuna-power-draw .page-wrap{
+  background:#ddd6cb;
+}
+
+.fortuna-power-draw .site-header,
+.fortuna-power-draw .site-nav,
+.fortuna-power-draw .home-grid,
+.fortuna-power-draw .site-footer{
+  filter:brightness(.92) saturate(.94);
+}
+
+.fortuna-power-draw .machine-case{
+  box-shadow:
+    inset 0 0 0 1px #766b6f,
+    inset 0 -14px 28px rgba(0,0,0,.24),
+    0 9px 16px rgba(56,44,49,.17),
+    0 0 18px rgba(188,107,135,.045);
+}
+
+/* Heavier, serviceable cabinet. */
+.machine-case{
+  padding:23px 23px 19px;
+  border:3px solid #484144;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,.012) 0 1px,
+      transparent 1px 4px
+    ),
+    linear-gradient(180deg,#3c3639 0%,#282426 100%);
+  box-shadow:
+    inset 0 0 0 1px #766b6f,
+    inset 0 -14px 28px rgba(0,0,0,.22),
+    0 8px 14px rgba(56,44,49,.15);
+}
+
+.machine-case::before{
+  inset:7px;
+  border:1px solid rgba(231,220,210,.075);
+  background:
+    radial-gradient(circle at 9px 9px,#9a918d 0 1.5px,#443e40 1.7px 3px,transparent 3.2px),
+    radial-gradient(circle at calc(100% - 9px) 9px,#9a918d 0 1.5px,#443e40 1.7px 3px,transparent 3.2px),
+    radial-gradient(circle at 9px calc(100% - 9px),#9a918d 0 1.5px,#443e40 1.7px 3px,transparent 3.2px),
+    radial-gradient(circle at calc(100% - 9px) calc(100% - 9px),#9a918d 0 1.5px,#443e40 1.7px 3px,transparent 3.2px);
+}
+
+.case-stamp{
+  position:absolute;
+  top:9px;
+  right:14px;
+  z-index:2;
+  color:#8e8488;
+  font:7px/1 "Courier New",monospace;
+  letter-spacing:.10em;
+}
+
+.machine-plate-label{
+  position:relative;
+  z-index:2;
+  width:min(560px,100%);
+  margin-left:auto;
+  margin-right:auto;
+  color:#9d9397;
+  font:7px/1 "Courier New",monospace;
+  letter-spacing:.14em;
+}
+
+.display-label{
+  margin-bottom:5px;
+}
+
+.number-bank-label{
+  margin-top:2px;
+  margin-bottom:5px;
+}
+
+/* The glass is recessed well behind a thick bezel. */
+.machine-screen{
+  min-height:154px;
+  margin-bottom:13px;
+  border:4px solid #3d373a;
+  outline:1px solid #71686c;
+  outline-offset:0;
+  box-shadow:
+    0 2px 0 rgba(255,255,255,.025),
+    0 0 0 2px #242124,
+    inset 0 0 36px rgba(0,0,0,.94),
+    inset 0 0 0 2px rgba(255,255,255,.010);
+}
+
+.screen-glass{
+  background:
+    linear-gradient(
+      118deg,
+      rgba(255,255,255,.045),
+      transparent 22%,
+      transparent 68%,
+      rgba(255,255,255,.018)
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,.014) 0 1px,
+      transparent 1px 4px
+    );
+}
+
+.screen-main.word-step{
+  animation:screen-word-step .095s steps(2,end) 1;
+}
+
+@keyframes screen-word-step{
+  0%{opacity:.45;filter:brightness(1.32)}
+  45%{opacity:1}
+  70%{opacity:.72}
+  100%{opacity:1;filter:brightness(1)}
+}
+
+/* Number bank is its own bolted-in module, not six floating boxes. */
+.roller-bank{
+  max-width:560px;
+  padding:9px 10px;
+  gap:8px;
+  background:#242023;
+  border:2px solid #4c4548;
+  box-shadow:
+    0 0 0 1px #71676b,
+    inset 0 1px 0 rgba(255,255,255,.025),
+    inset 0 -7px 14px rgba(0,0,0,.20);
+}
+
+.lucky-number{
+  border-color:#665d61;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025),
+    inset 0 -1px 0 rgba(0,0,0,.5),
+    0 0 0 1px #211e20;
+}
+
+/* Quicker shutters, still heavy. */
+.roller-shutter{
+  transition:transform .54s cubic-bezier(.18,.8,.25,1);
+}
+
+.shutters-open .lucky-number:nth-child(1) .roller-shutter{transition-delay:0s}
+.shutters-open .lucky-number:nth-child(2) .roller-shutter{transition-delay:.07s}
+.shutters-open .lucky-number:nth-child(3) .roller-shutter{transition-delay:.14s}
+.shutters-open .lucky-number:nth-child(4) .roller-shutter{transition-delay:.21s}
+.shutters-open .lucky-number:nth-child(5) .roller-shutter{transition-delay:.28s}
+.shutters-open .lucky-number:nth-child(6) .roller-shutter{transition-delay:.35s}
+
+/* The meters stop being decoration while the arithmetic is happening. */
+.machine-meter span{
+  width:100%;
+  transform:scaleX(.10);
+  transform-origin:left center;
+}
+
+.awake .machine-meter span{
+  width:100%;
+  transform:scaleX(1);
+}
+
+.computing .machine-meter span{
+  animation:fortuna-compute-meter .44s steps(5,end) infinite;
+}
+
+.computing .machine-screen{
+  box-shadow:
+    0 0 0 2px #242124,
+    inset 0 0 32px rgba(0,0,0,.86),
+    inset 0 0 24px rgba(188,107,135,.035),
+    0 0 8px rgba(188,107,135,.035);
+}
+
+@keyframes fortuna-compute-meter{
+  0%{transform:scaleX(.12);background:#795c67}
+  22%{transform:scaleX(.46);background:#9a6578}
+  47%{transform:scaleX(.81);background:#b86d86}
+  66%{transform:scaleX(.35);background:#8b6270}
+  100%{transform:scaleX(1);background:#b86d86}
+}
+
+/* QUERY control looks like a replaceable panel. */
+.ask-housing{
+  width:142px;
+  padding:23px 14px 12px;
+  border:2px solid #514a4c;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255,.014) 0 1px,
+      transparent 1px 5px
+    ),
+    #3a3436;
+  box-shadow:
+    0 0 0 1px #71676b,
+    inset 0 1px 0 rgba(255,255,255,.035),
+    inset 0 -6px 10px rgba(0,0,0,.18);
+}
+
+.control-label{
+  position:absolute;
+  top:7px;
+  left:9px;
+  color:#958b8e;
+  font:7px/1 "Courier New",monospace;
+  letter-spacing:.13em;
+}
+
+.fortuna-lamp{
+  left:auto;
+  right:10px;
+  top:6px;
+  margin-left:0;
+}
+
+.lucky-trigger{
+  border-radius:2px;
+  box-shadow:
+    inset 1px 1px 0 #f6ecd7,
+    inset -2px -2px 0 #91846d,
+    0 4px 0 #665b49,
+    0 5px 6px rgba(0,0,0,.18);
+}
+
+@media (max-width:520px){
+  .machine-case{
+    padding:20px 12px 13px;
+  }
+
+  .case-stamp{
+    right:10px;
+    font-size:6px;
+  }
+
+  .roller-bank{
+    padding:7px;
+  }
+}
