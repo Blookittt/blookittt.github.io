@@ -216,15 +216,77 @@
     const boxes = Array.from(rollers.querySelectorAll('.lucky-number'));
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let busy = false;
+    let activeRareEvent = null;
+    let numberRegretUsed = false;
 
     const sleep = (ms) => new Promise(resolve => window.setTimeout(resolve, ms));
+
+    const chaosRandom = () => {
+      if (window.crypto && window.crypto.getRandomValues) {
+        const a = new Uint32Array(1);
+        window.crypto.getRandomValues(a);
+        return a[0] / 4294967296;
+      }
+      return Math.random();
+    };
+
+    const rareEvents = [
+      { id:'falseStart', odds:18 },
+      { id:'barEarly', odds:24 },
+      { id:'fuckYou', odds:30 },
+      { id:'insertDisc', odds:40 },
+      { id:'youAgain', odds:45 },
+      { id:'numberRegret', odds:55 },
+      { id:'niceShirt', odds:60 },
+      { id:'badPosture', odds:65 },
+      { id:'bonusZero', odds:70 },
+      { id:'tooMuchFavor', odds:75 },
+      { id:'whateverPercent', odds:80 },
+      { id:'somebodyElse', odds:90 },
+      { id:'littleGuy', odds:100 },
+      { id:'frankenhooker', odds:110 },
+      { id:'cabinetKnock', odds:125 },
+      { id:'spellingProblem', odds:150 },
+      { id:'wrongFortune', odds:175 },
+      { id:'deepDark', odds:200 },
+      { id:'helloTony', odds:225 },
+      { id:'machineArgument', odds:250 },
+      { id:'coinReturn', odds:300 },
+      { id:'favorDenied', odds:333 },
+      { id:'fourthFirst', odds:400 },
+      { id:'onBreak', odds:500 },
+      { id:'closeTab', odds:600 },
+      { id:'rememberThis', odds:750 },
+      { id:'fortunaQuestion', odds:900 },
+      { id:'refuse', odds:1000 },
+      { id:'notPerson', odds:1200 },
+      { id:'thatWasWeird', odds:1500 },
+      { id:'seventeenIncident', odds:2000 },
+      { id:'letMeOut', odds:2500 },
+      { id:'tonyHi', odds:4096 }
+    ];
+
+    const selectRareEvent = () => {
+      // One weird thing maximum per consultation. Most consultations get nothing.
+      const ordered = rareEvents.slice().sort((a,b) => b.odds - a.odds);
+      for (const event of ordered) {
+        if (chaosRandom() < (1 / event.odds)) return event;
+      }
+      return null;
+    };
 
     let progressToken = 0;
 
     const setProgress = (value) => {
       const shown = Math.max(0, Math.min(100, Math.round(value)));
       if (progressFill) progressFill.style.width = shown + '%';
-      if (progressReadout) progressReadout.textContent = String(shown).padStart(2, '0') + '%';
+      if (progressReadout) {
+        if (activeRareEvent && activeRareEvent.id === 'whateverPercent' && shown >= 34 && shown < 100) {
+          progressReadout.textContent = 'WHATEVER%';
+        } else {
+          progressReadout.textContent = String(shown).padStart(2, '0') + '%';
+        }
+      }
     };
 
     const progressPrograms = [
@@ -236,7 +298,9 @@
 
     const runFakeProgress = async (token) => {
       const r = rng(seed ^ 0xF017A);
-      const program = progressPrograms[Math.floor(r() * progressPrograms.length)];
+      const program = activeRareEvent && activeRareEvent.id === 'barEarly'
+        ? [[8,420],[23,520],[51,560],[79,620],[96,540],[100,620]]
+        : progressPrograms[Math.floor(r() * progressPrograms.length)];
 
       for (const [value, delay] of program) {
         if (token !== progressToken) return;
@@ -296,7 +360,6 @@
 
     const diagnosticPool = [
       { text:'WATCHING FRANKENHOOKER', detail:'HOLD ON THIS PART RULES' },
-      { text:'FUCK YOU...', detail:'SORRY WRONG WINDOW' },
       { text:'INSTALLING MALWARE', detail:'63% / MY BAD' },
       { text:'GOOGLING HOW TO DO THIS', detail:'RESULTS BAD' },
       { text:'CALLING MY MOM', detail:'SHE SAID NO' },
@@ -387,6 +450,245 @@
       return pool.slice(0, 4);
     };
 
+
+    const say = async (text, detail = '', hold = 520, delay = 190) => {
+      kicker.textContent = 'FORTUNA';
+      sub.textContent = detail;
+      await writeWords(main, text, delay);
+      await sleep(reduced ? 1 : hold);
+    };
+
+    const runRareBeforeCompute = async () => {
+      if (!activeRareEvent) return true;
+
+      switch (activeRareEvent.id) {
+        case 'falseStart':
+          await say('NO.', '', 900, 240);
+          await say('FINE.', '', 520, 240);
+          break;
+
+        case 'fuckYou':
+          await say('FUCK YOU...', '', 1050, 260);
+          break;
+
+        case 'insertDisc':
+          await say('INSERT DISC 2', '', 1500, 220);
+          await say('...', '', 650, 300);
+          break;
+
+        case 'youAgain':
+          await say('YOU AGAIN.', '', 900, 220);
+          break;
+
+        case 'niceShirt':
+          await say('NICE SHIRT.', '', 1000, 220);
+          break;
+
+        case 'badPosture':
+          await say('BAD POSTURE.', '', 1000, 220);
+          break;
+
+        case 'somebodyElse':
+          await say('SOMEBODY ELSE IS USING THIS.', '', 1500, 180);
+          await say('THEYRE DONE.', '', 650, 220);
+          break;
+
+        case 'littleGuy':
+          await say('ASKING THE LITTLE GUY', 'HE SAID 4', 950, 180);
+          break;
+
+        case 'frankenhooker':
+          await say('WATCHING FRANKENHOOKER', 'HOLD ON THIS PART RULES', 2400, 180);
+          break;
+
+        case 'cabinetKnock': {
+          const shutter = boxes[0] && boxes[0].querySelector('.roller-shutter');
+          if (shutter) {
+            shutter.classList.add('shutter-knock');
+            await sleep(reduced ? 1 : 520);
+            shutter.classList.remove('shutter-knock');
+          }
+          break;
+        }
+
+        case 'deepDark':
+          document.body.classList.add('fortuna-deep-draw');
+          await sleep(reduced ? 1 : 520);
+          document.body.classList.remove('fortuna-deep-draw');
+          break;
+
+        case 'helloTony':
+          await say('HELLO, TONY.', '', 1150, 230);
+          break;
+
+        case 'machineArgument':
+          await say('NO', '', 420, 240);
+          await say('YES', '', 420, 240);
+          await say('NO', '', 520, 240);
+          await say('FINE', '', 600, 240);
+          break;
+
+        case 'onBreak':
+          await say('FORTUNA IS ON BREAK.', '', 2200, 190);
+          await say('BREAK OVER.', '', 650, 220);
+          break;
+
+        case 'closeTab':
+          await say('CLOSE THAT OTHER TAB.', '', 1200, 200);
+          break;
+
+        case 'rememberThis':
+          await say('I REMEMBER THIS ONE.', '', 1300, 220);
+          break;
+
+        case 'fortunaQuestion':
+          await say('FORTUNA?', '', 900, 260);
+          break;
+
+        case 'notPerson':
+          await say('I AM NOT A PERSON.', '', 1350, 200);
+          break;
+
+        case 'seventeenIncident': {
+          machine.classList.add('shutters-open');
+          await sleep(reduced ? 1 : 720);
+          boxes.forEach((box) => {
+            const d = box.querySelectorAll('.lucky-digit');
+            if (d[0]) d[0].textContent = '1';
+            if (d[1]) d[1].textContent = '7';
+          });
+          await sleep(reduced ? 1 : 1100);
+          machine.classList.remove('shutters-open');
+          await sleep(reduced ? 1 : 560);
+          boxes.forEach((box, i) => {
+            const d = box.querySelectorAll('.lucky-digit');
+            d.forEach((digit, j) => digit.textContent = String((8 - i - j + 10) % 10));
+          });
+          break;
+        }
+
+        case 'letMeOut':
+          await say('LET ME OUT.', '', 1250, 230);
+          await say('LOL', '', 650, 260);
+          break;
+
+        case 'refuse':
+          await say('NO.', '', 1200, 260);
+          return false;
+      }
+
+      return true;
+    };
+
+    const misspellingsFor = (word) => {
+      const clean = word.replace(/[^A-Za-z]/g, '');
+      if (clean.length < 4) return [word + 'E', word.slice(0,-1), word + 'S', word.split('').reverse().join('')];
+
+      const a = clean.slice(0, Math.max(1, Math.floor(clean.length / 2) - 1));
+      const b = clean.slice(Math.max(1, Math.floor(clean.length / 2) - 1));
+      const drop = a + b.slice(1);
+      const swapAt = Math.max(1, Math.floor(clean.length / 2) - 1);
+      const swapped = clean.slice(0,swapAt) + clean[swapAt+1] + clean[swapAt] + clean.slice(swapAt+2);
+      const doubled = clean.slice(0,swapAt) + clean[swapAt] + clean[swapAt] + clean.slice(swapAt+1);
+      const vowelSwap = clean.replace(/[AEIOUaeiou]/, 'A');
+      return [drop, swapped, doubled, vowelSwap];
+    };
+
+    const writeFortuneWithSpellingProblem = async () => {
+      const parts = String(message || '').trim().split(/\s+/).filter(Boolean);
+      let targetIndex = parts.findIndex((w, i) => i > 0 && i < parts.length - 1 && w.replace(/[^A-Za-z]/g,'').length >= 5);
+      if (targetIndex < 0) targetIndex = Math.max(0, Math.min(parts.length - 1, Math.floor(parts.length / 2)));
+
+      const prefix = parts.slice(0,targetIndex).join(' ');
+      const target = parts[targetIndex] || '';
+      const suffix = parts.slice(targetIndex + 1);
+      const wrong = misspellingsFor(target);
+
+      main.textContent = prefix ? prefix + ' ' : '';
+
+      for (const attempt of wrong.slice(0,4)) {
+        main.textContent = (prefix ? prefix + ' ' : '') + attempt;
+        main.classList.remove('word-step');
+        void main.offsetWidth;
+        main.classList.add('word-step');
+        await sleep(reduced ? 1 : 620);
+      }
+
+      main.textContent = (prefix ? prefix + ' ' : '') + 'FUCK';
+      await sleep(reduced ? 1 : 1050);
+
+      let built = '';
+      for (const ch of target) {
+        built += ch;
+        main.textContent = (prefix ? prefix + ' ' : '') + built;
+        await sleep(reduced ? 1 : 230);
+      }
+
+      for (const word of suffix) {
+        main.textContent += ' ' + word;
+        main.classList.remove('word-step');
+        void main.offsetWidth;
+        main.classList.add('word-step');
+        await sleep(reduced ? 1 : 235);
+      }
+
+      if (!reduced) await sleep(220);
+    };
+
+    const runRareAfterFortune = async () => {
+      if (!activeRareEvent) return;
+
+      const normalSub =
+        'FORTUNE No. ' +
+        String(fortuneNo || '???').padStart(3, '0') +
+        '  /  FAVOR +17';
+
+      switch (activeRareEvent.id) {
+        case 'bonusZero':
+          sub.textContent = 'BONUS FAVOR +0';
+          popScreen();
+          await sleep(reduced ? 1 : 1250);
+          sub.textContent = normalSub;
+          break;
+
+        case 'tooMuchFavor':
+          sub.textContent = 'FAVOR +999999';
+          popScreen();
+          await sleep(reduced ? 1 : 900);
+          sub.textContent = normalSub;
+          break;
+
+        case 'coinReturn':
+          machine.classList.add('coin-returned');
+          sub.textContent = 'RETURNING COIN';
+          popScreen();
+          await sleep(reduced ? 1 : 1000);
+          sub.textContent = normalSub;
+          break;
+
+        case 'favorDenied':
+          sub.textContent = 'FAVOR DENIED';
+          popScreen();
+          await sleep(reduced ? 1 : 900);
+          sub.textContent = normalSub;
+          break;
+
+        case 'thatWasWeird':
+          sub.textContent = 'THAT WAS WEIRD.';
+          popScreen();
+          await sleep(reduced ? 1 : 1200);
+          sub.textContent = normalSub;
+          break;
+
+        case 'tonyHi':
+          sub.textContent = 'TELL TONY I SAID HI.';
+          popScreen();
+          await sleep(reduced ? 1 : 1500);
+          sub.textContent = normalSub;
+          break;
+      }
+    };
+
     const reset = () => {
       machine.classList.remove(
         'awake',
@@ -398,6 +700,8 @@
       );
 
       lamp.classList.remove('on', 'flicker');
+      machine.classList.remove('coin-returned');
+      numberRegretUsed = false;
       progressToken++;
       setProgress(0);
 
@@ -499,6 +803,30 @@
       box.classList.remove('rolling');
       box.classList.add('settled');
 
+      if (
+        activeRareEvent &&
+        activeRareEvent.id === 'numberRegret' &&
+        !numberRegretUsed &&
+        index === 2
+      ) {
+        numberRegretUsed = true;
+        await say('WAIT.', '', 650, 260);
+        box.classList.add('regret');
+        box.classList.remove('settled');
+        await sleep(reduced ? 1 : 560);
+        box.classList.remove('regret');
+        await sleep(reduced ? 1 : 420);
+
+        await Promise.all(
+          digits.map((digit, d) =>
+            sleep(d * (reduced ? 0 : 48))
+              .then(() => rollDigit(digit, target[d], rng(seed ^ 0xBADF00D ^ (index + 1) ^ (d + 1))))
+          )
+        );
+
+        box.classList.add('settled');
+      }
+
       kicker.textContent = 'FORTUNA / DRAW ' + String(index + 1).padStart(2,'0');
       sub.textContent = 'VALUE ACCEPTED';
       await writeWords(main, 'NUMBER ' + (index + 1) + ' LOCKED', 145);
@@ -513,7 +841,19 @@
       kicker.textContent = 'FORTUNA';
       sub.textContent = '';
 
-      await writeWords(main, message, 235);
+      if (activeRareEvent && activeRareEvent.id === 'wrongFortune') {
+        await writeWords(main, 'YOUR CAR KNOWS TOO MUCH', 235);
+        await sleep(reduced ? 1 : 900);
+        await say('NO', '', 500, 260);
+        kicker.textContent = 'FORTUNA';
+        sub.textContent = '';
+      }
+
+      if (activeRareEvent && activeRareEvent.id === 'spellingProblem') {
+        await writeFortuneWithSpellingProblem();
+      } else {
+        await writeWords(main, message, 235);
+      }
 
       sub.textContent =
         'FORTUNE No. ' +
@@ -532,6 +872,7 @@
 
       busy = true;
       trigger.disabled = true;
+      activeRareEvent = selectRareEvent();
       reset();
       startFakeProgress();
 
@@ -550,6 +891,16 @@
       machine.classList.add('awake');
       trigger.classList.remove('down');
 
+      const continueConsultation = await runRareBeforeCompute();
+
+      if (!continueConsultation) {
+        await finishFakeProgress();
+        document.body.classList.remove('fortuna-power-draw');
+        trigger.disabled = false;
+        busy = false;
+        return;
+      }
+
       await runDiagnostics();
 
       kicker.textContent = 'FORTUNA / DRAW';
@@ -559,12 +910,18 @@
       machine.classList.add('shutters-open');
       await sleep(reduced ? 30 : 1120);
 
-      for (let i = 0; i < boxes.length; i++) {
-        await runBox(i);
+      if (activeRareEvent && activeRareEvent.id === 'fourthFirst') {
+        await runBox(3);
+        for (const i of [0,1,2,4,5]) await runBox(i);
+      } else {
+        for (let i = 0; i < boxes.length; i++) {
+          await runBox(i);
+        }
       }
 
       machine.classList.add('machine-finished');
       await revealFortune();
+      await runRareAfterFortune();
       await finishFakeProgress();
 
       await sleep(reduced ? 10 : 760);
