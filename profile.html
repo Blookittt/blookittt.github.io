@@ -41,7 +41,7 @@ permalink: /profile/
       </section>
 
       <section class="module">
-        <div class="module-head">LATEST</div>
+        <div class="module-head">POSTS</div>
         <div class="module-body">
           {% for post in site.posts limit:5 %}
           <div class="profile-post-line">
@@ -68,20 +68,7 @@ permalink: /profile/
 
       <section class="module" id="guestbook">
         <div class="module-head">GUESTBOOK</div>
-        <div class="module-body">
-          <div class="guestbook-entry"><strong>MIKA:</strong> this place smells like wires</div>
-          <div class="guestbook-entry"><strong>RAVI:</strong> 17 again btw</div>
-          <div class="guestbook-entry"><strong>TES:</strong> hi</div>
-          <div class="guestbook-note">guestbook write support comes with the real account backend.</div>
-        </div>
-      </section>
-
-      <section class="module">
-        <div class="module-head">FORTUNA</div>
-        <div class="module-body system-copy">
-          <a href="/balance/">THE BALANCE</a><br>
-          <span>daily apparatus / one puzzle</span>
-        </div>
+        <div class="module-body guestbook-empty">nobody signed this yet.</div>
       </section>
     </aside>
   </div>
