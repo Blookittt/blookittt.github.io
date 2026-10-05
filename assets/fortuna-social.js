@@ -20,7 +20,7 @@
   };
 
   const siteDefaults = {
-    theme: 'light',
+    theme: 'dark',
     motion: true,
     sysClock: true,
     showFavor: true,
