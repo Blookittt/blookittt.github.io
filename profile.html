@@ -1,0 +1,118 @@
+---
+layout: default
+title: profile
+permalink: /profile/
+---
+<div class="profile-page">
+  <section class="profile-head">
+    <div class="profile-avatar" data-profile-avatar>B.</div>
+    <div class="profile-intro">
+      <div class="profile-title-line">
+        <h1 data-profile-name>BLOO</h1>
+        <span class="profile-fortune-id">№ <span data-profile-id>17•421</span></span>
+      </div>
+
+      <dl class="profile-facts">
+        <dt>STATUS</dt><dd data-profile-status>should be sleeping</dd>
+        <dt>FAVOR</dt><dd data-profile-favor>284</dd>
+        <dt>UPDATED</dt><dd id="profile-updated">just now</dd>
+      </dl>
+
+      <div class="profile-actions">
+        <button type="button" class="old-button" id="keep-tabs">KEEP TABS</button>
+        <a class="old-button link-button" href="/settings/">EDIT PAGE</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="profile-tabs">
+    <a href="/archive/#log">LOG</a>
+    <a href="/archive/#scrap">SCRAPS</a>
+    <a href="/archive/#found">FOUND</a>
+    <a href="/archive/#music">MUSIC</a>
+    <a href="#guestbook">GUESTBOOK</a>
+  </div>
+
+  <div class="profile-grid">
+    <main>
+      <section class="module">
+        <div class="module-head">ABOUT</div>
+        <div class="module-body profile-bio" data-profile-bio></div>
+      </section>
+
+      <section class="module">
+        <div class="module-head">LATEST</div>
+        <div class="module-body">
+          {% for post in site.posts limit:5 %}
+          <div class="profile-post-line">
+            <span>{{ post.date | date: "%m.%d.%y" }}</span>
+            <a href="{{ post.url }}">{{ post.title }}</a>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="module">
+        <div class="module-head">EMBEDS</div>
+        <div class="module-body">
+          <div id="profile-embeds" class="profile-embeds"></div>
+        </div>
+      </section>
+    </main>
+
+    <aside>
+      <section class="module">
+        <div class="module-head">CURRENT SONG</div>
+        <div class="module-body" data-profile-song>The Heat Is On — Aaron G. West</div>
+      </section>
+
+      <section class="module" id="guestbook">
+        <div class="module-head">GUESTBOOK</div>
+        <div class="module-body">
+          <div class="guestbook-entry"><strong>MIKA:</strong> this place smells like wires</div>
+          <div class="guestbook-entry"><strong>RAVI:</strong> 17 again btw</div>
+          <div class="guestbook-entry"><strong>TES:</strong> hi</div>
+          <div class="guestbook-note">guestbook write support comes with the real account backend.</div>
+        </div>
+      </section>
+
+      <section class="module">
+        <div class="module-head">FORTUNA</div>
+        <div class="module-body system-copy">
+          <a href="/balance/">THE BALANCE</a><br>
+          <span>daily apparatus / one puzzle</span>
+        </div>
+      </section>
+    </aside>
+  </div>
+</div>
+
+<script>
+(() => {
+  const profile = window.FortunaProfile ? FortunaProfile.load() : null;
+  if (!profile) return;
+
+  FortunaProfile.apply(profile);
+  FortunaProfile.renderEmbeds(
+    document.getElementById('profile-embeds'),
+    [profile.embed1, profile.embed2, profile.embed3]
+  );
+
+  const tabs = document.getElementById('keep-tabs');
+  const tabKey = 'fortuna.keepTabs.bloo';
+  let kept = localStorage.getItem(tabKey) === '1';
+
+  const update = () => {
+    tabs.textContent = kept ? 'TABS KEPT' : 'KEEP TABS';
+    tabs.classList.toggle('is-active', kept);
+  };
+
+  tabs.addEventListener('click', () => {
+    kept = !kept;
+    localStorage.setItem(tabKey, kept ? '1' : '0');
+    update();
+  });
+
+  update();
+})();
+</script>
