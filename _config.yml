@@ -1,0 +1,9 @@
+title: BLOOFORTUNE
+description: personal transmission / found objects / assorted bullshit
+url: https://bloofortune.com
+baseurl: ""
+permalink: /:year/:month/:day/:title/
+markdown: kramdown
+
+exclude:
+  - README.md
