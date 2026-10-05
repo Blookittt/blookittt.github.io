@@ -2955,3 +2955,81 @@ body:has(.balance-page-v2) .page-wrap{
     justify-content:flex-start;
   }
 }
+
+
+/* BALANCE WEIGH CEREMONY */
+.balance-status-wrap{
+  position:relative;
+  max-width:650px;
+  margin:8px auto 0;
+  padding-left:18px;
+}
+
+.balance-status-wrap .balance-status{
+  margin:0;
+  max-width:none;
+}
+
+.weigh-lamp{
+  position:absolute;
+  left:0;
+  top:50%;
+  width:11px;
+  height:11px;
+  transform:translateY(-50%);
+  border-radius:50%;
+  background:#594b3e;
+  border:1px solid #3c332b;
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.45);
+}
+
+.weigh-lamp.on{
+  background:#c77967;
+  box-shadow:
+    0 0 7px rgba(199,121,103,.55),
+    inset 0 1px 0 rgba(255,255,255,.28);
+  animation:weigh-lamp-pulse .58s steps(2,end) infinite;
+}
+
+.is-weighing .balance-status{
+  color:#e6a6b7;
+}
+
+.is-weighing .balance-number-window{
+  filter:brightness(.95);
+}
+
+.balance-beam.tease-left{
+  animation:weigh-tease-left .48s ease-in-out 1;
+}
+
+.balance-beam.tease-right{
+  animation:weigh-tease-right .48s ease-in-out 1;
+}
+
+@keyframes weigh-tease-left{
+  0%{transform:rotate(0deg)}
+  35%{transform:rotate(-2.4deg)}
+  72%{transform:rotate(.8deg)}
+  100%{transform:rotate(0deg)}
+}
+
+@keyframes weigh-tease-right{
+  0%{transform:rotate(0deg)}
+  35%{transform:rotate(2.4deg)}
+  72%{transform:rotate(-.8deg)}
+  100%{transform:rotate(0deg)}
+}
+
+@keyframes weigh-lamp-pulse{
+  0%,49%{filter:brightness(.8)}
+  50%,100%{filter:brightness(1.2)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .weigh-lamp.on,
+  .balance-beam.tease-left,
+  .balance-beam.tease-right{
+    animation:none!important;
+  }
+}
