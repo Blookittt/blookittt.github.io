@@ -4617,3 +4617,270 @@ body:has(.balance-page-v2) .page-wrap{
     margin-bottom:18px;
   }
 }
+
+
+/* SITE SETTINGS — ACTUAL SETTINGS, NOT PROFILE EDITING */
+.site-settings-page{
+  max-width:760px;
+}
+
+.site-settings-form{
+  display:grid;
+  gap:14px;
+}
+
+.settings-group{
+  border-top:1px solid #7f776d;
+}
+
+.settings-group-head{
+  padding:6px 3px 5px;
+  color:#595149;
+  border-bottom:1px dotted #a49b90;
+  font:bold 8px/1 "Courier New",monospace;
+  letter-spacing:.14em;
+}
+
+.setting-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:20px;
+  align-items:center;
+  min-height:56px;
+  padding:9px 4px;
+  border-bottom:1px dotted #b0a79b;
+}
+
+.setting-copy{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+
+.setting-copy strong{
+  color:#302c27;
+  font:bold 10px/1.2 "Courier New",monospace;
+  letter-spacing:.05em;
+}
+
+.setting-copy span{
+  color:#6c655e;
+  font:10px/1.35 Georgia,"Times New Roman",serif;
+}
+
+.segmented-control{
+  display:flex;
+  border:1px solid #746c62;
+}
+
+.segmented-control button{
+  min-width:62px;
+  padding:6px 8px;
+  border:0;
+  border-right:1px solid #92897d;
+  background:#e4ddd1;
+  color:#403a34;
+  cursor:pointer;
+  font:bold 8px/1 "Courier New",monospace;
+}
+
+.segmented-control button:last-child{
+  border-right:0;
+}
+
+.segmented-control button.is-active{
+  background:#40566f;
+  color:#f0e8dc;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.22);
+}
+
+.switch{
+  position:relative;
+  width:42px;
+  height:21px;
+  display:block!important;
+  margin:0!important;
+}
+
+.switch input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+
+.switch > span{
+  position:absolute;
+  inset:0;
+  border:1px solid #746c62;
+  background:#c8c0b4;
+  cursor:pointer;
+  box-shadow:inset 0 2px 4px rgba(69,55,42,.10);
+}
+
+.switch > span::after{
+  content:"";
+  position:absolute;
+  top:3px;
+  left:3px;
+  width:13px;
+  height:13px;
+  background:#eee7dc;
+  border:1px solid #756d62;
+  transition:left .12s ease;
+}
+
+.switch input:checked + span{
+  background:#8ba0b5;
+}
+
+.switch input:checked + span::after{
+  left:23px;
+}
+
+.sys-clock-preview{
+  min-width:94px;
+  padding:7px 8px 6px;
+  color:#b76f82;
+  background:#171416;
+  border:2px solid #4c4548;
+  box-shadow:inset 0 0 7px rgba(0,0,0,.8);
+  text-align:center;
+  font:bold 11px/1 "Courier New",monospace;
+  letter-spacing:.08em;
+}
+
+.important-nothing-button{
+  min-width:172px;
+  font-weight:bold;
+}
+
+.site-settings-actions{
+  padding-top:4px;
+}
+
+.header-sys-clock{
+  display:block;
+  margin-top:2px;
+  color:#8b6270;
+}
+
+.fortuna-hide-favor .account-favor,
+.fortuna-hide-favor .profile-facts [data-profile-favor],
+.fortuna-hide-favor .profile-facts dt:has(+ dd [data-profile-favor]){
+  display:none;
+}
+
+.fortuna-hide-song [data-profile-song]{
+  display:none;
+}
+
+.fortuna-hide-song [data-profile-song]::before{
+  content:"";
+}
+
+.fortuna-hide-song .profile-grid aside .module:first-child{
+  display:none;
+}
+
+.fortuna-no-motion *,
+.fortuna-no-motion *::before,
+.fortuna-no-motion *::after{
+  animation-duration:.001ms!important;
+  animation-iteration-count:1!important;
+  transition-duration:.001ms!important;
+}
+
+/* Dark mode is intentionally old-monitor dark, not SaaS charcoal. */
+html[data-fortuna-theme="dark"]{
+  --page:#171719!important;
+  --panel:#211f22!important;
+  --panel-2:#2b282c!important;
+  --line:#5d575d!important;
+  --line-dark:#827780!important;
+  --ink:#ddd4ca!important;
+  --muted:#9a918c!important;
+  --link:#8eacd1!important;
+  --screen:#0b0a0c!important;
+  background:#0f0f11!important;
+  color:var(--ink)!important;
+}
+
+html[data-fortuna-theme="dark"] body{
+  background:#0f0f11!important;
+  color:var(--ink)!important;
+}
+
+html[data-fortuna-theme="dark"] .site-shell{
+  background:#171719!important;
+  border-color:#59535a!important;
+}
+
+html[data-fortuna-theme="dark"] .site-header,
+html[data-fortuna-theme="dark"] .site-footer{
+  background:#201e21!important;
+  border-color:#554f55!important;
+}
+
+html[data-fortuna-theme="dark"] .site-nav{
+  background:#18171a!important;
+  border-color:#554f55!important;
+}
+
+html[data-fortuna-theme="dark"] .site-nav a{
+  border-color:#413d42!important;
+}
+
+html[data-fortuna-theme="dark"] .site-nav a:hover{
+  background:#283445!important;
+}
+
+html[data-fortuna-theme="dark"] .site-name,
+html[data-fortuna-theme="dark"] .account-stub strong,
+html[data-fortuna-theme="dark"] .setting-copy strong,
+html[data-fortuna-theme="dark"] .profile-title-line h1{
+  color:#e4dbd1!important;
+}
+
+html[data-fortuna-theme="dark"] .site-subtitle,
+html[data-fortuna-theme="dark"] .account-stub,
+html[data-fortuna-theme="dark"] .setting-copy span,
+html[data-fortuna-theme="dark"] .settings-help{
+  color:#a69d96!important;
+}
+
+html[data-fortuna-theme="dark"] .settings-group{
+  border-color:#5d575d;
+}
+
+html[data-fortuna-theme="dark"] .setting-row,
+html[data-fortuna-theme="dark"] .settings-group-head{
+  border-color:#4d484d;
+}
+
+html[data-fortuna-theme="dark"] .old-button,
+html[data-fortuna-theme="dark"] .segmented-control button{
+  background:#2b282c;
+  color:#dcd3ca;
+  border-color:#625b61;
+  box-shadow:inset 1px 1px 0 #3a363b,inset -1px -1px 0 #171619;
+}
+
+html[data-fortuna-theme="dark"] .segmented-control button.is-active{
+  background:#516981;
+  color:#fff7ec;
+}
+
+@media (max-width:600px){
+  .setting-row{
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+
+  .switch{
+    justify-self:start;
+  }
+
+  .important-nothing-button{
+    justify-self:start;
+  }
+}
