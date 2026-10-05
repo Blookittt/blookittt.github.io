@@ -1625,3 +1625,99 @@ body{
     letter-spacing:.13em;
   }
 }
+
+
+/* DAILY LUCKY NUMBER ROLLERS */
+.fortune-message{
+  position:relative;
+  z-index:1;
+}
+
+.lucky-strip{
+  position:relative;
+  z-index:1;
+  width:min(660px,100%);
+  margin-top:24px;
+  padding-top:14px;
+  border-top:1px solid rgba(241,230,223,.22);
+}
+
+.lucky-label{
+  margin-bottom:9px;
+  color:rgba(241,230,223,.76);
+  font:9px/1 "Courier New",Courier,monospace;
+  letter-spacing:.19em;
+  text-transform:uppercase;
+}
+
+.lucky-rollers{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.lucky-number{
+  display:inline-flex;
+  overflow:hidden;
+  min-width:50px;
+  height:34px;
+  align-items:center;
+  justify-content:center;
+  padding:0 7px;
+
+  border:1px solid rgba(234,217,214,.24);
+  background:
+    linear-gradient(180deg,rgba(19,15,20,.62),rgba(36,28,39,.74));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    inset 0 -1px 0 rgba(0,0,0,.30),
+    0 2px 5px rgba(0,0,0,.13);
+
+  color:#f3e7df;
+  font:700 18px/1 "Courier New",Courier,monospace;
+  letter-spacing:.02em;
+}
+
+.lucky-digit{
+  display:inline-block;
+  width:.66em;
+  text-align:center;
+  transform:translateY(0);
+}
+
+.lucky-digit.is-settled{
+  animation:lucky-digit-clunk .14s ease-out 1;
+}
+
+.lucky-number.is-settled{
+  border-color:rgba(217,108,147,.34);
+}
+
+@keyframes lucky-digit-clunk{
+  0%{transform:translateY(-5px);filter:brightness(1.28)}
+  45%{transform:translateY(2px)}
+  100%{transform:translateY(0);filter:brightness(1)}
+}
+
+@media (max-width:700px){
+  .lucky-strip{
+    margin-top:20px;
+    padding-top:12px;
+  }
+  .lucky-rollers{
+    gap:5px;
+  }
+  .lucky-number{
+    min-width:42px;
+    height:31px;
+    padding:0 5px;
+    font-size:16px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .lucky-digit.is-settled{
+    animation:none;
+  }
+}
