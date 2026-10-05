@@ -19,13 +19,10 @@
   <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
-  <div id="crt-intro" class="crt-intro" aria-hidden="true">
-    <div class="intro-static"></div>
-    <div class="intro-tear"></div>
-    <div class="intro-word">LUCKY YOU</div>
-  </div>
-  <div class="noise" aria-hidden="true"></div>
-  <div class="crt-lines" aria-hidden="true"></div>
+<div id="crt-intro" class="crt-intro" aria-hidden="true">
+  <img class="crt-intro-gif" src="/assets/images/static.gif" alt="">
+  <div class="crt-intro-word">LUCKY YOU</div>
+</div>
 
   {% if site.data.weekly.song_audio and site.data.weekly.song_audio != "" %}
     <audio id="bg-song" preload="metadata" loop>
