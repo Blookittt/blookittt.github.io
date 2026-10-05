@@ -151,9 +151,9 @@ permalink: /balance/
         </div>
       </section>
 
-      <section class="fortometer fortometer-v2" id="fortometer" aria-label="Today's Fortuna condition">
+      <section class="fortometer fortometer-v3" id="fortometer" aria-label="Today's Fortuna condition">
         <div class="fortometer-head">
-          <div>
+          <div class="fortometer-head-copy">
             <span>FORTOMETER</span>
             <small>FIELD UNIT No. 17</small>
           </div>
@@ -161,55 +161,67 @@ permalink: /balance/
         </div>
 
         <div class="fortometer-body">
-          <div class="fortometer-instrument">
-            <div class="fortometer-dial" id="fortometer-dial" aria-hidden="true">
-              <div class="fortometer-scale">
-                <span class="tick t1"></span><span class="tick t2"></span><span class="tick t3"></span>
-                <span class="tick t4"></span><span class="tick t5"></span><span class="tick t6"></span>
-                <span class="tick t7"></span><span class="tick t8"></span><span class="tick t9"></span>
-              </div>
-
-              <span class="dial-word dial-clear">CLEAR</span>
-              <span class="dial-word dial-variable">VARIABLE</span>
-              <span class="dial-word dial-heavy">HEAVY</span>
-
-              <div class="fortometer-needle"></div>
-              <div class="fortometer-hub"></div>
-
-              <div class="fortometer-weather">
-                <span class="weather-frame weather-a">☼</span>
-                <span class="weather-frame weather-b">◐</span>
-              </div>
-            </div>
-
-            <div class="fortometer-reading">
-              <div class="fortometer-label">ALMANAC READING</div>
+          <div class="fortometer-hero">
+            <div class="fortometer-main-reading">
+              <div class="fortometer-label">TODAY'S READING</div>
               <div class="fortometer-condition" id="fortometer-condition">VARIABLE</div>
-              <div class="fortometer-pressure">
+
+              <div class="fortometer-pressure-line">
                 <strong id="fortometer-pressure">29.41</strong>
                 <span>fHg</span>
-                <span class="pressure-divider">/</span>
+                <span class="pressure-slash">/</span>
                 <span id="fortometer-trend">FALLING</span>
               </div>
             </div>
+
+            <div class="fortometer-dial-wrap">
+              <div class="fortometer-dial-title">FORTUNA PRESSURE</div>
+
+              <div class="fortometer-dial" id="fortometer-dial" aria-hidden="true">
+                <div class="fortometer-scale">
+                  <span class="tick t1"></span><span class="tick t2"></span><span class="tick t3"></span>
+                  <span class="tick t4"></span><span class="tick t5"></span><span class="tick t6"></span>
+                  <span class="tick t7"></span><span class="tick t8"></span><span class="tick t9"></span>
+                </div>
+
+                <span class="dial-word dial-stable">STABLE</span>
+                <span class="dial-word dial-variable">VARIABLE</span>
+                <span class="dial-word dial-absurd">ABSURD</span>
+
+                <div class="fortometer-needle"></div>
+                <div class="fortometer-hub"></div>
+
+                <div class="fortometer-weather">
+                  <span class="weather-frame weather-a">☼</span>
+                  <span class="weather-frame weather-b">◐</span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div class="fortometer-slip">
-            <div class="fortometer-slip-head">
-              <span>DAILY FIELD REPORT</span>
-              <span>FORM F-17</span>
+          <dl class="fortometer-quickstats">
+            <div class="quickstat">
+              <dt>LUNAR AGE</dt>
+              <dd id="fortometer-lunar">--.- d</dd>
             </div>
 
-            <dl class="fortometer-details">
-              <dt>LUNAR AGE</dt><dd id="fortometer-lunar">--.- d</dd>
-              <dt>SEASONAL CARRY</dt><dd id="fortometer-carry">WEST</dd>
-              <dt>STANDARD CORR.</dt><dd id="fortometer-correction">+0.0</dd>
-              <dt>BALANCE STRAIN</dt><dd id="fortometer-strain">--</dd>
-              <dt>TOMORROW</dt><dd id="fortometer-tomorrow">VARIABLE</dd>
-            </dl>
-          </div>
+            <div class="quickstat">
+              <dt>CARRY</dt>
+              <dd id="fortometer-carry">WEST</dd>
+            </div>
 
-          <div class="fortometer-advisory">
+            <div class="quickstat">
+              <dt>STRAIN</dt>
+              <dd id="fortometer-strain">--</dd>
+            </div>
+
+            <div class="quickstat">
+              <dt>TOMORROW</dt>
+              <dd id="fortometer-tomorrow">VARIABLE</dd>
+            </div>
+          </dl>
+
+          <div class="fortometer-note-strip">
             <span>FIELD NOTE</span>
             <p id="fortometer-note">Corrections generally hold.</p>
           </div>
