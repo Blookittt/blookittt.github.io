@@ -312,12 +312,18 @@
     }
 
     const numberEls = Array.from(rollers.querySelectorAll('.lucky-number'));
+    const trigger = document.getElementById('lucky-trigger');
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const teaseDigit = (digit, targetChar, localRand, delayBase, onDone) => {
-      const target = Number(targetChar);
+    const makeLocalRand = (index, digitIndex) => mulberry32(
+      seed ^
+      ((index + 1) * 0x45d9f3b) ^
+      ((digitIndex + 1) * 0x27d4eb2d) ^
+      (weekday * 0x9e3779b1)
+    );
 
-      // All motion is downward. No teleporty random flickering.
+    const teaseDigit = (digit, targetChar, localRand, onDone) => {
+      const target = Number(targetChar);
       let current = 9 - Math.floor(localRand() * 3);
       digit.textContent = String(current);
 
@@ -326,29 +332,27 @@
         digit.textContent = String(current);
       };
 
-      const phases = [
-        { count: 12 + Math.floor(localRand() * 5), delay: 30 },
-        { count: 10 + Math.floor(localRand() * 4), delay: 44 },
-        { count: 8 + Math.floor(localRand() * 4), delay: 63 },
-        { count: 6 + Math.floor(localRand() * 3), delay: 88 },
-        { count: 4 + Math.floor(localRand() * 2), delay: 122 }
+      const pulse = () => {
+        digit.classList.add('is-ticking');
+        window.setTimeout(() => digit.classList.remove('is-ticking'), 38);
+      };
+
+      const sequence = [
+        { count: 8 + Math.floor(localRand() * 3), delay: 28 },
+        { count: 6 + Math.floor(localRand() * 3), delay: 48 },
+        { count: 4 + Math.floor(localRand() * 2), delay: 82 }
       ];
 
       let phase = 0;
       let step = 0;
 
-      const pulse = () => {
-        digit.classList.add('is-ticking');
-        window.setTimeout(() => digit.classList.remove('is-ticking'), 42);
-      };
-
-      const runPhase = () => {
-        if (phase >= phases.length) {
-          runTease();
+      const spin = () => {
+        if (phase >= sequence.length) {
+          approach();
           return;
         }
 
-        const p = phases[phase];
+        const p = sequence[phase];
         down();
         pulse();
         step++;
@@ -358,134 +362,150 @@
           step = 0;
         }
 
-        const wobble = Math.floor(localRand() * 18);
-        window.setTimeout(runPhase, p.delay + wobble);
+        window.setTimeout(spin, p.delay + Math.floor(localRand() * 14));
       };
 
-      const descendUntil = (goal, delay, callback, loopsMinimum = 0) => {
-        let loops = 0;
-        const stepDown = () => {
+      const stepUntil = (goal, delay, minimumClicks, callback) => {
+        let clicks = 0;
+        const walk = () => {
           down();
           pulse();
-          if (current === goal && loops >= loopsMinimum) {
+          clicks++;
+
+          if (current === goal && clicks >= minimumClicks) {
             callback();
             return;
           }
-          loops++;
-          window.setTimeout(stepDown, delay + Math.floor(localRand() * 24));
+
+          window.setTimeout(walk, delay + Math.floor(localRand() * 18));
         };
-        stepDown();
+        walk();
       };
 
-      const fakeLand = (holdMs, slipDelay, callback) => {
-        digit.textContent = targetChar;
-        current = target;
-        digit.classList.add('is-near');
-        window.setTimeout(() => {
-          digit.classList.remove('is-near');
+      const approach = () => {
+        // First delicious almost-win.
+        stepUntil(target, 108 + Math.floor(localRand() * 22), 2, () => {
+          digit.classList.add('is-near');
 
-          // cruelly roll one click past the answer
           window.setTimeout(() => {
+            digit.classList.remove('is-near');
+
+            // One click past. Absolutely criminal.
             down();
             digit.classList.add('is-slip');
+
             window.setTimeout(() => {
               digit.classList.remove('is-slip');
-              callback();
-            }, 150 + Math.floor(localRand() * 80));
-          }, slipDelay);
-        }, holdMs);
+
+              // Slow final lap.
+              stepUntil(target, 145 + Math.floor(localRand() * 30), 3, () => {
+                window.setTimeout(() => {
+                  digit.textContent = targetChar;
+                  current = target;
+                  digit.classList.add('is-settled');
+                  onDone();
+                }, 90 + Math.floor(localRand() * 55));
+              });
+            }, 130 + Math.floor(localRand() * 65));
+          }, 120 + Math.floor(localRand() * 55));
+        });
       };
 
-      const runTease = () => {
-        // First approach: several slow clicks, lands on the real digit, then betrays you.
-        descendUntil(
-          target,
-          145 + Math.floor(localRand() * 28),
-          () => fakeLand(
-            140 + Math.floor(localRand() * 70),
-            80 + Math.floor(localRand() * 55),
-            () => {
-              // One full-ish slow orbit before the second almost-win.
-              descendUntil(
-                target,
-                175 + Math.floor(localRand() * 35),
-                () => fakeLand(
-                  190 + Math.floor(localRand() * 85),
-                  110 + Math.floor(localRand() * 65),
-                  () => {
-                    // Final Zoltar crawl. This one takes its sweet time.
-                    descendUntil(
-                      target,
-                      225 + Math.floor(localRand() * 55),
-                      () => {
-                        window.setTimeout(() => {
-                          digit.textContent = targetChar;
-                          current = target;
-                          digit.classList.add('is-settled');
-                          if (onDone) onDone();
-                        }, 180 + Math.floor(localRand() * 90));
-                      },
-                      2
-                    );
-                  }
-                ),
-                4
-              );
-            }
-          ),
-          2
-        );
-      };
-
-      window.setTimeout(() => {
-        digit.classList.add('is-armed');
-        window.setTimeout(() => digit.classList.remove('is-armed'), 180);
-        runPhase();
-      }, delayBase);
+      spin();
     };
 
-    numberEls.forEach((numberEl, index) => {
+    const resetMachine = () => {
+      rollers.classList.remove('shutters-open', 'is-complete');
+      rollers.classList.add('shutters-closed');
+
+      numberEls.forEach((numberEl, index) => {
+        numberEl.classList.remove('is-rolling', 'is-settled', 'has-afterglow');
+        const digits = Array.from(numberEl.querySelectorAll('.lucky-digit'));
+        digits.forEach((digit, digitIndex) => {
+          digit.classList.remove('is-ticking', 'is-near', 'is-slip', 'is-settled', 'is-armed');
+          digit.textContent = String((8 - index - digitIndex + 10) % 10);
+        });
+      });
+    };
+
+    const runNumber = (index) => {
+      if (index >= numberEls.length) {
+        rollers.classList.add('is-complete');
+        if (trigger) {
+          trigger.disabled = false;
+          trigger.classList.remove('is-running');
+          trigger.querySelector('.lucky-trigger-cap').textContent = 'AGAIN';
+        }
+        return;
+      }
+
+      const numberEl = numberEls[index];
       const target = String(picks[index]).padStart(2, '0');
       const digits = Array.from(numberEl.querySelectorAll('.lucky-digit'));
+
+      numberEl.classList.add('is-rolling');
 
       if (reduced) {
         digits[0].textContent = target[0];
         digits[1].textContent = target[1];
-        numberEl.classList.add('is-settled');
+        numberEl.classList.remove('is-rolling');
+        numberEl.classList.add('is-settled', 'has-afterglow');
+        window.setTimeout(() => runNumber(index + 1), 90);
         return;
       }
-
-      numberEl.classList.add('is-rolling');
 
       let settledDigits = 0;
       const settleOne = () => {
         settledDigits++;
-        if (settledDigits >= 2) {
-          numberEl.classList.remove('is-rolling');
-          numberEl.classList.add('is-settled');
-        }
+        if (settledDigits < 2) return;
+
+        numberEl.classList.remove('is-rolling');
+        numberEl.classList.add('is-settled', 'has-afterglow');
+
+        // Left-to-right cabinet clunks, one complete number at a time.
+        window.setTimeout(() => runNumber(index + 1), 170);
       };
 
       digits.forEach((digit, digitIndex) => {
-        const localRand = mulberry32(
-          seed ^
-          ((index + 1) * 0x45d9f3b) ^
-          ((digitIndex + 1) * 0x27d4eb2d) ^
-          (weekday * 0x9e3779b1)
-        );
+        const localRand = makeLocalRand(index, digitIndex);
+        digit.classList.add('is-armed');
 
-        const startDelay =
-          80 +
-          index * 150 +
-          digitIndex * 70 +
-          Math.floor(localRand() * 120);
-
-        teaseDigit(digit, target[digitIndex], localRand, startDelay, settleOne);
+        window.setTimeout(() => {
+          digit.classList.remove('is-armed');
+          teaseDigit(digit, target[digitIndex], localRand, settleOne);
+        }, digitIndex * 70);
       });
-    });
+    };
+
+    const reveal = () => {
+      if (!trigger || trigger.disabled) return;
+
+      trigger.disabled = true;
+      trigger.classList.add('is-running');
+      trigger.querySelector('.lucky-trigger-cap').textContent = 'FORTUNA';
+
+      resetMachine();
+
+      // Button depresses first. Then six little shutters lift like a carnival machine.
+      window.setTimeout(() => {
+        rollers.classList.remove('shutters-closed');
+        rollers.classList.add('shutters-open');
+
+        const shutterTime = reduced ? 90 : 950;
+        window.setTimeout(() => runNumber(0), shutterTime);
+      }, reduced ? 20 : 180);
+    };
+
+    resetMachine();
+
+    if (trigger) {
+      trigger.addEventListener('click', reveal);
+    }
 
     if (reading) {
-      reading.textContent = 'Lucky numbers for today: ' + picks.join(', ');
+      reading.textContent = 'Press the button to reveal today\'s lucky numbers.';
+    }
+
     }
   })();
   </script>
