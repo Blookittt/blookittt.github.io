@@ -5,9 +5,24 @@ title: home
 {% assign latest_fortune = site.categories.fortune | first %}
 {% if latest_fortune %}
   <a class="fortune-link" href="{{ latest_fortune.url }}">
-    <div class="fortune">
-      {{ latest_fortune.fortune_text | default: latest_fortune.title }}
+    <div class="fortune" id="daily-fortune"
+         data-fortune-no="{{ latest_fortune.fortune_no | default: "0" }}"
+         data-song-title="{{ site.data.weekly.song_title | escape }}">
+      <div class="fortune-message">{{ latest_fortune.fortune_text | default: latest_fortune.title }}</div>
       <small>FORTUNE No. {{ latest_fortune.fortune_no | default: "???" }} / {{ latest_fortune.date | date: "%m.%d.%y" }}</small>
+
+      <div class="lucky-strip">
+        <div class="lucky-label">LUCKY NUMBERS</div>
+        <div class="lucky-rollers" id="daily-lucky-numbers" aria-hidden="true">
+          <span class="lucky-number"><span class="lucky-digit">0</span><span class="lucky-digit">0</span></span>
+          <span class="lucky-number"><span class="lucky-digit">0</span><span class="lucky-digit">0</span></span>
+          <span class="lucky-number"><span class="lucky-digit">0</span><span class="lucky-digit">0</span></span>
+          <span class="lucky-number"><span class="lucky-digit">0</span><span class="lucky-digit">0</span></span>
+          <span class="lucky-number"><span class="lucky-digit">0</span><span class="lucky-digit">0</span></span>
+          <span class="lucky-number"><span class="lucky-digit">0</span><span class="lucky-digit">0</span></span>
+        </div>
+        <span id="lucky-reading" class="sr-only"></span>
+      </div>
     </div>
   </a>
 {% endif %}
