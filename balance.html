@@ -8,10 +8,7 @@ permalink: /balance/
     <div>
       <div class="balance-eyebrow">DAILY APPARATUS</div>
       <h1><span class="balance-title-sun" aria-hidden="true">☼</span>THE BALANCE</h1>
-      <p>
-        Flip the numbers until the left digits and right digits weigh exactly the same.
-        The sealed number stays put.
-      </p>
+      <p>Flip the numbers. Make both sides agree. The sealed number stays put.</p>
     </div>
 
     <div class="balance-page-meta">
@@ -765,6 +762,8 @@ permalink: /balance/
       }
 
       weighing = false;
+      root.classList.remove('weighing');
+      weighBusy = false;
       render();
       return;
     }
