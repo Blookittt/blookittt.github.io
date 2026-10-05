@@ -3,110 +3,133 @@ layout: default
 title: home
 ---
 {% assign latest_fortune = site.categories.fortune | first %}
+
 {% if latest_fortune %}
-  <div class="fortune-link">
-    <div class="fortune" id="daily-fortune"
+<section class="fortuna-machine"
+         id="fortuna-machine"
+         data-fortune-text="{{ latest_fortune.fortune_text | default: latest_fortune.title | escape }}"
          data-fortune-no="{{ latest_fortune.fortune_no | default: "0" }}"
+         data-fortune-url="{{ latest_fortune.url }}"
          data-song-title="{{ site.data.weekly.song_title | escape }}">
-      <a class="fortune-copy-link" href="{{ latest_fortune.url }}">
-        <div class="fortune-message">{{ latest_fortune.fortune_text | default: latest_fortune.title }}</div>
-        <small>FORTUNE No. {{ latest_fortune.fortune_no | default: "???" }} / {{ latest_fortune.date | date: "%m.%d.%y" }}</small>
-      </a>
-
-      <div class="lucky-strip">
-        <div class="lucky-label">LUCKY NUMBERS</div>
-        <div class="lucky-rollers shutters-closed" id="daily-lucky-numbers" aria-hidden="true">
-          <span class="lucky-number"><span class="lucky-digit">0</span><span class="lucky-digit">0</span></span>
-          <span class="lucky-number"><span class="lucky-digit">0</span><span class="lucky-digit">0</span></span>
-          <span class="lucky-number"><span class="lucky-digit">0</span><span class="lucky-digit">0</span></span>
-          <span class="lucky-number"><span class="lucky-digit">0</span><span class="lucky-digit">0</span></span>
-          <span class="lucky-number"><span class="lucky-digit">0</span><span class="lucky-digit">0</span></span>
-          <span class="lucky-number"><span class="lucky-digit">0</span><span class="lucky-digit">0</span></span>
-        </div>
-
-        <div class="lucky-trigger-well">
-          <div class="fortuna-control">
-            <span id="fortuna-lamp" class="fortuna-lamp" aria-hidden="true"></span>
-            <button id="lucky-trigger" class="lucky-trigger" type="button" aria-controls="daily-lucky-numbers">
-              <span class="lucky-trigger-cap">ASK</span>
-            </button>
-          </div>
-        </div>
-
-        <span id="lucky-reading" class="sr-only" aria-live="polite"></span>
+  <div class="machine-case">
+    <div class="machine-screen" id="fortuna-screen" aria-live="polite">
+      <div class="screen-glass" aria-hidden="true"></div>
+      <div class="screen-copy">
+        <div class="screen-kicker" id="screen-kicker">FORTUNA</div>
+        <div class="screen-main" id="screen-main">LUCKY YOU</div>
+        <div class="screen-sub" id="screen-sub">PRESS ASK</div>
       </div>
     </div>
+
+    <div class="roller-bank" id="daily-lucky-numbers" aria-hidden="true">
+      {% for i in (1..6) %}
+      <div class="lucky-number">
+        <span class="lucky-digit">0</span><span class="lucky-digit">0</span>
+        <span class="roller-shutter"></span>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="machine-hardware">
+      <div class="machine-meter" aria-hidden="true"><span></span></div>
+
+      <div class="ask-housing">
+        <span id="fortuna-lamp" class="fortuna-lamp" aria-hidden="true"></span>
+        <button id="lucky-trigger" class="lucky-trigger" type="button" aria-controls="daily-lucky-numbers">
+          ASK
+        </button>
+      </div>
+
+      <div class="machine-meter" aria-hidden="true"><span></span></div>
+    </div>
+
+    <div id="lucky-reading" class="sr-only" aria-live="polite"></div>
   </div>
+</section>
 {% endif %}
 
 <div class="home-grid">
-  <aside class="past-posts">
-    <h3>PAST POSTS</h3>
-    <ol class="past-post-list">
-      {% for post in site.posts offset:1 limit:12 %}
-        <li>
-          <span>{{ post.date | date: "%m.%d" }}</span>
-          <a href="{{ post.url }}">{{ post.title }}</a>
-        </li>
-      {% endfor %}
-    </ol>
-    <a class="all-link" href="/archive/">ARCHIVE →</a>
+  <main class="activity-column">
+    <div class="section-title-row">
+      <h1>RECENT ACTIVITY</h1>
+      <span>NEWEST FIRST</span>
+    </div>
 
-    <section class="weekly-widget left-picture-widget">
-      <h3>PICTURE OF THE WEEK</h3>
-      <div class="weekly-frame picture-frame">
+    <div class="activity-table">
+      {% for post in site.posts limit:8 %}
+      <article class="activity-row">
+        <time>{{ post.date | date: "%m.%d.%y" }}</time>
+        <div class="activity-kind">{{ post.category | default: "LOG" | upcase }}</div>
+        <div class="activity-copy">
+          <a class="activity-title" href="{{ post.url }}">{{ post.title }}</a>
+          {% if post.excerpt %}
+          <div class="activity-excerpt">{{ post.excerpt | strip_html | truncatewords: 20 }}</div>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    <div class="activity-pager">
+      <a href="/archive/">OLDER / ARCHIVE</a>
+    </div>
+  </main>
+
+  <aside class="home-sidebar">
+    <section class="module">
+      <div class="module-head">TODAY</div>
+      <div class="module-body system-copy">
+        <strong>THE BALANCE</strong><br>
+        <span>not yet open</span>
+      </div>
+    </section>
+
+    <section class="module">
+      <div class="module-head">CURRENT SONG</div>
+      <div class="module-body">
+        <div class="song-title">{{ site.data.weekly.song_title }}</div>
+        <div class="song-artist">{{ site.data.weekly.song_artist }}</div>
+
+        {% if site.data.weekly.song_audio and site.data.weekly.song_audio != "" %}
+        <div class="mini-player">
+          <button id="audio-toggle" type="button">PLAY</button>
+          <label for="audio-volume">VOL</label>
+          <input id="audio-volume" type="range" min="0" max="100" step="1" value="8" aria-label="background music volume">
+          <span id="volume-readout">08</span>
+        </div>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="module">
+      <div class="module-head">PICTURE OF THE WEEK</div>
+      <div class="module-body">
         {% if site.data.weekly.picture_image and site.data.weekly.picture_image != "" %}
-          <img src="{{ site.data.weekly.picture_image }}" alt="{{ site.data.weekly.picture_alt | default: "picture of the week" }}">
+          <img class="weekly-picture" src="{{ site.data.weekly.picture_image }}" alt="{{ site.data.weekly.picture_alt | default: "picture of the week" }}">
+          {% if site.data.weekly.picture_caption and site.data.weekly.picture_caption != "" %}
+          <div class="picture-caption">{{ site.data.weekly.picture_caption }}</div>
+          {% endif %}
         {% else %}
           <div class="picture-placeholder">NO PICTURE YET</div>
         {% endif %}
-        {% if site.data.weekly.picture_caption and site.data.weekly.picture_caption != "" %}
-          <div class="picture-caption">{{ site.data.weekly.picture_caption }}</div>
-        {% endif %}
       </div>
     </section>
-  </aside>
 
-  <section class="posts-column">
-    <div class="box-label latest-label">LATEST</div>
-
-    {% for post in site.posts limit:6 %}
-      <article class="entry">
-        <div class="entry-meta">
-          {{ post.date | date: "%m.%d.%y" }}
-          {% if post.category %}<span class="tag">{{ post.category | upcase }}</span>{% endif %}
-        </div>
-
-        <h2 class="entry-title">
-          <a href="{{ post.url }}">{{ post.title }}</a>
-        </h2>
-
-        {% if post.excerpt %}
-          <p class="entry-excerpt">{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
-        {% endif %}
-      </article>
-    {% endfor %}
-
-    <a class="all-link posts-all-link" href="/archive/">ALL POSTS →</a>
-  </section>
-
-  <aside class="weekly-column">
-    <section class="weekly-widget">
-      <h3>SONG OF THE WEEK</h3>
-      <div class="weekly-frame song-frame">
-        {% if site.data.weekly.song_url and site.data.weekly.song_url != "" %}
-          <a class="weekly-main-link" href="{{ site.data.weekly.song_url }}">
-        {% endif %}
-            <div class="song-title">{{ site.data.weekly.song_title }}</div>
-            <div class="song-artist">{{ site.data.weekly.song_artist }}</div>
-        {% if site.data.weekly.song_url and site.data.weekly.song_url != "" %}
-          </a>
-        {% endif %}
-        {% if site.data.weekly.song_note and site.data.weekly.song_note != "" %}
-          <p class="weekly-note">{{ site.data.weekly.song_note }}</p>
-        {% endif %}
-        <canvas id="song-eq" class="song-eq" width="320" height="68" aria-label="Audio spectrum visualizer"></canvas>
+    <section class="module">
+      <div class="module-head">PAST POSTS</div>
+      <div class="module-body">
+        <ol class="past-post-list">
+          {% for post in site.posts offset:1 limit:8 %}
+          <li><span>{{ post.date | date: "%m.%d" }}</span><a href="{{ post.url }}">{{ post.title }}</a></li>
+          {% endfor %}
+        </ol>
       </div>
     </section>
+
+    <div class="web-buttons" aria-label="site buttons">
+      <span class="web-button">FORTUNA<br>LUCKY YOU</span>
+      <span class="web-button rose">BLOO<br>WAS HERE</span>
+      <span class="web-button cream">KEEP THE<br>WEB WEIRD</span>
+    </div>
   </aside>
 </div>
