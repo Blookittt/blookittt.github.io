@@ -4884,3 +4884,44 @@ html[data-fortuna-theme="dark"] .segmented-control button.is-active{
     justify-self:start;
   }
 }
+
+
+/* DARK MODE — FORTUNA POWER DRAW */
+html[data-fortuna-theme="dark"] body.fortuna-power-draw{
+  background:#0b0a0c!important;
+}
+
+html[data-fortuna-theme="dark"] body.fortuna-power-draw .page-wrap{
+  background:#121114!important;
+}
+
+html[data-fortuna-theme="dark"] body.fortuna-power-draw .site-header,
+html[data-fortuna-theme="dark"] body.fortuna-power-draw .site-nav,
+html[data-fortuna-theme="dark"] body.fortuna-power-draw .home-grid,
+html[data-fortuna-theme="dark"] body.fortuna-power-draw .site-footer{
+  filter:brightness(.84) saturate(.90);
+}
+
+html[data-fortuna-theme="dark"] body.fortuna-power-draw .machine-case{
+  filter:none;
+  box-shadow:
+    inset 0 0 0 1px #766b6f,
+    inset 0 -14px 28px rgba(0,0,0,.28),
+    0 9px 18px rgba(0,0,0,.34),
+    0 0 24px rgba(188,107,135,.055);
+}
+
+html[data-fortuna-theme="dark"] body.fortuna-deep-draw{
+  background:#070709!important;
+}
+
+html[data-fortuna-theme="dark"] body.fortuna-deep-draw .page-wrap{
+  background:#0d0c0f!important;
+}
+
+html[data-fortuna-theme="dark"] body.fortuna-deep-draw .site-header,
+html[data-fortuna-theme="dark"] body.fortuna-deep-draw .site-nav,
+html[data-fortuna-theme="dark"] body.fortuna-deep-draw .home-grid,
+html[data-fortuna-theme="dark"] body.fortuna-deep-draw .site-footer{
+  filter:brightness(.68) saturate(.86);
+}
