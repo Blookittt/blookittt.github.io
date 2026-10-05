@@ -24,6 +24,20 @@ title: home
       {% endfor %}
     </ol>
     <a class="all-link" href="/archive/">ARCHIVE →</a>
+
+    <section class="weekly-widget left-picture-widget">
+      <h3>PICTURE OF THE WEEK</h3>
+      <div class="weekly-frame picture-frame">
+        {% if site.data.weekly.picture_image and site.data.weekly.picture_image != "" %}
+          <img src="{{ site.data.weekly.picture_image }}" alt="{{ site.data.weekly.picture_alt | default: "picture of the week" }}">
+        {% else %}
+          <div class="picture-placeholder">NO PICTURE YET</div>
+        {% endif %}
+        {% if site.data.weekly.picture_caption and site.data.weekly.picture_caption != "" %}
+          <div class="picture-caption">{{ site.data.weekly.picture_caption }}</div>
+        {% endif %}
+      </div>
+    </section>
   </aside>
 
   <section class="posts-column">
@@ -64,20 +78,7 @@ title: home
         {% if site.data.weekly.song_note and site.data.weekly.song_note != "" %}
           <p class="weekly-note">{{ site.data.weekly.song_note }}</p>
         {% endif %}
-      </div>
-    </section>
-
-    <section class="weekly-widget">
-      <h3>PICTURE OF THE WEEK</h3>
-      <div class="weekly-frame picture-frame">
-        {% if site.data.weekly.picture_image and site.data.weekly.picture_image != "" %}
-          <img src="{{ site.data.weekly.picture_image }}" alt="{{ site.data.weekly.picture_alt | default: "picture of the week" }}">
-        {% else %}
-          <div class="picture-placeholder">NO PICTURE YET</div>
-        {% endif %}
-        {% if site.data.weekly.picture_caption and site.data.weekly.picture_caption != "" %}
-          <div class="picture-caption">{{ site.data.weekly.picture_caption }}</div>
-        {% endif %}
+        <canvas id="song-eq" class="song-eq" width="320" height="68" aria-label="Audio spectrum visualizer"></canvas>
       </div>
     </section>
   </aside>
