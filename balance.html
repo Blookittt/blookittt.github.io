@@ -174,24 +174,56 @@ permalink: /balance/
               </div>
             </div>
 
-            <div class="fortometer-dial-wrap">
-              <div class="fortometer-dial-title">FORTUNA PRESSURE</div>
+            <div class="fortometer-gauge-wrap">
+              <div class="fortometer-gauge-head">
+                <span>CONTRARY INDEX</span>
+                <strong><span id="fortometer-contrary">--</span>/100</strong>
+              </div>
 
-              <div class="fortometer-dial" id="fortometer-dial" aria-hidden="true">
-                <div class="fortometer-scale">
-                  <span class="tick t1"></span><span class="tick t2"></span><span class="tick t3"></span>
-                  <span class="tick t4"></span><span class="tick t5"></span><span class="tick t6"></span>
-                  <span class="tick t7"></span><span class="tick t8"></span><span class="tick t9"></span>
-                </div>
+              <svg class="fortometer-gauge" viewBox="0 0 200 122" role="img" aria-label="Contrary Index gauge">
+                <rect class="gauge-face" x="2" y="2" width="196" height="118" rx="2"></rect>
 
-                <span class="dial-word dial-stable">STABLE</span>
-                <span class="dial-word dial-variable">VARIABLE</span>
-                <span class="dial-word dial-absurd">ABSURD</span>
+                <circle class="gauge-screw" cx="12" cy="12" r="4"></circle>
+                <circle class="gauge-screw" cx="188" cy="12" r="4"></circle>
 
-                <div class="fortometer-needle"></div>
-                <div class="fortometer-hub"></div>
+                <path class="gauge-arc gauge-arc-base" d="M30 96 A70 70 0 0 1 170 96" pathLength="100"></path>
+                <path class="gauge-arc gauge-zone gauge-zone-stable" d="M30 96 A70 70 0 0 1 170 96" pathLength="100"></path>
+                <path class="gauge-arc gauge-zone gauge-zone-variable" d="M30 96 A70 70 0 0 1 170 96" pathLength="100"></path>
+                <path class="gauge-arc gauge-zone gauge-zone-contrary" d="M30 96 A70 70 0 0 1 170 96" pathLength="100"></path>
+                <path class="gauge-arc gauge-zone gauge-zone-absurd" d="M30 96 A70 70 0 0 1 170 96" pathLength="100"></path>
 
-                <div class="fortometer-mini-plate">F-17</div>
+                <g class="gauge-ticks">
+                  <line x1="38" y1="100" x2="30" y2="100"></line>
+                  <line x1="42.7" y1="76.3" x2="35.3" y2="73.2"></line>
+                  <line x1="56.2" y1="56.2" x2="50.5" y2="50.5"></line>
+                  <line x1="76.3" y1="42.7" x2="73.2" y2="35.3"></line>
+                  <line x1="100" y1="38" x2="100" y2="30"></line>
+                  <line x1="123.7" y1="42.7" x2="126.8" y2="35.3"></line>
+                  <line x1="143.8" y1="56.2" x2="149.5" y2="50.5"></line>
+                  <line x1="157.3" y1="76.3" x2="164.7" y2="73.2"></line>
+                  <line x1="162" y1="100" x2="170" y2="100"></line>
+                </g>
+
+                <g class="gauge-numbers">
+                  <text x="23" y="105">0</text>
+                  <text x="43" y="58">25</text>
+                  <text x="100" y="25" text-anchor="middle">50</text>
+                  <text x="157" y="58" text-anchor="end">75</text>
+                  <text x="178" y="105" text-anchor="end">100</text>
+                </g>
+
+                <line id="fortometer-needle" class="gauge-needle" x1="100" y1="96" x2="100" y2="39"></line>
+                <circle class="gauge-hub-outer" cx="100" cy="96" r="10"></circle>
+                <circle class="gauge-hub-inner" cx="100" cy="96" r="6"></circle>
+
+                <text class="gauge-model" x="100" y="116" text-anchor="middle">MODEL F-17 / CAL. 1987</text>
+              </svg>
+
+              <div class="fortometer-zone-labels" aria-hidden="true">
+                <span>STABLE</span>
+                <span>VARIABLE</span>
+                <span>CONTRARY</span>
+                <span>ABSURD</span>
               </div>
             </div>
           </div>
@@ -282,7 +314,8 @@ permalink: /balance/
   const keyFavorEl = document.getElementById('balance-key-favor');
   const dateEl = document.getElementById('balance-date');
   const fortometerCondition = document.getElementById('fortometer-condition');
-  const fortometerDial = document.getElementById('fortometer-dial');
+  const fortometerNeedle = document.getElementById('fortometer-needle');
+  const fortometerContrary = document.getElementById('fortometer-contrary');
   const fortometerPressure = document.getElementById('fortometer-pressure');
   const fortometerTrend = document.getElementById('fortometer-trend');
   const fortometerLunar = document.getElementById('fortometer-lunar');
@@ -412,6 +445,27 @@ permalink: /balance/
     const trend = trendDelta > 0.055 ? 'RISING' : trendDelta < -0.055 ? 'FALLING' : 'STEADY';
     const carry = Math.sin((doy / 365.2422) * Math.PI * 2) >= 0 ? 'WEST' : 'EAST';
 
+    // Contrary Index: the degree to which ordinary fortune is expected to resist
+    // its indicated direction. The underlying rules are intentionally Almanac-grade.
+    const contraryNoise = hash('FORTUNA/CONTRARY/' + date.toISOString().slice(0,10)) % 29;
+    const lunarCross = Math.abs(Math.sin((lunar / SYNODIC) * Math.PI * 4)) * 21;
+    const carryResistance =
+      ((carry === 'EAST' && trend === 'RISING') || (carry === 'WEST' && trend === 'FALLING'))
+        ? 17
+        : 6;
+    const weekdayResistance = (((date.getUTCDay() + 1) * 7) + date.getUTCDate()) % 19;
+
+    let contrary = Math.round(
+      contraryNoise * 0.7 +
+      lunarCross +
+      Math.abs(correction) * 11 +
+      carryResistance +
+      weekdayResistance
+    );
+
+    if (date.getUTCDate() === 17) contrary += 17;
+    contrary = Math.max(3, Math.min(99, contrary));
+
     const tomorrowRaw = rawPressure(tomorrow);
     const tomorrowPressure = rawToday * 0.58 + tomorrowRaw * 0.42;
     const tomorrowSeed = rng(hash('FORTUNA/TOMORROW/' + tomorrow.toISOString().slice(0,10)));
@@ -434,6 +488,7 @@ permalink: /balance/
       lunar,
       correction,
       strain,
+      contrary,
       condition,
       trend,
       carry,
@@ -452,10 +507,10 @@ permalink: /balance/
   if (fortometerCorrection) fortometerCorrection.textContent = (almanac.correction >= 0 ? '+' : '') + almanac.correction.toFixed(1);
   if (fortometerStrain) fortometerStrain.textContent = String(almanac.strain).padStart(2,'0');
   if (fortometerTomorrow) fortometerTomorrow.textContent = almanac.tomorrow;
-  if (fortometerDial) {
-    const angle = -62 + (almanac.strain / 99) * 124;
-    fortometerDial.style.setProperty('--fortometer-angle', angle.toFixed(1) + 'deg');
-    fortometerDial.dataset.condition = almanac.condition.toLowerCase();
+  if (fortometerContrary) fortometerContrary.textContent = String(almanac.contrary).padStart(2,'0');
+  if (fortometerNeedle) {
+    const angle = -65 + (almanac.contrary / 99) * 130;
+    fortometerNeedle.setAttribute('transform', 'rotate(' + angle.toFixed(1) + ' 100 96)');
   }
   if (fortometerNote) fortometerNote.textContent = almanac.note;
 
