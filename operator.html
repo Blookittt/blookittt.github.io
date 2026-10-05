@@ -1,0 +1,865 @@
+---
+layout: default
+title: operator
+permalink: /operator/
+---
+<link rel="stylesheet" href="/assets/operator.css?v=20261005a">
+
+<div class="operator-page" id="operator-page">
+  <header class="operator-topbar">
+    <div class="operator-brand">
+      <a href="/" class="operator-back">FORTUNA</a>
+      <span>OPERATOR TERMINAL / TEST FLOOR</span>
+    </div>
+
+    <div class="operator-shift-state">
+      <span class="operator-lamp" id="operator-run-lamp"></span>
+      <span id="operator-run-state">SHIFT CLOSED</span>
+    </div>
+  </header>
+
+  <section class="operator-status-rack">
+    <div class="operator-time-block">
+      <span class="rack-label">TIME REMAINING</span>
+      <strong id="operator-time">02:17.24</strong>
+      <small>FORTUNA STANDARD TIME</small>
+    </div>
+
+    <div class="operator-rank-block">
+      <span class="rack-label">RANK</span>
+      <strong id="operator-rank">D</strong>
+      <small id="operator-rank-name">UNASSESSED</small>
+    </div>
+
+    <div class="operator-stat-block">
+      <span class="rack-label">GOOD FORTUNE</span>
+      <strong id="operator-streak">×1</strong>
+      <small>CHAIN</small>
+    </div>
+
+    <div class="operator-stat-block">
+      <span class="rack-label">FAVOR</span>
+      <strong id="operator-favor">000</strong>
+      <small>AVAILABLE</small>
+    </div>
+
+    <div class="operator-fst-block">
+      <span class="rack-label">SYS CLOCK</span>
+      <strong id="operator-fst">--:--:--</strong>
+      <small>INCORRECT / NORMAL</small>
+    </div>
+  </section>
+
+  <div class="operator-grid">
+    <aside class="operator-left-column">
+      <section class="operator-panel fortograph-panel">
+        <div class="operator-panel-head">
+          <span>FORTOGRAPH</span>
+          <small>DAILY CONDITIONS</small>
+        </div>
+
+        <div class="fortograph-condition-row">
+          <div>
+            <span class="tiny-label">CONDITION</span>
+            <strong id="op-condition">FAIR</strong>
+            <span id="op-pressure">29.12 fHg / FALLING</span>
+          </div>
+
+          <div class="fortograph-index">
+            <span class="tiny-label">CONTRARY</span>
+            <strong id="op-contrary">36</strong>
+            <span>/100</span>
+          </div>
+        </div>
+
+        <div class="fortograph-meter" aria-hidden="true">
+          <div class="fortograph-meter-fill" id="op-contrary-fill"></div>
+          <span class="fortograph-zone z1">STABLE</span>
+          <span class="fortograph-zone z2">VARIABLE</span>
+          <span class="fortograph-zone z3">CONTRARY</span>
+          <span class="fortograph-zone z4">ABSURD</span>
+        </div>
+
+        <dl class="fortograph-facts">
+          <div><dt>CARRY</dt><dd id="op-carry">EAST</dd></div>
+          <div><dt>STRAIN</dt><dd id="op-strain">41</dd></div>
+          <div><dt>LUNAR AGE</dt><dd id="op-lunar">23.7 d</dd></div>
+          <div><dt>TOMORROW</dt><dd id="op-tomorrow">VARIABLE</dd></div>
+        </dl>
+
+        <div class="operator-fortune">
+          <span>TODAY'S FORTUNE</span>
+          <p id="operator-fortune">You will survive an event you are already being dramatic about.</p>
+        </div>
+      </section>
+
+      <section class="operator-panel omen-panel">
+        <div class="operator-panel-head">
+          <span>OMENS</span>
+          <small>HELD / ACTIVE</small>
+        </div>
+
+        <div class="omen-slot active">
+          <span class="omen-code">O-17</span>
+          <div><strong>LEFT SHOE UNTIED</strong><small>LEFT TOTAL +1 UNTIL CORRECTED</small></div>
+        </div>
+        <div class="omen-slot">
+          <span class="omen-code">K-08</span>
+          <div><strong>COUNTY KEY No. 8</strong><small>DOOR STATUS / UNKNOWN</small></div>
+        </div>
+        <div class="omen-slot">
+          <span class="omen-code">R-04</span>
+          <div><strong>RECEIPT FACE-DOWN</strong><small>PURCHASE TIME -00:08</small></div>
+        </div>
+      </section>
+
+      <section class="operator-panel lamps-panel">
+        <div class="operator-panel-head">
+          <span>INDICATORS</span>
+          <small>DO NOT PANIC</small>
+        </div>
+        <div class="lamp-grid">
+          <div><i class="status-bulb on blue"></i><span>CARRY</span></div>
+          <div><i class="status-bulb on rose"></i><span>SEAL</span></div>
+          <div><i class="status-bulb"></i><span>DEBT</span></div>
+          <div><i class="status-bulb on amber"></i><span>COUNTY</span></div>
+        </div>
+      </section>
+    </aside>
+
+    <main class="operator-center-column">
+      <section class="operator-panel dispatch-strip" id="dispatch-strip">
+        <div>
+          <span class="tiny-label">CURRENT ORDER</span>
+          <strong id="dispatch-name">NO ORDER LOADED</strong>
+        </div>
+        <div>
+          <span class="tiny-label">CLASS</span>
+          <strong id="dispatch-class">--</strong>
+        </div>
+        <div>
+          <span class="tiny-label">PAR</span>
+          <strong id="dispatch-par">--:--</strong>
+        </div>
+        <div>
+          <span class="tiny-label">TIME AWARD</span>
+          <strong id="dispatch-reward">+--:--</strong>
+        </div>
+        <button id="operator-engage" class="operator-engage" type="button">OPEN SHIFT</button>
+      </section>
+
+      <section class="operator-balance" id="operator-balance">
+        <div class="operator-balance-head">
+          <span>FORTUNA PRESENTS</span>
+          <strong>THE BALANCE</strong>
+          <span id="operator-ruleline">AWAITING DISPATCH</span>
+        </div>
+
+        <div class="operator-number-bank" id="operator-number-bank" aria-label="Balance number bank"></div>
+
+        <div class="operator-weigh-deck">
+          <div class="operator-total">
+            <span>LEFT TOTAL</span>
+            <strong id="operator-left-total">--</strong>
+          </div>
+
+          <div class="operator-scale" aria-hidden="true">
+            <div class="operator-scale-beam" id="operator-scale-beam"></div>
+            <div class="operator-scale-pivot"></div>
+          </div>
+
+          <div class="operator-total">
+            <span>RIGHT TOTAL</span>
+            <strong id="operator-right-total">--</strong>
+          </div>
+        </div>
+
+        <div class="operator-balance-readout" id="operator-balance-readout">
+          SHIFT CLOSED. OPEN WHEN READY.
+        </div>
+
+        <div class="operator-controls">
+          <div class="operator-weighs">
+            <span>WEIGHS</span>
+            <strong id="operator-weighs">0</strong>
+            <div id="operator-weigh-pips" class="operator-weigh-pips"></div>
+          </div>
+
+          <button class="operator-weigh-button" id="operator-weigh-button" type="button" disabled>
+            WEIGH
+          </button>
+
+          <button class="operator-no-button" id="operator-no-button" type="button" disabled title="Reject current order at great expense.">
+            NO.
+          </button>
+        </div>
+      </section>
+
+      <section class="operator-panel payout-panel">
+        <div class="operator-panel-head">
+          <span>SETTLEMENT</span>
+          <small id="settlement-state">NO ENTRY</small>
+        </div>
+        <div class="payout-ledger">
+          <div><span>BASE</span><strong id="pay-base">+00:00</strong></div>
+          <div><span>QUICK</span><strong id="pay-quick">+00:00</strong></div>
+          <div><span>FIRST WEIGH</span><strong id="pay-first">+00:00</strong></div>
+          <div><span>CHAIN</span><strong id="pay-chain">×1.00</strong></div>
+          <div class="payout-total"><span>TOTAL</span><strong id="pay-total">+00:00</strong></div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="operator-right-column">
+      <section class="operator-panel queue-panel">
+        <div class="operator-panel-head">
+          <span>ORDER BOARD</span>
+          <small>INCOMING</small>
+        </div>
+
+        <div id="operator-job-queue" class="operator-job-queue"></div>
+      </section>
+
+      <section class="operator-panel ticker-panel">
+        <div class="operator-panel-head">
+          <span>FORTUNA WIRE</span>
+          <small>LIVE</small>
+        </div>
+        <div class="operator-ticker" id="operator-ticker" aria-live="polite"></div>
+      </section>
+
+      <section class="operator-panel schedule-panel">
+        <div class="operator-panel-head">
+          <span>SHIFT TABLE</span>
+          <small>FST</small>
+        </div>
+        <ol class="operator-schedule">
+          <li><time>06:17</time><span>SHIFT OPEN</span></li>
+          <li><time>07:00</time><span>THE BALANCE</span></li>
+          <li><time>09:15</time><span>BUS 44</span></li>
+          <li class="warning"><time>11:17</time><span>REVERSAL PERIOD</span></li>
+          <li><time>12:00</time><span>????????</span></li>
+          <li><time>17:30</time><span>SUPPER</span></li>
+          <li class="warning"><time>21:17</time><span>RECURRENCE</span></li>
+          <li><time>00:00</time><span>CLOSE OF DAY</span></li>
+        </ol>
+      </section>
+    </aside>
+  </div>
+
+  <footer class="operator-console-footer">
+    <span>COUNTY USE / TEST FLOOR</span>
+    <span id="operator-footer-message">FORTUNA IS NOT RESPONSIBLE FOR MISREAD CONDITIONS.</span>
+    <button id="operator-reset-run" type="button">RESET SHIFT</button>
+  </footer>
+</div>
+
+<script>
+(() => {
+  const page = document.getElementById('operator-page');
+  if (!page) return;
+
+  const $ = id => document.getElementById(id);
+  const wait = ms => new Promise(resolve => window.setTimeout(resolve, ms));
+
+  const jobs = [
+    {
+      id:'STANDARD-17',
+      name:'STANDARD WEIGH',
+      className:'PUBLIC / ROUTINE',
+      baseMs:18000,
+      parMs:24000,
+      favor:7,
+      sealed:1,
+      minFlips:2,
+      maxWeighs:3,
+      rules:['1 SEALED','STANDARD CARRY'],
+      intro:'ROUTINE PUBLIC WEIGH. DO NOT OVERTHINK IT.'
+    },
+    {
+      id:'CROSSED-44',
+      name:'CROSSED WEIGH',
+      className:'CONTRARY / COUNTY',
+      baseMs:34000,
+      parMs:32000,
+      favor:13,
+      sealed:2,
+      minFlips:3,
+      maxWeighs:3,
+      rules:['2 SEALED','EAST CARRY','CROSSED'],
+      intro:'CROSSED VALUES AUTHORIZED. SECOND SEAL ACTIVE.'
+    },
+    {
+      id:'ESTATE-08',
+      name:'THE ESTATE',
+      className:'SPECIAL / HEAVY',
+      baseMs:64000,
+      parMs:38000,
+      favor:22,
+      sealed:2,
+      minFlips:4,
+      maxWeighs:2,
+      rules:['2 SEALED','2 WEIGHS','NO CORRECTION'],
+      intro:'FORTUNA RECOMMENDS 00:54 MINIMUM RESERVE.'
+    }
+  ];
+
+  const fortunes = [
+    'i luv u :)',
+    'Do not hook up with a man whose name starts with C.',
+    'Your instincts are correct, but your explanation is insane.',
+    'A door you thought was locked was only very heavy.',
+    'You will survive an event you are already being dramatic about.',
+    'Your enemy is currently having stomach problems.',
+    'Avoid boats tomorrow.',
+    'I like bears :) ohhh you meant the ANIMAL?',
+    'A raccoon would respect your choices.',
+    'The answer is yes, but not for the reason you want.'
+  ];
+
+  const hash = str => {
+    let h = 2166136261 >>> 0;
+    for (let i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  };
+
+  const rng = seed => () => {
+    seed |= 0;
+    seed = seed + 0x6D2B79F5 | 0;
+    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+
+  const dateKey = new Date().toISOString().slice(0,10);
+  const dailyRandom = rng(hash('FORTUNA/OPERATOR/' + dateKey));
+  const dailyStrain = 28 + Math.floor(dailyRandom() * 54);
+  const contrary = 18 + Math.floor(dailyRandom() * 68);
+  const condition =
+    dailyStrain < 38 ? 'FAIR' :
+    dailyStrain < 58 ? 'VARIABLE' :
+    dailyStrain < 72 ? 'UNSETTLED' :
+    'HEAVY';
+
+  const carry = dailyRandom() > .5 ? 'EAST' : 'WEST';
+  const pressure = (28.86 + dailyRandom() * .72).toFixed(2);
+  const trend = dailyRandom() > .55 ? 'RISING' : dailyRandom() > .25 ? 'FALLING' : 'STEADY';
+  const lunar = (dailyRandom() * 29.53).toFixed(1);
+  const tomorrow = ['FAIR','VARIABLE','UNSETTLED','HEAVY'][Math.floor(dailyRandom()*4)];
+  const fortune = fortunes[Math.floor(dailyRandom() * fortunes.length)];
+
+  $('op-condition').textContent = condition;
+  $('op-pressure').textContent = pressure + ' fHg / ' + trend;
+  $('op-contrary').textContent = String(contrary);
+  $('op-contrary-fill').style.width = contrary + '%';
+  $('op-carry').textContent = carry;
+  $('op-strain').textContent = String(dailyStrain);
+  $('op-lunar').textContent = lunar + ' d';
+  $('op-tomorrow').textContent = tomorrow;
+  $('operator-fortune').textContent = fortune;
+
+  let timeMs = 137240;
+  let running = false;
+  let finished = false;
+  let lastTick = performance.now();
+  let activeJobIndex = -1;
+  let jobStartTime = 0;
+  let jobWeighsUsed = 0;
+  let streak = 1;
+  let rank = 'D';
+  let favor = window.FortunaProfile ? Number(FortunaProfile.load().favor || 0) : 0;
+  let puzzle = null;
+  let tileState = [];
+  let operatorBusy = false;
+  let totalEarned = 0;
+
+  const formatTime = ms => {
+    const safe = Math.max(0, Math.floor(ms));
+    const mins = Math.floor(safe / 60000);
+    const secs = Math.floor((safe % 60000) / 1000);
+    const cs = Math.floor((safe % 1000) / 10);
+    return String(mins).padStart(2,'0') + ':' +
+      String(secs).padStart(2,'0') + '.' +
+      String(cs).padStart(2,'0');
+  };
+
+  const formatAward = ms => '+' + formatTime(ms).slice(0,5);
+
+  const ticker = (message, tone='') => {
+    const line = document.createElement('div');
+    line.className = 'ticker-line ' + tone;
+    const t = document.createElement('span');
+    t.textContent = window.FortunaSite ? FortunaSite.getWrongTime().slice(0,8) : '--:--:--';
+    const m = document.createElement('strong');
+    m.textContent = message;
+    line.append(t,m);
+    $('operator-ticker').prepend(line);
+    while ($('operator-ticker').children.length > 12) {
+      $('operator-ticker').lastElementChild.remove();
+    }
+  };
+
+  const setRank = next => {
+    if (next === rank) return;
+    rank = next;
+    const names = {D:'UNASSESSED',C:'FORTUNATE',B:'FAVORED',A:'BLESSED',S:'QUESTIONABLE'};
+    $('operator-rank').classList.remove('rank-flip');
+    void $('operator-rank').offsetWidth;
+    $('operator-rank').textContent = next;
+    $('operator-rank').classList.add('rank-flip');
+    $('operator-rank-name').textContent = names[next] || '???';
+    ticker('RANK ADJUSTED / ' + next, 'good');
+  };
+
+  const updateRank = () => {
+    if (streak >= 5 || totalEarned >= 125000) setRank('S');
+    else if (streak >= 4 || totalEarned >= 85000) setRank('A');
+    else if (streak >= 3 || totalEarned >= 50000) setRank('B');
+    else if (streak >= 2 || totalEarned >= 22000) setRank('C');
+  };
+
+  const updateTopbar = () => {
+    $('operator-time').textContent = formatTime(timeMs);
+    $('operator-streak').textContent = '×' + streak;
+    $('operator-favor').textContent = String(Math.max(0,favor)).padStart(3,'0');
+    if (window.FortunaSite) $('operator-fst').textContent = FortunaSite.getWrongTime();
+  };
+
+  const loop = now => {
+    const dt = now - lastTick;
+    lastTick = now;
+
+    if (running && !finished) {
+      timeMs -= dt;
+      if (timeMs <= 0) {
+        timeMs = 0;
+        endShift(false);
+      }
+    }
+
+    updateTopbar();
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+
+  const oriented = (pair, flipped) => flipped ? [pair[1],pair[0]] : pair;
+
+  const makePuzzle = (job, seed) => {
+    const random = rng(seed);
+
+    for (let attempt = 0; attempt < 8000; attempt++) {
+      const solvedPairs = [];
+      let diff = 0;
+
+      for (let i=0;i<5;i++) {
+        let a = Math.floor(random()*10);
+        let b = Math.floor(random()*10);
+        if (a === b) b = (b + 1 + Math.floor(random()*8)) % 10;
+        solvedPairs.push([a,b]);
+        diff += a-b;
+      }
+
+      if (Math.abs(diff) > 9) continue;
+      const needed = -diff;
+      const candidates = [];
+
+      for (let a=0;a<=9;a++) {
+        const b = a-needed;
+        if (b >= 0 && b <= 9 && a !== b) candidates.push([a,b]);
+      }
+      if (!candidates.length) continue;
+      solvedPairs.push(candidates[Math.floor(random()*candidates.length)]);
+
+      const flippable = [];
+      for (let i=job.sealed;i<6;i++) flippable.push(i);
+
+      let solutionCount = 0;
+      let solvedMask = 0;
+      const possibilities = 1 << flippable.length;
+
+      for (let mask=0;mask<possibilities;mask++) {
+        let left = 0;
+        let right = 0;
+
+        for (let i=0;i<6;i++) {
+          const pos = flippable.indexOf(i);
+          const flip = pos >= 0 ? Boolean(mask & (1 << pos)) : false;
+          const p = oriented(solvedPairs[i],flip);
+          left += p[0];
+          right += p[1];
+        }
+
+        if (left === right) {
+          solutionCount++;
+          solvedMask = mask;
+        }
+      }
+
+      if (solutionCount !== 1) continue;
+
+      let scrambleMask = 0;
+      let flipCount = 0;
+      let guard = 0;
+
+      while ((flipCount < Math.min(job.minFlips,flippable.length) || scrambleMask === solvedMask) && guard < 500) {
+        scrambleMask = Math.floor(random()*possibilities);
+        flipCount = 0;
+        for (let i=0;i<flippable.length;i++) if (scrambleMask & (1<<i)) flipCount++;
+        guard++;
+      }
+
+      if (flipCount < Math.min(job.minFlips,flippable.length)) continue;
+
+      const shownPairs = solvedPairs.map((pair,i) => {
+        const pos = flippable.indexOf(i);
+        if (pos < 0) return pair.slice();
+        return oriented(pair,Boolean(scrambleMask & (1<<pos))).slice();
+      });
+
+      return {shownPairs};
+    }
+
+    return {shownPairs:[[3,8],[7,2],[4,9],[3,6],[6,0],[7,1]]};
+  };
+
+  const currentPairs = () => tileState.map(item => item.flipped ? [item.pair[1],item.pair[0]] : item.pair);
+
+  const measure = () => {
+    const pairs = currentPairs();
+    const left = pairs.reduce((sum,p) => sum+p[0],0);
+    const right = pairs.reduce((sum,p) => sum+p[1],0);
+    return {left,right,diff:left-right};
+  };
+
+  const renderQueue = () => {
+    const queue = $('operator-job-queue');
+    queue.innerHTML = '';
+
+    jobs.forEach((job,index) => {
+      const row = document.createElement('div');
+      row.className = 'operator-job-card' +
+        (index === activeJobIndex ? ' current' : '') +
+        (index < activeJobIndex ? ' done' : '');
+
+      const top = document.createElement('div');
+      const name = document.createElement('strong');
+      const state = document.createElement('span');
+      name.textContent = job.name;
+      state.textContent =
+        index < activeJobIndex ? 'CLEARED' :
+        index === activeJobIndex ? 'ACTIVE' :
+        'PENDING';
+      top.append(name,state);
+
+      const meta = document.createElement('small');
+      meta.textContent = job.rules.join(' / ');
+
+      const pay = document.createElement('b');
+      pay.textContent = formatAward(job.baseMs);
+
+      row.append(top,meta,pay);
+      queue.appendChild(row);
+    });
+  };
+
+  const renderWeighPips = max => {
+    const wrap = $('operator-weigh-pips');
+    wrap.innerHTML = '';
+    for (let i=0;i<max;i++) {
+      const pip = document.createElement('span');
+      pip.classList.toggle('spent', i < jobWeighsUsed);
+      wrap.appendChild(pip);
+    }
+  };
+
+  const renderTiles = () => {
+    const bank = $('operator-number-bank');
+    bank.innerHTML = '';
+    const job = jobs[activeJobIndex];
+
+    tileState.forEach((item,index) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'operator-number' + (item.sealed ? ' sealed' : '');
+      button.disabled = item.sealed || operatorBusy || !running;
+
+      const windowEl = document.createElement('span');
+      windowEl.className = 'operator-number-window';
+
+      const digits = document.createElement('strong');
+      const p = item.flipped ? [item.pair[1],item.pair[0]] : item.pair;
+      digits.textContent = p.join('');
+
+      const plate = document.createElement('span');
+      plate.className = 'operator-number-plate';
+      plate.textContent = item.sealed ? 'SEALED' : 'FLIP';
+
+      windowEl.appendChild(digits);
+      button.append(windowEl,plate);
+
+      if (!item.sealed) {
+        button.addEventListener('click', async () => {
+          if (operatorBusy || !running) return;
+          operatorBusy = true;
+          button.classList.add('rolling');
+          plate.textContent = 'CLACK';
+          await wait(90);
+          item.flipped = !item.flipped;
+          const np = item.flipped ? [item.pair[1],item.pair[0]] : item.pair;
+          digits.textContent = np.join('');
+          await wait(100);
+          button.classList.remove('rolling');
+          plate.textContent = 'FLIP';
+          operatorBusy = false;
+          $('operator-left-total').textContent = '--';
+          $('operator-right-total').textContent = '--';
+          $('operator-scale-beam').style.transform = 'rotate(0deg)';
+        });
+      }
+
+      bank.appendChild(button);
+    });
+
+    $('operator-ruleline').textContent = job.rules.join(' / ');
+  };
+
+  const clearPayout = () => {
+    $('pay-base').textContent = '+00:00';
+    $('pay-quick').textContent = '+00:00';
+    $('pay-first').textContent = '+00:00';
+    $('pay-chain').textContent = '×' + (1 + Math.max(0,streak-1)*.15).toFixed(2);
+    $('pay-total').textContent = '+00:00';
+    $('settlement-state').textContent = 'PENDING';
+  };
+
+  const loadJob = index => {
+    if (index >= jobs.length) {
+      endShift(true);
+      return;
+    }
+
+    activeJobIndex = index;
+    const job = jobs[index];
+    puzzle = makePuzzle(job,hash(dateKey+'|'+job.id+'|'+index));
+    tileState = puzzle.shownPairs.map((pair,i) => ({
+      pair:pair.slice(),
+      flipped:false,
+      sealed:i < job.sealed
+    }));
+
+    jobStartTime = performance.now();
+    jobWeighsUsed = 0;
+
+    $('dispatch-name').textContent = job.name;
+    $('dispatch-class').textContent = job.className;
+    $('dispatch-par').textContent = formatTime(job.parMs).slice(0,5);
+    $('dispatch-reward').textContent = formatAward(job.baseMs);
+    $('operator-engage').textContent = 'ACTIVE';
+    $('operator-engage').disabled = true;
+    $('operator-weigh-button').disabled = false;
+    $('operator-no-button').disabled = favor < 40;
+    $('operator-weighs').textContent = String(job.maxWeighs);
+    $('operator-balance-readout').textContent = job.intro;
+
+    clearPayout();
+    renderWeighPips(job.maxWeighs);
+    renderTiles();
+    renderQueue();
+    ticker('ORDER RECEIVED / '+job.id,'warn');
+  };
+
+  const settleJob = async () => {
+    const job = jobs[activeJobIndex];
+    const elapsed = performance.now() - jobStartTime;
+    const quick = Math.max(0,Math.round((job.parMs-elapsed)*.55));
+    const first = jobWeighsUsed === 1 ? 8000 : 0;
+    const chain = 1 + Math.max(0,streak-1)*.15;
+    const subtotal = job.baseMs + quick + first;
+    const total = Math.round(subtotal*chain);
+
+    $('pay-base').textContent = formatAward(job.baseMs);
+    $('pay-quick').textContent = formatAward(quick);
+    $('pay-first').textContent = formatAward(first);
+    $('pay-chain').textContent = '×'+chain.toFixed(2);
+    $('pay-total').textContent = formatAward(total);
+    $('settlement-state').textContent = 'ACCEPTED';
+
+    timeMs += total;
+    totalEarned += total;
+    favor += job.favor;
+    streak += 1;
+
+    if (window.FortunaProfile) {
+      const p = FortunaProfile.load();
+      p.favor = favor;
+      FortunaProfile.save(p);
+    }
+
+    updateRank();
+    ticker('ACCEPTED / '+formatAward(total)+' / FAVOR +'+job.favor,'good');
+
+    $('operator-weigh-button').disabled = true;
+    $('operator-no-button').disabled = true;
+    $('operator-balance').classList.add('accepted');
+    await wait(950);
+    $('operator-balance').classList.remove('accepted');
+    loadJob(activeJobIndex+1);
+  };
+
+  const failJob = async () => {
+    const job = jobs[activeJobIndex];
+    timeMs = Math.max(0,timeMs-12000);
+    streak = 1;
+    $('operator-streak').textContent = '×1';
+    $('operator-balance-readout').textContent = 'ORDER VOID. -00:12. GOOD FORTUNE LOST.';
+    ticker('ORDER VOID / -00:12 / CHAIN LOST','bad');
+    $('operator-weigh-button').disabled = true;
+    $('operator-no-button').disabled = true;
+    await wait(1000);
+    loadJob(activeJobIndex+1);
+  };
+
+  const weigh = async () => {
+    if (operatorBusy || !running || activeJobIndex < 0) return;
+    const job = jobs[activeJobIndex];
+    operatorBusy = true;
+    $('operator-weigh-button').disabled = true;
+    jobWeighsUsed++;
+    $('operator-weighs').textContent = String(Math.max(0,job.maxWeighs-jobWeighsUsed));
+    renderWeighPips(job.maxWeighs);
+    $('operator-balance').classList.add('weighing');
+    $('operator-balance-readout').textContent = 'FORTUNA IS WEIGHING...';
+
+    const beam = $('operator-scale-beam');
+    for (const angle of [-5,4,-3,2,-1,0]) {
+      beam.style.transform = 'rotate('+angle+'deg)';
+      await wait(110);
+    }
+
+    const m = measure();
+    $('operator-left-total').textContent = String(m.left).padStart(2,'0');
+    $('operator-right-total').textContent = String(m.right).padStart(2,'0');
+    beam.style.transform = 'rotate('+Math.max(-8,Math.min(8,m.diff*1.2))+'deg)';
+    await wait(260);
+
+    $('operator-balance').classList.remove('weighing');
+
+    if (m.diff === 0) {
+      $('operator-balance-readout').textContent = 'CLUNK. BALANCE ACCEPTED.';
+      operatorBusy = false;
+      await settleJob();
+      return;
+    }
+
+    timeMs = Math.max(0,timeMs-4000);
+    $('operator-balance-readout').textContent =
+      (m.diff > 0 ? 'LEFT' : 'RIGHT') +
+      ' HEAVIER BY ' + Math.abs(m.diff) +
+      '. -00:04.';
+
+    ticker('FAILED WEIGH / '+(m.diff>0?'LEFT':'RIGHT')+' +'+Math.abs(m.diff)+' / -00:04','bad');
+
+    if (jobWeighsUsed >= job.maxWeighs) {
+      operatorBusy = false;
+      await failJob();
+      return;
+    }
+
+    operatorBusy = false;
+    $('operator-weigh-button').disabled = false;
+  };
+
+  const startShift = () => {
+    if (running || finished) return;
+    running = true;
+    $('operator-run-lamp').classList.add('on');
+    $('operator-run-state').textContent = 'SHIFT ACTIVE';
+    $('operator-engage').textContent = 'LOADING';
+    ticker('SHIFT OPEN / TIME BANK 02:17.24','good');
+    ticker('FORTOGRAPH READ / '+condition+' / CONTRARY '+contrary);
+    loadJob(0);
+  };
+
+  const endShift = success => {
+    if (finished) return;
+    running = false;
+    finished = true;
+    $('operator-run-lamp').classList.remove('on');
+    $('operator-run-state').textContent = success ? 'SHIFT CLEARED' : 'SHIFT EXPIRED';
+    $('operator-weigh-button').disabled = true;
+    $('operator-no-button').disabled = true;
+    $('operator-engage').disabled = true;
+    $('operator-balance-readout').textContent =
+      success ? 'CLOSE OF DAY ACCEPTED. GOOD NIGHT.' : 'TIME BANK EMPTY. SHIFT CLOSED.';
+    $('operator-footer-message').textContent =
+      success ? 'FORTUNA HAS FILED YOUR DAY.' : 'FORTUNA HAS FILED SOMETHING.';
+    ticker(success ? 'ALL ORDERS CLEARED / SHIFT ACCEPTED' : 'TIME BANK EMPTY / SHIFT CLOSED',success?'good':'bad');
+  };
+
+  const resetShift = () => {
+    timeMs = 137240;
+    running = false;
+    finished = false;
+    activeJobIndex = -1;
+    jobWeighsUsed = 0;
+    streak = 1;
+    rank = 'D';
+    totalEarned = 0;
+    tileState = [];
+    operatorBusy = false;
+
+    $('operator-run-lamp').classList.remove('on');
+    $('operator-run-state').textContent = 'SHIFT CLOSED';
+    $('operator-rank').textContent = 'D';
+    $('operator-rank-name').textContent = 'UNASSESSED';
+    $('operator-engage').disabled = false;
+    $('operator-engage').textContent = 'OPEN SHIFT';
+    $('operator-weigh-button').disabled = true;
+    $('operator-no-button').disabled = true;
+    $('operator-number-bank').innerHTML = '';
+    $('operator-left-total').textContent = '--';
+    $('operator-right-total').textContent = '--';
+    $('operator-scale-beam').style.transform = 'rotate(0deg)';
+    $('operator-balance-readout').textContent = 'SHIFT CLOSED. OPEN WHEN READY.';
+    $('operator-ruleline').textContent = 'AWAITING DISPATCH';
+    $('dispatch-name').textContent = 'NO ORDER LOADED';
+    $('dispatch-class').textContent = '--';
+    $('dispatch-par').textContent = '--:--';
+    $('dispatch-reward').textContent = '+--:--';
+    $('operator-weighs').textContent = '0';
+    $('operator-weigh-pips').innerHTML = '';
+    $('operator-ticker').innerHTML = '';
+    clearPayout();
+    renderQueue();
+    ticker('TEST FLOOR READY.');
+  };
+
+  $('operator-engage').addEventListener('click',startShift);
+  $('operator-weigh-button').addEventListener('click',weigh);
+
+  $('operator-no-button').addEventListener('click',async () => {
+    if (!running || activeJobIndex < 0 || operatorBusy || favor < 40) return;
+    operatorBusy = true;
+    favor -= 40;
+    streak = 1;
+    ticker('NO. / ORDER REJECTED / FAVOR -40','bad');
+    $('operator-balance-readout').textContent = 'NO. ACCEPTED.';
+    if (window.FortunaProfile) {
+      const p = FortunaProfile.load();
+      p.favor = favor;
+      FortunaProfile.save(p);
+    }
+    updateTopbar();
+    await wait(650);
+    operatorBusy = false;
+    loadJob(activeJobIndex+1);
+  });
+
+  $('operator-reset-run').addEventListener('click',resetShift);
+
+  resetShift();
+})();
+</script>
