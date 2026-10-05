@@ -61,8 +61,7 @@ title: home
 <div class="home-grid">
   <main class="activity-column">
     <div class="section-title-row">
-      <h1>RECENT ACTIVITY</h1>
-      <span>NEWEST FIRST</span>
+      <h1>RECENT</h1>
     </div>
 
     <div class="activity-table">
@@ -89,13 +88,12 @@ title: home
     <section class="module">
       <div class="module-head">TODAY</div>
       <div class="module-body system-copy">
-        <strong><a href="/balance/">THE BALANCE</a></strong><br>
-        <span>open today / one board</span>
+        <a class="today-balance-link" href="/balance/">THE BALANCE →</a>
       </div>
     </section>
 
     <section class="module">
-      <div class="module-head">CURRENT SONG</div>
+      <div class="module-head">LISTENING TO</div>
       <div class="module-body">
         <div class="song-title">{{ site.data.weekly.song_title }}</div>
         <div class="song-artist">{{ site.data.weekly.song_artist }}</div>
@@ -125,21 +123,8 @@ title: home
       </div>
     </section>
 
-    <section class="module">
-      <div class="module-head">PAST POSTS</div>
-      <div class="module-body">
-        <ol class="past-post-list">
-          {% for post in site.posts offset:1 limit:8 %}
-          <li><span>{{ post.date | date: "%m.%d" }}</span><a href="{{ post.url }}">{{ post.title }}</a></li>
-          {% endfor %}
-        </ol>
-      </div>
-    </section>
-
-    <div class="web-buttons" aria-label="site buttons">
+    <div class="web-buttons" aria-label="site button">
       <span class="web-button">FORTUNA<br>LUCKY YOU</span>
-      <span class="web-button rose">BLOO<br>WAS HERE</span>
-      <span class="web-button cream">KEEP THE<br>WEB WEIRD</span>
     </div>
   </aside>
 </div>
