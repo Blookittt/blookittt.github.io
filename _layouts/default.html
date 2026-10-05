@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% if page.title and page.title != "home" %}{{ page.title | escape }} / {% endif %}BLOOFORTUNE</title>
+  <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | strip_newlines | escape }}">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <main class="shell">
+    <header class="masthead">
+      <a class="masthead-link" href="/">
+        <h1>BLOOFORTUNE.COM</h1>
+      </a>
+      <div class="sub">personal transmission / found objects / assorted bullshit <span class="blink">_</span></div>
+    </header>
+
+    <nav class="nav" aria-label="main navigation">
+      <a href="/">HOME</a>
+      <a href="/archive/#log">LOG</a>
+      <a href="/archive/#found">FOUND</a>
+      <a href="/archive/#music">NOW PLAYING</a>
+      <a href="/archive/#scrap">SCRAPS</a>
+      <a href="/archive/">ARCHIVE</a>
+    </nav>
+
+    {{ content }}
+
+    <footer class="footer">
+      best experienced while avoiding something important
+      <span class="footer-dot">•</span>
+      <a href="/archive/">everything eventually ends up here</a>
+    </footer>
+  </main>
+</body>
+</html>
