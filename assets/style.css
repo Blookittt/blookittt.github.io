@@ -1081,3 +1081,12 @@ body::after{
     letter-spacing:-.035em;
   }
 }
+
+
+/* tiny optical centering fix for LUCKY YOU */
+.lucky-neon-center{
+  width:max-content;
+  margin-left:auto;
+  margin-right:auto;
+  transform:translateX(-1px);
+}
