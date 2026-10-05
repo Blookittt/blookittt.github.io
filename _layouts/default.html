@@ -105,8 +105,11 @@
   (() => {
     const fortune = document.getElementById('daily-fortune');
     const rollers = document.getElementById('daily-lucky-numbers');
+    const trigger = document.getElementById('lucky-trigger');
+    const lamp = document.getElementById('fortuna-lamp');
     const reading = document.getElementById('lucky-reading');
-    if (!fortune || !rollers) return;
+
+    if (!fortune || !rollers || !trigger) return;
 
     const message = (fortune.querySelector('.fortune-message')?.textContent || '').trim();
     const fortuneNo = Number.parseInt(fortune.dataset.fortuneNo || '0', 10) || 0;
@@ -117,21 +120,21 @@
     const mm = now.getMonth() + 1;
     const dd = now.getDate();
     const yy = yyyy % 100;
+    const weekday = now.getDay();
     const dateKey = [yyyy, String(mm).padStart(2,'0'), String(dd).padStart(2,'0')].join('-');
-
-    const start = new Date(yyyy, 0, 0);
-    const dayOfYear = Math.floor((now - start) / 86400000);
+    const yearStart = new Date(yyyy, 0, 0);
+    const dayOfYear = Math.floor((now - yearStart) / 86400000);
 
     const words = message.split(/\s+/).filter(Boolean);
-    const lettersOnly = message.match(/[A-Za-z]/g) || [];
-    const letters = lettersOnly.length;
+    const letters = (message.match(/[A-Za-z]/g) || []).length;
     const vowels = (message.match(/[AEIOUaeiou]/g) || []).length;
     const consonants = Math.max(0, letters - vowels);
     const punctuation = (message.match(/[^A-Za-z0-9\s]/g) || []).length;
     const spaces = (message.match(/\s/g) || []).length;
+    const apostrophes = (message.match(/['’]/g) || []).length;
+    const doubledLetters = (message.match(/([A-Za-z])\1/gi) || []).length;
     const songWords = songTitle.split(/\s+/).filter(Boolean).length;
     const songLetters = (songTitle.match(/[A-Za-z]/g) || []).length;
-    const weekday = now.getDay();
 
     const hashString = (str) => {
       let h = 2166136261 >>> 0;
@@ -158,42 +161,23 @@
     const seed = hashString(dateKey + '|' + message + '|' + fortuneNo + '|' + songTitle);
     const rand = mulberry32(seed);
 
-    /*
-      FORTUNA DAILY NUMBER ENGINE
-      -----------------------------------
-      No single input is allowed to feel important enough to explain the result.
-
-      Components presently include:
-      - Gregorian date leakage
-      - weekday surcharge
-      - punctuation debt
-      - vowel/consonant imbalance
-      - middle-word taxation
-      - song-title contamination
-      - fake moon phase residue
-      - apostrophe surcharge
-      - fortune-fold asymmetry
-      - the Bloo constant (17), whose authority is self-evident
-      - a convenience-store receipt correction because 24/7 establishments know things
-
-      None of this is astrology.
-      This is worse.
-    */
-
     const middleWord = words.length ? words[Math.floor(words.length / 2)] : '';
     const firstWord = words[0] || '';
     const lastWord = words[words.length - 1] || '';
     const firstHalf = message.slice(0, Math.floor(message.length / 2));
     const secondHalf = message.slice(Math.ceil(message.length / 2));
+    const longWords = words.filter(w => w.replace(/[^A-Za-z]/g, '').length >= 7).length;
+    const tinyWords = words.filter(w => w.replace(/[^A-Za-z]/g, '').length <= 3).length;
 
-    const apostrophes = (message.match(/['’]/g) || []).length;
-    const doubledLetters = (message.match(/([A-Za-z])\1/gi) || []).length;
-    const longWords = words.filter(word => word.replace(/[^A-Za-z]/g, '').length >= 7).length;
-    const tinyWords = words.filter(word => word.replace(/[^A-Za-z]/g, '').length <= 3).length;
-
-    const fakeMoonResidue = norm(
-      Math.floor((dayOfYear + (yyyy % 19) * 11 + dd * 3) * 0.87)
-    );
+    /*
+      FORTUNA DAILY NUMBER ENGINE
+      A mathematically indefensible system built from:
+      Gregorian leakage, punctuation debt, vowel debt, middle-word tax,
+      fortune-fold asymmetry, fake moon residue, convenience-store receipt
+      correction, song contamination, apostrophe surcharge, weekday exceptions,
+      and the Bloo Constant (17), whose authority remains self-evident.
+    */
+    const fakeMoonResidue = norm(Math.floor((dayOfYear + (yyyy % 19) * 11 + dd * 3) * 0.87));
     const weekdaySurcharge = norm((weekday + 1) * 7 + dd + punctuation);
     const apostropheSurcharge = norm(apostrophes * 13 + 3 + mm);
     const vowelDebt = norm(consonants - vowels + yy);
@@ -216,55 +200,23 @@
     const sentenceEcho = norm(hashString(message.split('').reverse().join('')) % 127);
 
     const echoes = [
-      dd,
-      mm,
-      yy,
-      dd + mm,
-      dd + yy,
-      mm * dd,
-      dayOfYear,
-      words.length,
-      letters,
-      vowels,
-      consonants,
-      punctuation,
-      songTitle.length,
-      songWords * 11,
-      fortuneNo,
-      fortuneNo + dd,
-      fortuneNo + words.length,
-      letters - vowels,
-      fakeMoonResidue,
-      weekdaySurcharge,
-      apostropheSurcharge,
-      vowelDebt,
-      middleWordTax,
-      firstLastHandshake,
-      fortuneFold,
-      gasStationReceipt,
-      blooConstant,
-      songContamination,
-      doubledLetterPenalty,
-      suspiciousWordRatio,
-      sundayException,
-      receiptTail,
-      titleEcho,
-      sentenceEcho,
-      hashString(message + 'lucky') % 60,
+      dd, mm, yy, dd + mm, dd + yy, mm * dd, dayOfYear,
+      words.length, letters, vowels, consonants, punctuation,
+      songTitle.length, songWords * 11, fortuneNo,
+      fortuneNo + dd, fortuneNo + words.length, letters - vowels,
+      fakeMoonResidue, weekdaySurcharge, apostropheSurcharge, vowelDebt,
+      middleWordTax, firstLastHandshake, fortuneFold, gasStationReceipt,
+      blooConstant, songContamination, doubledLetterPenalty,
+      suspiciousWordRatio, sundayException, receiptTail, titleEcho,
+      sentenceEcho, hashString(message + 'lucky') % 60,
       hashString(songTitle + 'you') % 60,
       hashString(dateKey + middleWord) % 60
     ].map(norm);
 
-    /*
-      The weighted bowl is intentionally rude:
-      familiar/date-adjacent values get duplicated so coincidences happen just often
-      enough for a person with a corkboard and red string to ruin their weekend.
-    */
     const weighted = [
       ...echoes,
       norm(dd), norm(dd), norm(dd),
-      norm(mm), norm(mm),
-      norm(yy),
+      norm(mm), norm(mm), norm(yy),
       norm(words.length), norm(words.length + dd),
       norm(fortuneNo + dd), norm(fortuneNo + mm),
       norm(fakeMoonResidue + blooConstant),
@@ -279,21 +231,12 @@
     const used = new Set();
 
     while (picks.length < 6) {
-      let candidate;
+      let candidate = rand() < 0.86
+        ? weighted[Math.floor(rand() * weighted.length)]
+        : 1 + Math.floor(rand() * 60);
 
-      // Usually pick from the nonsense bowl; occasionally the machine "hears a number".
-      if (rand() < 0.86) {
-        candidate = weighted[Math.floor(rand() * weighted.length)];
-      } else {
-        candidate = 1 + Math.floor(rand() * 60);
-      }
-
-      /*
-        Duplicate resolution is also intentionally stupid:
-        walk forward by a daily prime-ish hop, then charge a punctuation fee.
-      */
       let guard = 0;
-      const hop = 3 + ((dd + weekday + fortuneNo + guard) % 11);
+      const hop = 3 + ((dd + weekday + fortuneNo) % 11);
       while (used.has(candidate) && guard < 60) {
         candidate = norm(candidate + hop + punctuation + (guard % 5));
         guard++;
@@ -305,127 +248,102 @@
       }
     }
 
-    // Do not sort. The order is part of the omen, obviously.
     for (let i = picks.length - 1; i > 0; i--) {
       const j = Math.floor(rand() * (i + 1));
       [picks[i], picks[j]] = [picks[j], picks[i]];
     }
 
     const numberEls = Array.from(rollers.querySelectorAll('.lucky-number'));
-    const trigger = document.getElementById('lucky-trigger');
-    const lamp = document.getElementById('fortuna-lamp');
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let busy = false;
 
-    const makeLocalRand = (index, digitIndex) => mulberry32(
+    const localRandFor = (index, digitIndex) => mulberry32(
       seed ^
       ((index + 1) * 0x45d9f3b) ^
       ((digitIndex + 1) * 0x27d4eb2d) ^
       (weekday * 0x9e3779b1)
     );
 
-    const teaseDigit = (digit, targetChar, localRand, onDone) => {
+    const resetMachine = () => {
+      rollers.classList.remove('shutters-open', 'is-complete');
+      rollers.classList.add('shutters-closed');
+      if (lamp) lamp.classList.remove('is-waking', 'is-on');
+
+      numberEls.forEach((box, index) => {
+        box.classList.remove('is-rolling', 'is-settled', 'has-afterglow');
+        const digits = Array.from(box.querySelectorAll('.lucky-digit'));
+        digits.forEach((digit, digitIndex) => {
+          digit.className = 'lucky-digit';
+          digit.textContent = String((8 - index - digitIndex + 10) % 10);
+        });
+      });
+    };
+
+    const rollDigit = (digit, targetChar, random, done) => {
       const target = Number(targetChar);
-      let current = 9 - Math.floor(localRand() * 3);
+      let current = 9 - Math.floor(random() * 3);
       digit.textContent = String(current);
 
       const down = () => {
         current = (current - 1 + 10) % 10;
         digit.textContent = String(current);
-      };
-
-      const pulse = () => {
         digit.classList.add('is-ticking');
         window.setTimeout(() => digit.classList.remove('is-ticking'), 38);
       };
 
-      const sequence = [
-        { count: 8 + Math.floor(localRand() * 3), delay: 28 },
-        { count: 6 + Math.floor(localRand() * 3), delay: 48 },
-        { count: 4 + Math.floor(localRand() * 2), delay: 82 }
-      ];
-
-      let phase = 0;
-      let step = 0;
-
-      const spin = () => {
-        if (phase >= sequence.length) {
-          approach();
-          return;
-        }
-
-        const p = sequence[phase];
-        down();
-        pulse();
-        step++;
-
-        if (step >= p.count) {
-          phase++;
-          step = 0;
-        }
-
-        window.setTimeout(spin, p.delay + Math.floor(localRand() * 14));
-      };
-
-      const stepUntil = (goal, delay, minimumClicks, callback) => {
-        let clicks = 0;
-        const walk = () => {
+      const runTicks = (count, delay, next) => {
+        let n = 0;
+        const tick = () => {
           down();
-          pulse();
-          clicks++;
-
-          if (current === goal && clicks >= minimumClicks) {
-            callback();
+          n++;
+          if (n >= count) {
+            next();
             return;
           }
-
-          window.setTimeout(walk, delay + Math.floor(localRand() * 18));
+          window.setTimeout(tick, delay + Math.floor(random() * 14));
         };
-        walk();
+        tick();
       };
 
-      const approach = () => {
-        // First delicious almost-win.
-        stepUntil(target, 108 + Math.floor(localRand() * 22), 2, () => {
-          digit.classList.add('is-near');
+      const descendToTarget = (delay, minimumClicks, next) => {
+        let clicks = 0;
+        const tick = () => {
+          down();
+          clicks++;
+          if (current === target && clicks >= minimumClicks) {
+            next();
+            return;
+          }
+          window.setTimeout(tick, delay + Math.floor(random() * 18));
+        };
+        tick();
+      };
 
-          window.setTimeout(() => {
-            digit.classList.remove('is-near');
+      runTicks(8 + Math.floor(random() * 3), 28, () => {
+        runTicks(6 + Math.floor(random() * 3), 48, () => {
+          runTicks(4 + Math.floor(random() * 2), 82, () => {
+            descendToTarget(110, 2, () => {
+              digit.classList.add('is-near');
 
-            // One click past. Absolutely criminal.
-            down();
-            digit.classList.add('is-slip');
+              window.setTimeout(() => {
+                digit.classList.remove('is-near');
+                down();
+                digit.classList.add('is-slip');
 
-            window.setTimeout(() => {
-              digit.classList.remove('is-slip');
-
-              // Slow final lap.
-              stepUntil(target, 145 + Math.floor(localRand() * 30), 3, () => {
                 window.setTimeout(() => {
-                  digit.textContent = targetChar;
-                  current = target;
-                  digit.classList.add('is-settled');
-                  onDone();
-                }, 90 + Math.floor(localRand() * 55));
-              });
-            }, 130 + Math.floor(localRand() * 65));
-          }, 120 + Math.floor(localRand() * 55));
-        });
-      };
+                  digit.classList.remove('is-slip');
 
-      spin();
-    };
-
-    const resetMachine = () => {
-      rollers.classList.remove('shutters-open', 'is-complete');
-      if (lamp) lamp.classList.remove('is-waking', 'is-on');
-      rollers.classList.add('shutters-closed');
-
-      numberEls.forEach((numberEl, index) => {
-        numberEl.classList.remove('is-rolling', 'is-settled', 'has-afterglow');
-        const digits = Array.from(numberEl.querySelectorAll('.lucky-digit'));
-        digits.forEach((digit, digitIndex) => {
-          digit.classList.remove('is-ticking', 'is-near', 'is-slip', 'is-settled', 'is-armed');
-          digit.textContent = String((8 - index - digitIndex + 10) % 10);
+                  descendToTarget(150, 3, () => {
+                    window.setTimeout(() => {
+                      digit.textContent = targetChar;
+                      digit.classList.add('is-settled');
+                      done();
+                    }, 110);
+                  });
+                }, 150);
+              }, 145);
+            });
+          });
         });
       });
     };
@@ -433,65 +351,60 @@
     const runNumber = (index) => {
       if (index >= numberEls.length) {
         rollers.classList.add('is-complete');
-        if (trigger) {
-          trigger.disabled = false;
-          trigger.classList.remove('is-running');
-          trigger.querySelector('.lucky-trigger-cap').textContent = 'ASK';
+        trigger.classList.remove('is-running');
+        trigger.removeAttribute('aria-busy');
+        busy = false;
+
+        if (reading) {
+          reading.textContent = 'Today\'s lucky numbers are ' + picks.join(', ') + '.';
         }
         return;
       }
 
-      const numberEl = numberEls[index];
+      const box = numberEls[index];
       const target = String(picks[index]).padStart(2, '0');
-      const digits = Array.from(numberEl.querySelectorAll('.lucky-digit'));
+      const digits = Array.from(box.querySelectorAll('.lucky-digit'));
 
-      numberEl.classList.add('is-rolling');
+      box.classList.add('is-rolling');
 
       if (reduced) {
         digits[0].textContent = target[0];
         digits[1].textContent = target[1];
-        numberEl.classList.remove('is-rolling');
-        numberEl.classList.add('is-settled', 'has-afterglow');
+        box.classList.remove('is-rolling');
+        box.classList.add('is-settled', 'has-afterglow');
         window.setTimeout(() => runNumber(index + 1), 90);
         return;
       }
 
-      let settledDigits = 0;
-      const settleOne = () => {
-        settledDigits++;
-        if (settledDigits < 2) return;
+      let settled = 0;
+      const settleDigit = () => {
+        settled++;
+        if (settled < 2) return;
 
-        numberEl.classList.remove('is-rolling');
-        numberEl.classList.add('is-settled', 'has-afterglow');
-
-        // Left-to-right cabinet clunks, one complete number at a time.
-        window.setTimeout(() => runNumber(index + 1), 170);
+        box.classList.remove('is-rolling');
+        box.classList.add('is-settled', 'has-afterglow');
+        window.setTimeout(() => runNumber(index + 1), 190);
       };
 
       digits.forEach((digit, digitIndex) => {
-        const localRand = makeLocalRand(index, digitIndex);
-        digit.classList.add('is-armed');
-
+        const random = localRandFor(index, digitIndex);
         window.setTimeout(() => {
-          digit.classList.remove('is-armed');
-          teaseDigit(digit, target[digitIndex], localRand, settleOne);
+          rollDigit(digit, target[digitIndex], random, settleDigit);
         }, digitIndex * 70);
       });
     };
 
     const reveal = () => {
-      if (!trigger || trigger.disabled) return;
-
-      trigger.disabled = true;
+      if (busy) return;
+      busy = true;
       trigger.classList.add('is-running');
-      trigger.querySelector('.lucky-trigger-cap').textContent = 'ASK';
+      trigger.setAttribute('aria-busy', 'true');
 
       resetMachine();
 
-      // ASK -> lamp coughs awake -> shutters lift -> Fortuna answers.
       window.setTimeout(() => {
         if (lamp) lamp.classList.add('is-waking');
-      }, reduced ? 10 : 150);
+      }, reduced ? 10 : 120);
 
       window.setTimeout(() => {
         if (lamp) {
@@ -502,19 +415,26 @@
         rollers.classList.remove('shutters-closed');
         rollers.classList.add('shutters-open');
 
-        const shutterTime = reduced ? 90 : 1180;
-        window.setTimeout(() => runNumber(0), shutterTime);
-      }, reduced ? 30 : 760);
+        window.setTimeout(() => runNumber(0), reduced ? 80 : 1100);
+      }, reduced ? 30 : 720);
     };
 
     resetMachine();
 
-    if (trigger) {
-      trigger.addEventListener('click', reveal);
-    }
+    trigger.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      reveal();
+    });
+
+    trigger.addEventListener('pointerup', (event) => {
+      if (event.pointerType === 'touch') {
+        event.preventDefault();
+      }
+    });
 
     if (reading) {
-      reading.textContent = 'Press the button to reveal today\'s lucky numbers.';
+      reading.textContent = 'Press ASK to reveal today\'s lucky numbers.';
     }
   })();
   </script>
