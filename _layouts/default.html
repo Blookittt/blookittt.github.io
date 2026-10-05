@@ -5,63 +5,30 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>{% if page.title and page.title != "home" %}{{ page.title | escape }} / {% endif %}FORTUNA</title>
   <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | strip_newlines | escape }}">
-  <script>
-    try {
-      if (sessionStorage.getItem('bloofortuneIntroSeen')) {
-        document.documentElement.classList.add('skip-intro');
-      } else {
-        document.documentElement.classList.add('play-intro');
-      }
-    } catch (_) {
-      document.documentElement.classList.add('play-intro');
-    }
-  </script>
   <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
-<div id="crt-intro" class="crt-intro" aria-hidden="true">
-  <img class="crt-intro-gif" src="/assets/images/static.gif" alt="">
-  <div class="crt-intro-word">LUCKY YOU</div>
-</div>
-
-  <div class="noise" aria-hidden="true"></div>
-  <div class="crt-lines" aria-hidden="true"></div>
-
   {% if site.data.weekly.song_audio and site.data.weekly.song_audio != "" %}
-    <audio id="bg-song" preload="metadata" loop>
-      <source src="{{ site.data.weekly.song_audio }}" type="audio/mpeg">
-    </audio>
-
-    <div class="audio-controls">
-      <button id="audio-toggle" class="audio-toggle" type="button" aria-label="toggle background music">♪ CLICK TO START</button>
-      <label class="volume-control" for="audio-volume">
-        <span id="volume-readout">VOL 08</span>
-        <input id="audio-volume" type="range" min="0" max="100" step="1" value="8" aria-label="background music volume">
-      </label>
-    </div>
+  <audio id="bg-song" preload="metadata" loop>
+    <source src="{{ site.data.weekly.song_audio }}" type="audio/mpeg">
+  </audio>
   {% endif %}
 
-  <main class="shell">
-    <header class="masthead masthead-center">
-      <a class="masthead-link ascii-brand exact-ascii-brand" href="/" aria-label="FORTUNA home">
-<pre class="ascii-title exact-ascii-title fortuna-ascii-title" aria-hidden="true">░▒▓████████▓▒░░▒▓██████▓▒░░▒▓███████▓▒░▒▓████████▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓███████▓▒░░▒▓██████▓▒░
-░▒▓█▓▒░     ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░   ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░
-░▒▓█▓▒░     ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░   ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░
-░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓███████▓▒░  ░▒▓█▓▒░   ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓████████▓▒░
-░▒▓█▓▒░     ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░   ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░
-░▒▓█▓▒░     ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░   ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░
-░▒▓█▓▒░      ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░    ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░</pre>
-        <span class="sr-only">FORTUNA</span>
-      </a>
+  <div class="site-shell">
+    <header class="site-header">
+      <div>
+        <a class="site-name" href="/">FORTUNA</a>
+        <div class="site-subtitle">personal pages / logs / found things / daily apparatus</div>
+      </div>
 
-      <div class="lucky-neon lucky-neon-center" aria-label="Lucky You">
-        <span>L</span><span>U</span><span>C</span><span>K</span><span>Y</span>
-        <span class="neon-gap" aria-hidden="true"></span>
-        <span>Y</span><span>O</span><span>U</span>
+      <div class="account-stub">
+        SIGNED IN AS<br>
+        <strong>BLOO № 17•421</strong><br>
+        FAVOR: 284
       </div>
     </header>
 
-    <nav class="nav" aria-label="main navigation">
+    <nav class="site-nav" aria-label="main navigation">
       <a href="/">HOME</a>
       <a href="/archive/">ARCHIVE</a>
       <a href="/archive/#log">LOG</a>
@@ -70,50 +37,72 @@
       <a href="/archive/#scrap">SCRAPS</a>
     </nav>
 
-    {{ content }}
-  </main>
+    <div class="page-wrap">
+      {{ content }}
+    </div>
+
+    <footer class="site-footer">
+      <span>FORTUNA</span>
+      <span>bloofortune.com</span>
+      <span>LUCKY YOU</span>
+    </footer>
+  </div>
 
   <script>
   (() => {
-    const root = document.documentElement;
-    const intro = document.getElementById('crt-intro');
+    const audio = document.getElementById('bg-song');
+    const toggle = document.getElementById('audio-toggle');
+    const slider = document.getElementById('audio-volume');
+    const readout = document.getElementById('volume-readout');
 
-    if (!root.classList.contains('play-intro')) {
-      if (intro) intro.remove();
-      return;
-    }
+    if (!audio || !toggle || !slider || !readout) return;
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const hold = reduced ? 80 : 1250;
-    const removeAt = reduced ? 140 : 1540;
+    const saved = Number(localStorage.getItem('fortunaVolume'));
+    const initial = Number.isFinite(saved) ? Math.max(0, Math.min(100, saved)) : 8;
+    slider.value = String(initial);
+    audio.volume = initial / 100;
+    readout.textContent = String(initial).padStart(2, '0');
 
-    window.setTimeout(() => {
-      if (intro) intro.classList.add('intro-out');
-      root.classList.remove('play-intro');
-      root.classList.add('intro-finished');
-      try { sessionStorage.setItem('bloofortuneIntroSeen', '1'); } catch (_) {}
-    }, hold);
+    const update = () => {
+      toggle.textContent = audio.paused ? 'PLAY' : 'STOP';
+    };
 
-    window.setTimeout(() => {
-      if (intro) intro.remove();
-    }, removeAt);
+    toggle.addEventListener('click', async () => {
+      if (audio.paused) {
+        try { await audio.play(); } catch (_) {}
+      } else {
+        audio.pause();
+      }
+      update();
+    });
+
+    slider.addEventListener('input', () => {
+      const v = Math.max(0, Math.min(100, Number(slider.value) || 0));
+      audio.volume = v / 100;
+      localStorage.setItem('fortunaVolume', String(v));
+      readout.textContent = String(v).padStart(2, '0');
+    });
+
+    update();
   })();
   </script>
 
-
   <script>
   (() => {
-    const fortune = document.getElementById('daily-fortune');
+    const machine = document.getElementById('fortuna-machine');
     const rollers = document.getElementById('daily-lucky-numbers');
     const trigger = document.getElementById('lucky-trigger');
     const lamp = document.getElementById('fortuna-lamp');
+    const kicker = document.getElementById('screen-kicker');
+    const main = document.getElementById('screen-main');
+    const sub = document.getElementById('screen-sub');
     const reading = document.getElementById('lucky-reading');
 
-    if (!fortune || !rollers || !trigger) return;
+    if (!machine || !rollers || !trigger || !kicker || !main || !sub) return;
 
-    const message = (fortune.querySelector('.fortune-message')?.textContent || '').trim();
-    const fortuneNo = Number.parseInt(fortune.dataset.fortuneNo || '0', 10) || 0;
-    const songTitle = (fortune.dataset.songTitle || '').trim();
+    const message = machine.dataset.fortuneText || 'Lucky you.';
+    const fortuneNo = Number.parseInt(machine.dataset.fortuneNo || '0', 10) || 0;
+    const songTitle = machine.dataset.songTitle || '';
 
     const now = new Date();
     const yyyy = now.getFullYear();
@@ -121,22 +110,19 @@
     const dd = now.getDate();
     const yy = yyyy % 100;
     const weekday = now.getDay();
-    const dateKey = [yyyy, String(mm).padStart(2,'0'), String(dd).padStart(2,'0')].join('-');
-    const yearStart = new Date(yyyy, 0, 0);
-    const dayOfYear = Math.floor((now - yearStart) / 86400000);
+    const start = new Date(yyyy, 0, 0);
+    const dayOfYear = Math.floor((now - start) / 86400000);
+    const dateKey = yyyy + '-' + String(mm).padStart(2,'0') + '-' + String(dd).padStart(2,'0');
 
     const words = message.split(/\s+/).filter(Boolean);
     const letters = (message.match(/[A-Za-z]/g) || []).length;
     const vowels = (message.match(/[AEIOUaeiou]/g) || []).length;
     const consonants = Math.max(0, letters - vowels);
     const punctuation = (message.match(/[^A-Za-z0-9\s]/g) || []).length;
-    const spaces = (message.match(/\s/g) || []).length;
     const apostrophes = (message.match(/['’]/g) || []).length;
-    const doubledLetters = (message.match(/([A-Za-z])\1/gi) || []).length;
     const songWords = songTitle.split(/\s+/).filter(Boolean).length;
-    const songLetters = (songTitle.match(/[A-Za-z]/g) || []).length;
 
-    const hashString = (str) => {
+    const hash = (str) => {
       let h = 2166136261 >>> 0;
       for (let i = 0; i < str.length; i++) {
         h ^= str.charCodeAt(i);
@@ -145,95 +131,56 @@
       return h >>> 0;
     };
 
-    const charSum = (str) => Array.from(str).reduce((sum, ch, i) => {
-      return sum + ch.charCodeAt(0) * (i + 3);
-    }, 0);
-
-    const mulberry32 = (seed) => () => {
+    const chars = (str) => Array.from(str).reduce((sum, ch, i) => sum + ch.charCodeAt(0) * (i + 3), 0);
+    const rng = (seed) => () => {
       seed |= 0;
       seed = seed + 0x6D2B79F5 | 0;
       let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
       t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
       return ((t ^ t >>> 14) >>> 0) / 4294967296;
     };
-
     const norm = (n) => ((Math.abs(Math.trunc(n)) - 1) % 60 + 60) % 60 + 1;
-    const seed = hashString(dateKey + '|' + message + '|' + fortuneNo + '|' + songTitle);
-    const rand = mulberry32(seed);
 
+    const seed = hash(dateKey + '|' + message + '|' + fortuneNo + '|' + songTitle);
+    const random = rng(seed);
     const middleWord = words.length ? words[Math.floor(words.length / 2)] : '';
     const firstWord = words[0] || '';
     const lastWord = words[words.length - 1] || '';
-    const firstHalf = message.slice(0, Math.floor(message.length / 2));
-    const secondHalf = message.slice(Math.ceil(message.length / 2));
-    const longWords = words.filter(w => w.replace(/[^A-Za-z]/g, '').length >= 7).length;
-    const tinyWords = words.filter(w => w.replace(/[^A-Za-z]/g, '').length <= 3).length;
-
-    /*
-      FORTUNA DAILY NUMBER ENGINE
-      A mathematically indefensible system built from:
-      Gregorian leakage, punctuation debt, vowel debt, middle-word tax,
-      fortune-fold asymmetry, fake moon residue, convenience-store receipt
-      correction, song contamination, apostrophe surcharge, weekday exceptions,
-      and the Bloo Constant (17), whose authority remains self-evident.
-    */
-    const fakeMoonResidue = norm(Math.floor((dayOfYear + (yyyy % 19) * 11 + dd * 3) * 0.87));
-    const weekdaySurcharge = norm((weekday + 1) * 7 + dd + punctuation);
-    const apostropheSurcharge = norm(apostrophes * 13 + 3 + mm);
-    const vowelDebt = norm(consonants - vowels + yy);
-    const middleWordTax = norm(charSum(middleWord) + middleWord.length * dd);
-    const firstLastHandshake = norm(charSum(firstWord) - charSum(lastWord) + dayOfYear);
-    const fortuneFold = norm(charSum(firstHalf) - charSum(secondHalf));
-    const gasStationReceipt = norm((dd * mm) + yy + letters + 24 + 7);
     const blooConstant = 17;
-    const songContamination = norm(charSum(songTitle) + songLetters * 3 + songWords * 11);
-    const doubledLetterPenalty = norm(doubledLetters * 9 + spaces + mm);
-    const suspiciousWordRatio = norm((longWords + 1) * 13 - tinyWords * 5 + words.length);
-    const sundayException = norm(
-      weekday === 0 ? 44 + vowels :
-      weekday === 2 ? 13 + punctuation :
-      weekday === 5 ? 27 + songWords :
-      weekday * 6 + 5
-    );
-    const receiptTail = norm(Number(String(yyyy) + String(mm).padStart(2,'0') + String(dd).padStart(2,'0')) % 97);
-    const titleEcho = norm(hashString(songTitle + dateKey) % 113);
-    const sentenceEcho = norm(hashString(message.split('').reverse().join('')) % 127);
 
-    const echoes = [
+    const nonsense = [
       dd, mm, yy, dd + mm, dd + yy, mm * dd, dayOfYear,
       words.length, letters, vowels, consonants, punctuation,
-      songTitle.length, songWords * 11, fortuneNo,
-      fortuneNo + dd, fortuneNo + words.length, letters - vowels,
-      fakeMoonResidue, weekdaySurcharge, apostropheSurcharge, vowelDebt,
-      middleWordTax, firstLastHandshake, fortuneFold, gasStationReceipt,
-      blooConstant, songContamination, doubledLetterPenalty,
-      suspiciousWordRatio, sundayException, receiptTail, titleEcho,
-      sentenceEcho, hashString(message + 'lucky') % 60,
-      hashString(songTitle + 'you') % 60,
-      hashString(dateKey + middleWord) % 60
+      fortuneNo, fortuneNo + dd, fortuneNo + words.length,
+      norm(Math.floor((dayOfYear + (yyyy % 19) * 11 + dd * 3) * .87)),
+      norm((weekday + 1) * 7 + dd + punctuation),
+      norm(apostrophes * 13 + 3 + mm),
+      norm(consonants - vowels + yy),
+      norm(chars(middleWord) + middleWord.length * dd),
+      norm(chars(firstWord) - chars(lastWord) + dayOfYear),
+      norm((dd * mm) + yy + letters + 24 + 7),
+      norm(chars(songTitle) + songWords * 11),
+      blooConstant,
+      norm(hash(message + 'lucky') % 60),
+      norm(hash(songTitle + 'you') % 60)
     ].map(norm);
 
     const weighted = [
-      ...echoes,
+      ...nonsense,
       norm(dd), norm(dd), norm(dd),
-      norm(mm), norm(mm), norm(yy),
-      norm(words.length), norm(words.length + dd),
-      norm(fortuneNo + dd), norm(fortuneNo + mm),
-      norm(fakeMoonResidue + blooConstant),
-      norm(gasStationReceipt - weekdaySurcharge),
-      norm(songContamination + vowels),
-      norm(middleWordTax - punctuation),
-      norm(receiptTail + apostropheSurcharge),
-      norm(dayOfYear + songWords + 17)
+      norm(mm), norm(mm),
+      norm(words.length + dd),
+      norm(fortuneNo + dd),
+      norm(dayOfYear + songWords + blooConstant)
     ];
 
     const picks = [];
     const used = new Set();
 
     while (picks.length < 6) {
-      let candidate = rand() < 0.86
-        ? weighted[Math.floor(rand() * weighted.length)]
-        : 1 + Math.floor(rand() * 60);
+      let candidate = random() < .86
+        ? weighted[Math.floor(random() * weighted.length)]
+        : 1 + Math.floor(random() * 60);
 
       let guard = 0;
       const hop = 3 + ((dd + weekday + fortuneNo) % 11);
@@ -249,410 +196,172 @@
     }
 
     for (let i = picks.length - 1; i > 0; i--) {
-      const j = Math.floor(rand() * (i + 1));
+      const j = Math.floor(random() * (i + 1));
       [picks[i], picks[j]] = [picks[j], picks[i]];
     }
 
-    const numberEls = Array.from(rollers.querySelectorAll('.lucky-number'));
+    const boxes = Array.from(rollers.querySelectorAll('.lucky-number'));
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let busy = false;
 
-    const localRandFor = (index, digitIndex) => mulberry32(
+    const setDisplay = (a, b, c) => {
+      kicker.textContent = a || '';
+      main.textContent = b || '';
+      sub.textContent = c || '';
+      machine.classList.remove('screen-pop');
+      void machine.offsetWidth;
+      machine.classList.add('screen-pop');
+    };
+
+    const sleep = (ms) => new Promise(resolve => window.setTimeout(resolve, ms));
+
+    const localRandom = (boxIndex, digitIndex) => rng(
       seed ^
-      ((index + 1) * 0x45d9f3b) ^
-      ((digitIndex + 1) * 0x27d4eb2d) ^
-      (weekday * 0x9e3779b1)
+      ((boxIndex + 1) * 0x45d9f3b) ^
+      ((digitIndex + 1) * 0x27d4eb2d)
     );
 
-    const resetMachine = () => {
-      rollers.classList.remove('shutters-open', 'is-complete');
-      rollers.classList.add('shutters-closed');
-      if (lamp) lamp.classList.remove('is-waking', 'is-on');
-
-      numberEls.forEach((box, index) => {
-        box.classList.remove('is-rolling', 'is-settled', 'has-afterglow');
-        const digits = Array.from(box.querySelectorAll('.lucky-digit'));
-        digits.forEach((digit, digitIndex) => {
+    const reset = () => {
+      machine.classList.remove('awake', 'shutters-open', 'fortune-revealed', 'machine-finished');
+      lamp.classList.remove('on', 'flicker');
+      boxes.forEach((box, i) => {
+        box.classList.remove('rolling', 'settled');
+        const digits = box.querySelectorAll('.lucky-digit');
+        digits.forEach((digit, d) => {
           digit.className = 'lucky-digit';
-          digit.textContent = String((8 - index - digitIndex + 10) % 10);
+          digit.textContent = String((8 - i - d + 10) % 10);
         });
       });
+      setDisplay('FORTUNA', 'LUCKY YOU', 'PRESS ASK');
     };
 
-    const rollDigit = (digit, targetChar, random, done) => {
+    const rollDigit = async (digit, targetChar, r) => {
       const target = Number(targetChar);
-      let current = 9 - Math.floor(random() * 3);
+      let current = 9 - Math.floor(r() * 3);
       digit.textContent = String(current);
 
-      const down = () => {
+      const down = async (delay) => {
         current = (current - 1 + 10) % 10;
         digit.textContent = String(current);
-        digit.classList.add('is-ticking');
-        window.setTimeout(() => digit.classList.remove('is-ticking'), 38);
+        digit.classList.add('tick');
+        await sleep(reduced ? 1 : delay);
+        digit.classList.remove('tick');
       };
 
-      const runTicks = (count, delay, next) => {
-        let n = 0;
-        const tick = () => {
-          down();
-          n++;
-          if (n >= count) {
-            next();
-            return;
-          }
-          window.setTimeout(tick, delay + Math.floor(random() * 14));
-        };
-        tick();
-      };
+      for (let i = 0; i < (reduced ? 1 : 10); i++) await down(28 + i * 3);
+      for (let i = 0; i < (reduced ? 0 : 6); i++) await down(55 + i * 7);
 
-      const descendToTarget = (delay, minimumClicks, next) => {
-        let clicks = 0;
-        const tick = () => {
-          down();
-          clicks++;
-          if (current === target && clicks >= minimumClicks) {
-            next();
-            return;
-          }
-          window.setTimeout(tick, delay + Math.floor(random() * 18));
-        };
-        tick();
-      };
-
-      runTicks(8 + Math.floor(random() * 3), 28, () => {
-        runTicks(6 + Math.floor(random() * 3), 48, () => {
-          runTicks(4 + Math.floor(random() * 2), 82, () => {
-            descendToTarget(110, 2, () => {
-              digit.classList.add('is-near');
-
-              window.setTimeout(() => {
-                digit.classList.remove('is-near');
-                down();
-                digit.classList.add('is-slip');
-
-                window.setTimeout(() => {
-                  digit.classList.remove('is-slip');
-
-                  descendToTarget(150, 3, () => {
-                    window.setTimeout(() => {
-                      digit.textContent = targetChar;
-                      digit.classList.add('is-settled');
-                      done();
-                    }, 110);
-                  });
-                }, 150);
-              }, 145);
-            });
-          });
-        });
-      });
-    };
-
-    const runNumber = (index) => {
-      if (index >= numberEls.length) {
-        rollers.classList.add('is-complete');
-        trigger.classList.remove('is-running');
-        trigger.removeAttribute('aria-busy');
-        busy = false;
-
-        if (reading) {
-          reading.textContent = 'Today\'s lucky numbers are ' + picks.join(', ') + '.';
-        }
-        return;
+      let clicks = 0;
+      while ((current !== target || clicks < 2) && clicks < 24) {
+        await down(105 + Math.min(clicks, 8) * 8);
+        clicks++;
       }
 
-      const box = numberEls[index];
+      if (!reduced) {
+        digit.classList.add('near');
+        await sleep(150);
+        digit.classList.remove('near');
+        await down(160);
+        digit.classList.add('slip');
+        await sleep(120);
+        digit.classList.remove('slip');
+
+        clicks = 0;
+        while ((current !== target || clicks < 3) && clicks < 24) {
+          await down(145 + Math.min(clicks, 8) * 10);
+          clicks++;
+        }
+      }
+
+      digit.textContent = targetChar;
+      digit.classList.add('locked');
+    };
+
+    const runBox = async (index) => {
+      const box = boxes[index];
       const target = String(picks[index]).padStart(2, '0');
       const digits = Array.from(box.querySelectorAll('.lucky-digit'));
+      box.classList.add('rolling');
 
-      box.classList.add('is-rolling');
+      await Promise.all(
+        digits.map((digit, d) => sleep(d * (reduced ? 0 : 70)).then(() => rollDigit(digit, target[d], localRandom(index, d))))
+      );
 
-      if (reduced) {
-        digits[0].textContent = target[0];
-        digits[1].textContent = target[1];
-        box.classList.remove('is-rolling');
-        box.classList.add('is-settled', 'has-afterglow');
-        window.setTimeout(() => runNumber(index + 1), 90);
-        return;
-      }
-
-      let settled = 0;
-      const settleDigit = () => {
-        settled++;
-        if (settled < 2) return;
-
-        box.classList.remove('is-rolling');
-        box.classList.add('is-settled', 'has-afterglow');
-        window.setTimeout(() => runNumber(index + 1), 190);
-      };
-
-      digits.forEach((digit, digitIndex) => {
-        const random = localRandFor(index, digitIndex);
-        window.setTimeout(() => {
-          rollDigit(digit, target[digitIndex], random, settleDigit);
-        }, digitIndex * 70);
-      });
+      box.classList.remove('rolling');
+      box.classList.add('settled');
+      setDisplay('FORTUNA', 'NUMBER ' + (index + 1) + ' / 6', 'ACCEPTED');
+      await sleep(reduced ? 20 : 210);
     };
 
-    const reveal = () => {
+    const revealFortune = async () => {
+      setDisplay('', '', '');
+      await sleep(reduced ? 10 : 240);
+      machine.classList.add('fortune-revealed');
+
+      kicker.textContent = 'FORTUNA';
+      main.textContent = message;
+      sub.textContent = 'FORTUNE No. ' + String(fortuneNo || '???').padStart(3, '0') + '  /  FAVOR +17';
+
+      machine.classList.remove('screen-pop');
+      void machine.offsetWidth;
+      machine.classList.add('screen-pop');
+
+      if (reading) {
+        reading.textContent = message + '. Lucky numbers: ' + picks.join(', ') + '.';
+      }
+    };
+
+    const ask = async () => {
       if (busy) return;
       busy = true;
-      trigger.classList.add('is-running');
-      trigger.setAttribute('aria-busy', 'true');
+      trigger.disabled = true;
+      reset();
 
-      resetMachine();
+      trigger.classList.add('down');
+      setDisplay('FORTUNA', 'PLEASE WAIT', '');
+      await sleep(reduced ? 20 : 180);
 
-      window.setTimeout(() => {
-        if (lamp) lamp.classList.add('is-waking');
-      }, reduced ? 10 : 120);
+      lamp.classList.add('flicker');
+      await sleep(reduced ? 20 : 620);
+      lamp.classList.remove('flicker');
+      lamp.classList.add('on');
+      machine.classList.add('awake');
+      trigger.classList.remove('down');
 
-      window.setTimeout(() => {
-        if (lamp) {
-          lamp.classList.remove('is-waking');
-          lamp.classList.add('is-on');
-        }
+      setDisplay('FORTUNA', 'CONSIDERING', 'THE MATTER');
+      await sleep(reduced ? 30 : 760);
 
-        rollers.classList.remove('shutters-closed');
-        rollers.classList.add('shutters-open');
+      machine.classList.add('shutters-open');
+      await sleep(reduced ? 40 : 980);
 
-        window.setTimeout(() => runNumber(0), reduced ? 80 : 1100);
-      }, reduced ? 30 : 720);
+      for (let i = 0; i < boxes.length; i++) {
+        setDisplay('FORTUNA', 'NUMBER ' + (i + 1) + ' / 6', 'IN MOTION');
+        await runBox(i);
+      }
+
+      machine.classList.add('machine-finished');
+      await revealFortune();
+
+      trigger.disabled = false;
+      busy = false;
     };
 
-    resetMachine();
+    trigger.addEventListener('click', ask);
 
-    trigger.addEventListener('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      reveal();
-    });
-
-    trigger.addEventListener('pointerup', (event) => {
-      if (event.pointerType === 'touch') {
-        event.preventDefault();
+    machine.addEventListener('pointerenter', () => {
+      if (!busy && !machine.classList.contains('fortune-revealed')) {
+        sub.textContent = 'READY';
       }
     });
 
-    if (reading) {
-      reading.textContent = 'Press ASK to reveal today\'s lucky numbers.';
-    }
+    machine.addEventListener('pointerleave', () => {
+      if (!busy && !machine.classList.contains('fortune-revealed')) {
+        sub.textContent = 'PRESS ASK';
+      }
+    });
+
+    reset();
   })();
   </script>
-
-  {% if site.data.weekly.song_audio and site.data.weekly.song_audio != "" %}
-  <script>
-  (() => {
-    const audio = document.getElementById('bg-song');
-    const button = document.getElementById('audio-toggle');
-    const slider = document.getElementById('audio-volume');
-    const readout = document.getElementById('volume-readout');
-    const eqCanvas = document.getElementById('song-eq');
-    if (!audio || !button || !slider || !readout) return;
-
-    const defaultVolume = Math.round(({{ site.data.weekly.song_volume | default: 0.08 }}) * 100);
-    const savedVolume = Number(localStorage.getItem('bloofortuneVolume'));
-    const initialVolume = Number.isFinite(savedVolume)
-      ? Math.max(0, Math.min(100, savedVolume))
-      : defaultVolume;
-
-    slider.value = String(initialVolume);
-    audio.volume = initialVolume / 100;
-
-    let audioContext = null;
-    let mediaSource = null;
-    let analyser = null;
-    let eqFrame = 0;
-    let eqData = null;
-    const peakLevels = new Array(16).fill(0);
-
-    const ensureVisualizer = async () => {
-      if (!eqCanvas || analyser) {
-        if (audioContext && audioContext.state === 'suspended') {
-          try { await audioContext.resume(); } catch (_) {}
-        }
-        return;
-      }
-
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (!AudioCtx) return;
-
-      try {
-        audioContext = new AudioCtx();
-        mediaSource = audioContext.createMediaElementSource(audio);
-        analyser = audioContext.createAnalyser();
-        analyser.fftSize = 128;
-        analyser.smoothingTimeConstant = 0.82;
-        mediaSource.connect(analyser);
-        analyser.connect(audioContext.destination);
-        eqData = new Uint8Array(analyser.frequencyBinCount);
-        if (audioContext.state === 'suspended') await audioContext.resume();
-      } catch (_) {
-        analyser = null;
-      }
-    };
-
-    const drawVisualizer = () => {
-      if (!eqCanvas || !analyser || !eqData) {
-        eqFrame = 0;
-        return;
-      }
-
-      const rect = eqCanvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const width = Math.max(1, Math.round(rect.width * dpr));
-      const height = Math.max(1, Math.round(rect.height * dpr));
-
-      if (eqCanvas.width !== width || eqCanvas.height !== height) {
-        eqCanvas.width = width;
-        eqCanvas.height = height;
-      }
-
-      const ctx = eqCanvas.getContext('2d');
-      if (!ctx) {
-        eqFrame = 0;
-        return;
-      }
-
-      analyser.getByteFrequencyData(eqData);
-      ctx.clearRect(0, 0, width, height);
-
-      const styles = getComputedStyle(document.documentElement);
-      const ink = styles.getPropertyValue('--ink').trim() || '#f3e7ee';
-      const pink = styles.getPropertyValue('--pink').trim() || '#ff78c8';
-      const bars = 16;
-      const gap = 3 * dpr;
-      const barWidth = Math.max(1, (width - gap * (bars - 1)) / bars);
-      const usableHeight = height - 8 * dpr;
-      let anyPeak = false;
-
-      const nyquist = audioContext ? audioContext.sampleRate / 2 : 22050;
-      const minHz = 70;
-      const maxHz = Math.min(8000, nyquist * 0.78);
-
-      for (let i = 0; i < bars; i++) {
-        const t0 = i / bars;
-        const t1 = (i + 1) / bars;
-        const lowHz = minHz * Math.pow(maxHz / minHz, t0);
-        const highHz = minHz * Math.pow(maxHz / minHz, t1);
-
-        const lowBin = Math.max(1, Math.floor((lowHz / nyquist) * eqData.length));
-        const highBin = Math.max(
-          lowBin + 1,
-          Math.min(eqData.length - 1, Math.ceil((highHz / nyquist) * eqData.length))
-        );
-
-        let sum = 0;
-        let count = 0;
-        for (let bin = lowBin; bin <= highBin; bin++) {
-          sum += eqData[bin];
-          count++;
-        }
-
-        const averaged = count ? (sum / count) / 255 : 0;
-        const highLift = 1 + (i / Math.max(1, bars - 1)) * 0.55;
-        const raw = audio.paused ? 0 : Math.min(1, averaged * highLift);
-        const level = Math.pow(raw, 0.80);
-        const barHeight = Math.max(1.2 * dpr, level * usableHeight);
-
-        peakLevels[i] = Math.max(level, peakLevels[i] - 0.018);
-        if (peakLevels[i] > 0.012) anyPeak = true;
-
-        const x = i * (barWidth + gap);
-        const y = height - barHeight;
-
-        ctx.globalAlpha = 0.74;
-        ctx.fillStyle = ink;
-        ctx.fillRect(x, y, barWidth, barHeight);
-
-        const peakY = height - peakLevels[i] * usableHeight - 2 * dpr;
-        ctx.globalAlpha = 0.92;
-        ctx.fillStyle = pink;
-        ctx.fillRect(x, Math.max(0, peakY), barWidth, Math.max(1, 1.5 * dpr));
-      }
-
-      ctx.globalAlpha = 1;
-
-      if (!audio.paused || anyPeak) {
-        eqFrame = requestAnimationFrame(drawVisualizer);
-      } else {
-        eqFrame = 0;
-      }
-    };
-
-    const startVisualizer = () => {
-      if (!eqCanvas || !analyser) return;
-      if (!eqFrame) eqFrame = requestAnimationFrame(drawVisualizer);
-    };
-
-    const updateReadout = () => {
-      readout.textContent = 'VOL ' + String(Math.round(Number(slider.value))).padStart(2, '0');
-    };
-    updateReadout();
-
-    const savedTime = Number(sessionStorage.getItem('bloofortuneSongTime') || 0);
-    const wantsMusic = sessionStorage.getItem('bloofortuneMusic') === 'on';
-
-    const setButton = () => {
-      button.textContent = audio.paused ? '♪ OFF' : '♪ ON';
-      button.classList.toggle('is-playing', !audio.paused);
-    };
-
-    const saveTime = () => {
-      if (Number.isFinite(audio.currentTime)) {
-        sessionStorage.setItem('bloofortuneSongTime', String(audio.currentTime));
-      }
-    };
-
-    const startMusic = async () => {
-      try {
-        if (savedTime > 0 && audio.currentTime < 1) audio.currentTime = savedTime;
-        await ensureVisualizer();
-        await audio.play();
-        sessionStorage.setItem('bloofortuneMusic', 'on');
-        setButton();
-        startVisualizer();
-      } catch (_) {
-        button.textContent = '♪ CLICK TO START';
-      }
-    };
-
-    const stopMusic = () => {
-      audio.pause();
-      saveTime();
-      sessionStorage.setItem('bloofortuneMusic', 'off');
-      setButton();
-      startVisualizer();
-    };
-
-    button.addEventListener('click', (event) => {
-      event.stopPropagation();
-      if (audio.paused) startMusic();
-      else stopMusic();
-    });
-
-    slider.addEventListener('pointerdown', (event) => event.stopPropagation());
-    slider.addEventListener('input', () => {
-      const value = Math.max(0, Math.min(100, Number(slider.value)));
-      audio.volume = value / 100;
-      localStorage.setItem('bloofortuneVolume', String(value));
-      updateReadout();
-    });
-
-    const firstGesture = () => {
-      if (sessionStorage.getItem('bloofortuneMusic') !== 'off') startMusic();
-    };
-
-    document.addEventListener('pointerdown', firstGesture, { once: true, capture: true });
-    document.addEventListener('keydown', firstGesture, { once: true, capture: true });
-    audio.addEventListener('timeupdate', saveTime);
-    audio.addEventListener('play', startVisualizer);
-    audio.addEventListener('pause', startVisualizer);
-    window.addEventListener('pagehide', saveTime);
-
-    if (wantsMusic) startMusic();
-    else button.textContent = '♪ CLICK TO START';
-  })();
-  </script>
-  {% endif %}
 </body>
 </html>
