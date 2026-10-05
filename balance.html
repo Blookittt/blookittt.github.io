@@ -71,9 +71,9 @@ permalink: /balance/
 
   const now = new Date();
   const dateKey =
-    now.getFullYear() + '-' +
-    String(now.getMonth() + 1).padStart(2,'0') + '-' +
-    String(now.getDate()).padStart(2,'0');
+    now.getUTCFullYear() + '-' +
+    String(now.getUTCMonth() + 1).padStart(2,'0') + '-' +
+    String(now.getUTCDate()).padStart(2,'0');
 
   dateEl.textContent = dateKey.replaceAll('-', '.');
 
