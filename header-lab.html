@@ -1,0 +1,205 @@
+---
+layout: null
+permalink: /header-lab/
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BLOOFORTUNE / HEADER LAB</title>
+<style>
+  :root{
+    --bg:#18131c;
+    --panel:#211923;
+    --ink:#f3e7ee;
+    --muted:#a994a2;
+    --pink:#ff73c8;
+    --line:rgba(255,255,255,.12);
+  }
+  *{box-sizing:border-box}
+  html{background:#0d0a10}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 18% 0%,rgba(255,115,200,.07),transparent 32%),
+      linear-gradient(180deg,#1a141e 0%,#151019 100%);
+    color:var(--ink);
+    font-family:Arial,Helvetica,sans-serif;
+  }
+  body:after{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:repeating-linear-gradient(to bottom,rgba(255,255,255,.012) 0 1px,transparent 1px 4px);
+    opacity:.32;
+    mix-blend-mode:soft-light;
+  }
+  main{
+    width:min(1180px,calc(100% - 36px));
+    margin:0 auto;
+    padding:42px 0 80px;
+  }
+  .lab-head{
+    display:flex;
+    align-items:end;
+    justify-content:space-between;
+    gap:24px;
+    margin-bottom:26px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:14px;
+  }
+  h1{
+    margin:0;
+    font:600 13px/1.2 "Courier New",monospace;
+    letter-spacing:.15em;
+  }
+  .lab-head span{
+    color:var(--muted);
+    font:10px/1.2 "Courier New",monospace;
+  }
+  .candidate{
+    position:relative;
+    margin:0 0 32px;
+    padding:20px 22px 22px;
+    background:rgba(33,25,35,.72);
+    border:1px solid rgba(255,115,200,.18);
+    box-shadow:0 12px 40px rgba(0,0,0,.16);
+    overflow:hidden;
+  }
+  .candidate:before{
+    content:"";
+    position:absolute;
+    left:0;top:0;bottom:0;
+    width:3px;
+    background:var(--pink);
+    opacity:.65;
+  }
+  .label{
+    margin-bottom:18px;
+    color:var(--muted);
+    font:10px/1 "Courier New",monospace;
+    letter-spacing:.12em;
+  }
+  .brand-row{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  pre{
+    margin:0;
+    color:var(--ink);
+    font-family:"Courier New",Courier,monospace;
+    line-height:.9;
+    white-space:pre;
+    max-width:100%;
+    overflow-x:auto;
+    scrollbar-width:thin;
+    text-shadow:
+      0 0 7px rgba(243,231,238,.045),
+      0 0 15px rgba(255,115,200,.035);
+  }
+  .heavy pre{font-size:clamp(5px,.68vw,10px);font-weight:700;letter-spacing:-.08em}
+  .classic pre{font-size:clamp(7px,.92vw,14px);line-height:1.05;font-weight:700}
+  .matrix pre{font-size:clamp(5px,.72vw,10px);line-height:.92;font-weight:700;letter-spacing:-.04em}
+  .neon{
+    display:flex;
+    gap:.16em;
+    margin:15px 0 0 4px;
+    color:var(--pink);
+    font:500 clamp(15px,1.6vw,22px)/1 "Courier New",monospace;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+  }
+  .neon span{
+    opacity:.22;
+    text-shadow:none;
+    animation:ignite 4.8s steps(1,end) infinite;
+  }
+  .neon span:nth-child(1){animation-delay:.08s}
+  .neon span:nth-child(2){animation-delay:.20s}
+  .neon span:nth-child(3){animation-delay:.31s}
+  .neon span:nth-child(4){animation-delay:.47s}
+  .neon span:nth-child(5){animation-delay:.58s}
+  .neon span:nth-child(6){animation-delay:.75s}
+  .neon span:nth-child(7){animation-delay:.89s}
+  .neon span:nth-child(8){animation-delay:1.02s}
+  @keyframes ignite{
+    0%,3%{opacity:.15;text-shadow:none}
+    4%{opacity:1;text-shadow:0 0 5px var(--pink),0 0 13px rgba(255,115,200,.55)}
+    5%{opacity:.28;text-shadow:none}
+    6%,86%{opacity:1;text-shadow:0 0 5px var(--pink),0 0 15px rgba(255,115,200,.38)}
+    87%{opacity:.65}
+    88%,100%{opacity:1;text-shadow:0 0 5px var(--pink),0 0 15px rgba(255,115,200,.38)}
+  }
+  .note{
+    margin-top:16px;
+    color:var(--muted);
+    font:11px/1.45 "Courier New",monospace;
+  }
+  @media(max-width:700px){
+    main{width:min(100% - 20px,1180px);padding-top:22px}
+    .candidate{padding:16px 12px 18px}
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="lab-head">
+    <h1>BLOOFORTUNE / HEADER LAB</h1>
+    <span>three title directions / nothing here changes the homepage</span>
+  </div>
+
+  <section class="candidate heavy">
+    <div class="label">01 / HEAVY BLOCK</div>
+    <div class="brand-row">
+<pre>████████    ██            ██████      ██████    ██████████    ██████    ████████    ██████████  ██      ██  ██      ██  ██████████
+██      ██  ██          ██      ██  ██      ██  ██          ██      ██  ██      ██      ██      ██      ██  ████    ██  ██
+██      ██  ██          ██      ██  ██      ██  ██          ██      ██  ██      ██      ██      ██      ██  ████    ██  ██
+████████    ██          ██      ██  ██      ██  ████████    ██      ██  ████████        ██      ██      ██  ██  ██  ██  ████████
+██      ██  ██          ██      ██  ██      ██  ██          ██      ██  ██  ██          ██      ██      ██  ██    ████  ██
+██      ██  ██          ██      ██  ██      ██  ██          ██      ██  ██    ██        ██      ██      ██  ██    ████  ██
+████████    ██████████    ██████      ██████    ██            ██████    ██      ██      ██        ██████    ██      ██  ██████████</pre>
+      <div class="neon" aria-label="Lucky You">
+        <span>L</span><span>U</span><span>C</span><span>K</span><span>Y</span><span>Y</span><span>O</span><span>U</span>
+      </div>
+    </div>
+    <div class="note">Big blunt station ID. Least “computer font,” most physical signage.</div>
+  </section>
+
+  <section class="candidate classic">
+    <div class="label">02 / CLASSIC TERMINAL</div>
+    <div class="brand-row">
+<pre> ____  _      ___   ___  _____ ___  ____  _____ _   _ _   _ _____
+| __ )| |    / _ \ / _ \|  ___/ _ \|  _ \|_   _| | | | \ | | ____|
+|  _ \| |   | | | | | | | |_ | | | | |_) | | | | | | |  \| |  _|
+| |_) | |___| |_| | |_| |  _|| |_| |  _ <  | | | |_| | |\  | |___
+|____/|_____\___/ \___/|_|   \___/|_| \_\ |_|  \___/|_| \_|_____|</pre>
+      <div class="neon" aria-label="Lucky You">
+        <span>L</span><span>U</span><span>C</span><span>K</span><span>Y</span><span>Y</span><span>O</span><span>U</span>
+      </div>
+    </div>
+    <div class="note">The raw old-internet option. Feels the most like actual text-mode art.</div>
+  </section>
+
+  <section class="candidate matrix">
+    <div class="label">03 / TEXT-MODE BILLBOARD</div>
+    <div class="brand-row">
+<pre>########    ##            ######      ######    ##########    ######    ########    ##########  ##      ##  ##      ##  ##########
+##      ##  ##          ##      ##  ##      ##  ##          ##      ##  ##      ##      ##      ##      ##  ####    ##  ##
+##      ##  ##          ##      ##  ##      ##  ##          ##      ##  ##      ##      ##      ##      ##  ####    ##  ##
+########    ##          ##      ##  ##      ##  ########    ##      ##  ########        ##      ##      ##  ##  ##  ##  ########
+##      ##  ##          ##      ##  ##      ##  ##          ##      ##  ##  ##          ##      ##      ##  ##    ####  ##
+##      ##  ##          ##      ##  ##      ##  ##          ##      ##  ##    ##        ##      ##      ##  ##    ####  ##
+########    ##########    ######      ######    ##            ######    ##      ##      ##        ######    ##      ##  ##########</pre>
+      <div class="neon" aria-label="Lucky You">
+        <span>L</span><span>U</span><span>C</span><span>K</span><span>Y</span><span>Y</span><span>O</span><span>U</span>
+      </div>
+    </div>
+    <div class="note">Cheap electronic sign / gas-station display energy. Rougher and more 24-hour.</div>
+  </section>
+</main>
+</body>
+</html>
